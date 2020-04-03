@@ -1,10 +1,15 @@
 import React from "react";
 import "./App.css";
 import "./styles/app.css";
+import Navbar from "./components/navbar"
+import Background from "./components/background"
 
 function App() {
   return (
-    <p className = "text-red-300">Hello</p>
+    <React.Fragment>
+      <Navbar />
+      <Background />
+    </React.Fragment>
   ); 
 }
 
