@@ -15,10 +15,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "npm run build:css && react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "build:css": "tailwind build src/styles/tailwind.css -o src/styles/app.css"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
