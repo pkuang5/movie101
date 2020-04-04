@@ -33,7 +33,10 @@ class Background extends Component {
 
     render() {
         return (
-            <div class="h-screen" style={divStyle}><Navbar isSignedIn= {this.isSignedIn} /></div>
+            <div class="flex flex-col h-screen" style={divStyle}>
+                <Navbar class="content-start" isSignedIn= {this.isSignedIn} />
+                <span class="m-auto font-sans font-semibold text-3xl tracking-tight text-white">Target</span>
+            </div>
         );
     }
 }
