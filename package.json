@@ -9,7 +9,7 @@
     "bootstrap": "^4.1.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-google-login-component": "0.9.3",
+    "react-google-login": "^5.1.2",
     "react-scripts": "3.4.1",
     "tailwindcss": "^1.2.0"
   },

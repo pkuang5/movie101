@@ -16,10 +16,26 @@ const divStyle = {
     backgroundPosition: 'center',
   };
 
-function Background() {
-    return (
-        <div class="h-screen" style={divStyle}><Navbar /></div>
-    );
+class Background extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { 
+            isSignedIn: false
+        };
+    }
+
+    isSignedIn= () => {
+        console.log("yay you signed in!")
+        this.setState({
+            isSignedIn: true
+        });
+    }
+
+    render() {
+        return (
+            <div class="h-screen" style={divStyle}><Navbar isSignedIn= {this.isSignedIn} /></div>
+        );
+    }
 }
 
 
