@@ -10,7 +10,8 @@ let images = ['https://film-grab.com/wp-content/uploads/2019/03/moonlight065.jpg
 'https://film-grab.com/wp-content/uploads/photo-gallery/dunkirk050.jpg?bwg=1551283900',
 'https://film-grab.com/wp-content/uploads/2019/03/dunkirk021.jpg',
 'https://screenmusings.org/movie/blu-ray/Joker/images/Joker-333.jpg',
-'https://highdefdiscnews.com/wp-content/uploads/2019/03/the_dark_knight_rises_4k_79.png'
+'https://highdefdiscnews.com/wp-content/uploads/2019/03/the_dark_knight_rises_4k_79.png',
+'https://pbs.twimg.com/media/EUxPgs-WoAQLuT5?format=jpg&name=large'
 ];
 
 export default images;

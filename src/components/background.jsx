@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Navbar from './navbar'
+import Login from './googleLogInBtn'
 import Images from '../assets/images';
 
 
@@ -34,8 +35,12 @@ class Background extends Component {
     render() {
         return (
             <div class="flex flex-col h-screen" style={divStyle}>
-                <Navbar class="content-start" isSignedIn= {this.isSignedIn} />
-                <span class="m-auto font-sans font-semibold text-3xl tracking-tight text-white">Target</span>
+                {/* <Navbar class="content-start" isSignedIn= {this.isSignedIn} /> */}
+                <div class="flex flex-col m-auto box-content h-64 w-70 p-4">
+                    <div><h1 class="font-serif font-semibold text-6xl tracking-tight text-white">Screenbook</h1></div>
+                    <div class="font-sans font-semibold text-white text-center">Watch, Enjoy, Record</div>
+                    <div class="flex justify-center p-12"><Login /></div>
+                </div>
             </div>
         );
     }
