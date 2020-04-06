@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { GoogleLogin } from "react-google-login";
+require('dotenv').config()
 
 class Login extends Component {
   render() {
@@ -17,9 +18,9 @@ class Login extends Component {
       <div>
         <GoogleLogin
           render={renderProps => (
-            <button onClick={renderProps.onClick} disabled={renderProps.disabled} class="bg-white font-sans font-semibold text-black py-2 px-4 rounded w-56">Login</button>
+            <button onClick={renderProps.onClick} disabled={renderProps.disabled} class="bg-white hover:bg-gray-200 font-sans font-semibold text-black py-2 px-4 rounded w-56">Login</button>
           )}
-          clientId="1002495861102-pi46kessn4v06m00i1gjsvpdilkqhf55.apps.googleusercontent.com"
+          clientId= {process.env.REACT_APP_LOCAL_GOOGLE_CLIENT_ID}
           buttonText="Login"
           onSuccess={responseGoogle}
           onFailure={responseGoogle}
