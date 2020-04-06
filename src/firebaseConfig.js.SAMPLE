@@ -1,0 +1,17 @@
+import firebase from 'firebase'
+
+// Set the configuration for your app
+// TODO: Replace with your project's config object
+const firebaseConfig = {
+  apiKey: "",
+  authDomain: "",
+  databaseURL: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: "",
+  measurementId: ""
+};
+firebase.initializeApp(firebaseConfig);
+
+export default firebase;

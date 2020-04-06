@@ -56,3 +56,14 @@ buck-out/
 
 # Bundle artifact
 *.jsbundle
+
+#firebase
+.firebase
+.firebaserc
+firebase.json
+
+#firebase SDK
+src/firebaseConfig.js
+
+#env
+.env
