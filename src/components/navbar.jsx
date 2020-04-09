@@ -1,37 +1,27 @@
 import React, { Component } from "react";
-import Login from "./googleLogInBtn";
 class Navbar extends Component {
 
   render() {
-    const {isSignedIn} = this.props;
+    // TODO: have under border for the tab that you are in
     return (
-      <nav class="flex items-center justify-between flex-wrap p-6">
-          <div class="flex items-center flex-shrink-0 text-white mr-6">
-            <svg class="fill-current h-8 w-8 mr-2" width="54" height="54" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z"/></svg>
-            <span class="font-sans font-semibold text-3xl tracking-tight">Screenbook</span>
-          </div>
-        <div class="block lg:hidden">
-          <button class="flex items-center px-3 py-2 border rounded text-whitee border-teal-400 hover:text-white hover:border-white">
-            <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
-          </button>
-        </div>
-        <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-          <div class="text-sm lg:flex-grow">
-            <a href="#responsive-header" class="font-sans block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white mr-4">
-              Tab 1
-            </a>
-            <a href="#responsive-header" class="font-sans block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white mr-4">
-              Tab 2
-            </a>
-            <a href="#responsive-header" class="font-sans block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white">
-              Tab 3
-            </a>
+      <nav class="flex items-center flex-wrap p-4 px-10 font-serif">
+        <div class="w-full block flex-grow flex items-end">
+          <div class="text-base flex-grow">
+            <svg width="30" height="30" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" fill="white"/>
+            <circle cx="20.5" cy="17.5" r="10.5" stroke="black" stroke-width="2"/>
+            <line x1="28.1584" y1="25.244" x2="37.256" y2="34.3417" stroke="black" stroke-width="2" stroke-linecap="round"/></svg>
           </div>
           <div>
-            {/* <button onClick={this.clicked} class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">
-            Login
-            </button> */}
-            <Login func={isSignedIn}/>
+            <a href="#responsive-header" class="font-montserrat block inline-block mt-0 text-black hover:border-gray-200 hover:text-gray-700 mr-4">
+              Feed
+            </a>
+            <a href="#responsive-header" class="font-montserrat block inline-block mt-0 text-black hover:text-gray-700 mr-4">
+              Editor
+            </a>
+            <a href="#responsive-header" class="font-montserrat block inline-block mt-0 text-black hover:text-gray-700 mr-6">
+              Films
+            </a>
+            <a href="#responsive-header" class="font-montserrat block inline-block text-black mt-0 mr-4 font-semibold">pkuang5</a>
           </div>
         </div>
       </nav>  
