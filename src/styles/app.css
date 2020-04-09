@@ -591,6 +591,12 @@ video {
   height: auto;
 }
 
+@font-face {
+  font-family: montserrat-regular;
+
+  src: url('../assets/fonts/Montserrat-Regular.ttf');
+}
+
 @tailwind component;
 
 .sr-only {
@@ -13156,6 +13162,10 @@ video {
 
 .duration-1000 {
   transition-duration: 1000ms;
+}
+
+.font-montserrat{
+  font-family: montserrat-regular;
 }
 
 .rainbow:hover {

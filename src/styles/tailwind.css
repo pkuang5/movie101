@@ -1,6 +1,17 @@
 @tailwind base;
+
+@font-face { 
+    font-family: montserrat-regular; 
+    src: url('../assets/fonts/Montserrat-Regular.ttf'); 
+} 
+
 @tailwind component;
 @tailwind utilities; 
+
+.font-montserrat{
+	font-family: montserrat-regular;
+}
+
 
 .rainbow:hover {
     -webkit-animation:rainbow 1s infinite;
