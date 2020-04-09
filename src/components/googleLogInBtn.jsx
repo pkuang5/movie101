@@ -1,18 +1,29 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { GoogleLogin } from "react-google-login";
-require('dotenv').config()
+import firebase from "../firebaseConfig";
+require("dotenv").config();
 
 class Login extends Component {
+
+  
   render() {
-    const { func } = this.props;
+    const { signedInIsTrue } = this.props;
     function responseGoogle(googleUser) {
       var id_token = googleUser.getAuthResponse().id_token;
       var googleId = googleUser.getId();
 
       console.log({ googleId });
       console.log({ accessToken: id_token });
-
-      func();
+      let profile = googleUser.getBasicProfile();
+      console.log(profile.getName());
+      firebase
+        .database()
+        .ref("users/" + googleId)
+        .set({
+          username: profile.getName(),
+          email: profile.getEmail(),     
+        });
+        signedInIsTrue();
     }
     return (
       <div>
