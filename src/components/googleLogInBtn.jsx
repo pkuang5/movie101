@@ -7,8 +7,7 @@ class Login extends Component {
 
   
   render() {
-    
-    const { func } = this.props;
+    const { signedInIsTrue } = this.props;
     function responseGoogle(googleUser) {
       var id_token = googleUser.getAuthResponse().id_token;
       var googleId = googleUser.getId();
@@ -22,11 +21,9 @@ class Login extends Component {
         .ref("users/" + googleId)
         .set({
           username: profile.getName(),
-          email: profile.getEmail(),
-          
+          email: profile.getEmail(),     
         });
-
-      func();
+        signedInIsTrue();
     }
     return (
       <div>
