@@ -3,7 +3,8 @@ import "./App.css";
 import "./styles/app.css";
 import Background from "./components/background"
 import firebase from "./firebaseConfig"
-
+import Profile from "./components/profilePage"
+import Nav from "./components/navbar";
 function writeUserData(userId, name, email) {
   firebase.database().ref('users/' + userId).set({
     username: name,
@@ -11,14 +12,12 @@ function writeUserData(userId, name, email) {
   });
   console.log("data uploaded to database");
 }
-
 class App extends Component {
   render(){
-    writeUserData("1","Patrick Kuang","pkuang@ucsb.edu");
-    return (
+    return ( 
       <React.Fragment>
-        <Background></Background>  
-      </React.Fragment>
+        <Nav></Nav>  
+      </React.Fragment> 
     ); 
   }
 }

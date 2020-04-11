@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import {BrowserRouter as Router, Link} from 'react-router-dom';
+import Route from 'react-router-dom/Route';
+import Profile from "./profilePage";
 class Navbar extends Component {
 
   render() {
@@ -21,7 +24,22 @@ class Navbar extends Component {
             <a href="#responsive-header" class="font-montserrat block inline-block mt-0 text-black hover:text-gray-700 mr-6">
               Films
             </a>
-            <a href="#responsive-header" class="font-montserrat block inline-block text-black mt-0 mr-4 font-semibold">pkuang5</a>
+            <a href="#responsive-header" class="font-montserrat block inline-block text-black mt-0 mr-4 font-semibold">Nate</a>
+            <Router>     
+              <div className = "App"> 
+
+              <ul>
+                <li>
+                <Link to = "/profile">Profile</Link> 
+                </li>
+              </ul>
+
+              <Route path = "/profile" exact strict component = { 
+              Profile
+              }/>
+
+              </div>
+            </Router>
           </div>
         </div>
       </nav>  

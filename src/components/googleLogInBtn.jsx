@@ -4,7 +4,7 @@ import firebase from "../firebaseConfig";
 require("dotenv").config();
 
 class Login extends Component {
-
+  
   
   render() {
     const { signedInIsTrue } = this.props;
@@ -24,6 +24,7 @@ class Login extends Component {
           email: profile.getEmail(),     
         });
         signedInIsTrue();
+        //exports.googleId = googleId; returns undefined
     }
     return (
       <div>
@@ -43,3 +44,7 @@ class Login extends Component {
 }
 
 export default Login;
+
+
+
+
