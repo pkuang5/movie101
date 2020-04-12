@@ -61,4 +61,15 @@ let searchMoviesByKeyword = function (keyword) {
     })
 }
 
-export default getConfig;
+let searchTrendingMovies = function () {
+    let url = ''.concat(baseURL, 'trending/movie/week?api_key=', APIKEY);
+    fetch(url)
+    .then(result=>result.json())
+    .then((data)=>{
+        // console.log(data.results)
+        return data.results;
+    })
+}
+
+
+export default searchTrendingMovies;
