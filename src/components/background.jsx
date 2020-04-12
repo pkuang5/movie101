@@ -20,14 +20,13 @@ class Background extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            isSignedIn: false
+            signedIn: false
         };
     }
 
     isSignedIn= () => {
-        console.log("yay you signed in!")
         this.setState({
-            isSignedIn: true
+            signedIn: true
         });
     }
 
@@ -38,7 +37,7 @@ class Background extends Component {
                 <div class="flex flex-col m-auto box-content h-64 w-70 p-4">
                     <div class="font-serif font-semibold text-6xl tracking-tight text-white select-none">Screenbook</div>
                     <div class="font-sans font-semibold text-white text-center select-none">Watch, Enjoy, Record</div>
-                    <div class="flex justify-center p-12"><Login /></div>
+                    <div class="flex justify-center p-12" ><Login signedInIsTrue = {this.isSignedIn}  /></div>
                 </div>
             </div>
         );
