@@ -3,6 +3,7 @@ import "./App.css";
 import "./styles/app.css";
 import Background from "./components/background"
 import firebase from "./firebaseConfig"
+import searchMoviesByKeyword from "./assets/movieDbApi"
 
 function writeUserData(userId, name, email) {
   firebase.database().ref('users/' + userId).set({
@@ -14,7 +15,8 @@ function writeUserData(userId, name, email) {
 
 class App extends Component {
   render(){
-    writeUserData("1","Patrick Kuang","pkuang@ucsb.edu");
+    searchMoviesByKeyword()
+    // writeUserData("1","Patrick Kuang","pkuang@ucsb.edu");
     return (
       <React.Fragment>
         <Background></Background>  
