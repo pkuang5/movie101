@@ -15,9 +15,9 @@ let getConfig = function () {
     .then((data)=>{
         baseImageURL = data.images.secure_base_url;
         configData = data.images;
-        console.log('config:', data);
-        console.log('config fetched');
-        getPosterPathofMovie('parasite')
+        // console.log('config:', data);
+        // console.log('config fetched');
+        searchMoviesByKeyword('parasite')
     })
     .catch(function(err){
         alert(err);
@@ -36,6 +36,27 @@ let getPosterPathofMovie = function (keyword) {
         console.log(data)
         let posterPath = data.results[0].poster_path;
         console.log('https://image.tmdb.org/t/p/w500' + posterPath)
+        
+    })
+}
+
+let searchMoviesByKeyword = function (keyword) {
+    let url = ''.concat(baseURL, 'search/movie?api_key=', APIKEY, '&query=', keyword, '&page=1');
+    fetch(url)
+    .then(result=>result.json())
+    .then((data)=>{
+        data.results.sort(function(a, b) {
+            return -(parseFloat(a.popularity) - parseFloat(b.popularity));
+        });
+        //process the returned data
+        console.log(data)
+        // var i;
+        // for (i = 0; i < 10; i++) {
+        //     let movieResults = data.results[i].title + " " + data.results[i].release_date;
+        //     console.log(movieResults)
+        // }
+        let movieResults = data.results['title']
+        console.log(movieResults)
         
     })
 }
