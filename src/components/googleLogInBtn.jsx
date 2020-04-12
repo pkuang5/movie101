@@ -11,6 +11,7 @@ class Login extends Component {
   responseGoogle = (googleUser) => {
     var id_token = googleUser.getAuthResponse().id_token;
     var googleId = googleUser.getId();
+    global.id = googleId;
     this.setState({ id: googleId})
 
     console.log({ googleId });
@@ -29,7 +30,6 @@ class Login extends Component {
   }
   
   render() {
-    // const { signedInIsTrue } = this.props;
     return (
       <div>
         <GoogleLogin

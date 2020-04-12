@@ -25,6 +25,8 @@ class Background extends Component {
     }
 
     isSignedIn= () => {
+        console.log("yay you signed in")
+        console.log(global.id)
         this.setState({
             signedIn: true
         });
@@ -43,6 +45,5 @@ class Background extends Component {
         );
     }
 }
-
 
 export default Background; 
