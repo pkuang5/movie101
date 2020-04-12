@@ -4,27 +4,32 @@ import firebase from "../firebaseConfig";
 require("dotenv").config();
 
 class Login extends Component {
+  state = {
+    id: ""
+  }
 
+  responseGoogle = (googleUser) => {
+    var id_token = googleUser.getAuthResponse().id_token;
+    var googleId = googleUser.getId();
+    this.setState({ id: googleId})
+
+    console.log({ googleId });
+    console.log({ accessToken: id_token });
+    let profile = googleUser.getBasicProfile();
+    console.log(profile.getName());
+    firebase
+      .database()
+      .ref("users/" + googleId)
+      .set({
+        username: profile.getName(),
+        email: profile.getEmail(),     
+      });
+      this.props.signedInIsTrue();
+      console.log(this.state.id)
+  }
   
   render() {
-    const { signedInIsTrue } = this.props;
-    function responseGoogle(googleUser) {
-      var id_token = googleUser.getAuthResponse().id_token;
-      var googleId = googleUser.getId();
-
-      console.log({ googleId });
-      console.log({ accessToken: id_token });
-      let profile = googleUser.getBasicProfile();
-      console.log(profile.getName());
-      firebase
-        .database()
-        .ref("users/" + googleId)
-        .set({
-          username: profile.getName(),
-          email: profile.getEmail(),     
-        });
-        signedInIsTrue();
-    }
+    // const { signedInIsTrue } = this.props;
     return (
       <div>
         <GoogleLogin
@@ -33,8 +38,8 @@ class Login extends Component {
           )}
           clientId= {process.env.REACT_APP_LOCAL_GOOGLE_CLIENT_ID}
           buttonText="Login"
-          onSuccess={responseGoogle}
-          onFailure={responseGoogle}
+          onSuccess={this.responseGoogle}
+          onFailure={this.responseGoogle}
           cookiePolicy={"single_host_origin"}
         />
       </div>
