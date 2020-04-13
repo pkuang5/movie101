@@ -61,13 +61,21 @@ let searchMoviesByKeyword = function (keyword) {
     })
 }
 
-let searchTrendingMovies = function () {
+let searchTrendingMovies = () => {
     let url = ''.concat(baseURL, 'trending/movie/week?api_key=', APIKEY);
     fetch(url)
     .then(result=>result.json())
     .then((data)=>{
-        // console.log(data.results)
-        return data.results;
+        let stateList = [];
+            var i;
+            for (i in data.results){
+                let movieEntry = {
+                    title: data.results[i].title,
+                    posterImageUrl: 'https://image.tmdb.org/t/p/w500'+data.results[i].poster_path
+                }
+                stateList.push(movieEntry);
+            }
+        return stateList;
     })
 }
 

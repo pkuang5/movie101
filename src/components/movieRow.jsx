@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import forwardArrow from '../assets/svg/forwardArrow.svg'
 import backArrow from '../assets/svg/backArrow.svg'
+require('dotenv').config()
 
 class MovieRow extends Component {
     state = {  
@@ -9,11 +10,9 @@ class MovieRow extends Component {
         end: 5,
     }
 
-    componentDidMount() {
-        let url = ''.concat('https://api.themoviedb.org/3/', 'trending/movie/week?api_key=', 'ff726c8d4b1d4ce72b5a0e0588fcd235');
-        fetch(url)
-        .then(result=>result.json())
-        .then((data)=>{
+    componentDidMount = () => {
+        let url = ''.concat('https://api.themoviedb.org/3/', 'trending/movie/week?api_key=', process.env.REACT_APP_MOVIEDB_API_KEY);
+        fetch(url).then(result=>result.json()).then((data)=>{
             let stateList = this.state.movies;
             var i;
             for (i in data.results){
@@ -25,7 +24,6 @@ class MovieRow extends Component {
             }
             this.setState({ movies: stateList })
         })
-        console.log(this.state.movies)
     }
 
     backClicked = () => {

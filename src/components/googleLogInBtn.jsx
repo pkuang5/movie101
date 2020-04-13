@@ -1,23 +1,18 @@
-import React, { Component, useState } from "react";
+import React, { Component} from "react";
 import { GoogleLogin } from "react-google-login";
 import firebase from "../firebaseConfig";
 require("dotenv").config();
 
-class Login extends Component {
-  state = {
-    id: ""
-  }
+class GoogleLogInBtn extends Component {
 
   responseGoogle = (googleUser) => {
     var id_token = googleUser.getAuthResponse().id_token;
     var googleId = googleUser.getId();
     global.id = googleId;
-    this.setState({ id: googleId})
 
     console.log({ googleId });
     console.log({ accessToken: id_token });
     let profile = googleUser.getBasicProfile();
-    console.log(profile.getName());
     firebase
       .database()
       .ref("users/" + googleId)
@@ -26,7 +21,6 @@ class Login extends Component {
         email: profile.getEmail(),     
       });
       this.props.signedInIsTrue();
-      console.log(this.state.id)
   }
   
   render() {
@@ -47,4 +41,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default GoogleLogInBtn;

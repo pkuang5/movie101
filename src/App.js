@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import "./App.css";
 import "./styles/app.css";
-import Background from "./components/background"
+import Login from "./components/login"
 import Feed from "./components/feed"
 
 function App() {
   return (
     <React.Fragment>
-      <Feed></Feed>  
+      <Login></Login>  
     </React.Fragment>
   ); 
 }
