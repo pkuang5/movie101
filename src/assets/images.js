@@ -1,7 +1,6 @@
 let images = ['https://film-grab.com/wp-content/uploads/2019/03/moonlight065.jpg',
 'https://film-grab.com/wp-content/uploads/photo-gallery/Castle_in_the_Sky_052.jpg?bwg=15694009777',
 'https://film-grab.com/wp-content/uploads/photo-gallery/26%20(463).jpg?bwg=1547220405',
-'https://screenmusings.org/movie/blu-ray/Parasite/images/Parasite-206.jpg',
 'https://film-grab.com/wp-content/uploads/2014/07/0889.jpg',
 'https://film-grab.com/wp-content/uploads/photo-gallery/lastjedi052.jpg?bwg=1551289216',
 'https://film-grab.com/wp-content/uploads/photo-gallery/imported_from_media_libray/forceawakens57.jpg?bwg=1547036685',

@@ -5,24 +5,24 @@ import firebase from "../firebaseConfig";
 
 class Feed extends Component {
     state = {
-        userName: "",
+        firstName: "",
     }
 
     componentDidMount = () => {
         var userInfo = firebase.database().ref('users/' + global.id);
         userInfo.on('value', (snapshot) => {
-            this.setState({userName: snapshot.val().username});
+            this.setState({firstName: snapshot.val().firstName});
           });
     }
 
     render() {
         return (
             <React.Fragment>
-                <Navbar />
+                <Navbar name={this.state.firstName} />
                 <div class="flex justify-center pt-3 w-full">
                     <div class="text-center w-2/3">
                         <p class="font-serif text-3xl font-bold">Screenbook</p>
-                        <p class="font-montserrat"> Welcome, {this.state.userName}! This is your feed. <br></br> See what movies are popular in the Screenbook community and follow other members to see their journals. Or, get started on your own journal. </p>
+                        <p class="font-montserrat"> Welcome, {this.state.firstName}! This is your feed. <br></br> See what movies are popular in the Screenbook community and follow other members to see their journals. Or, get started on your own journal. </p>
                     </div>
                 </div>
                 <div class="flex justify-center pt-4">

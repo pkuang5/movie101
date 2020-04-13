@@ -17,7 +17,9 @@ class GoogleLogInBtn extends Component {
       .database()
       .ref("users/" + googleId)
       .set({
-        username: profile.getName(),
+        fullName: profile.getName(),
+        firstName: profile.getGivenName(),
+        lastName: profile.getFamilyName(),
         email: profile.getEmail(),     
       });
       this.props.signedInIsTrue();
