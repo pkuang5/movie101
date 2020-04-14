@@ -1,31 +1,31 @@
-import React, { Component, useState } from "react";
+import React, { Component} from "react";
 import { GoogleLogin } from "react-google-login";
 import firebase from "../firebaseConfig";
 require("dotenv").config();
 
-class Login extends Component {
-  
+class GoogleLogInBtn extends Component {
+
+  responseGoogle = (googleUser) => {
+    var id_token = googleUser.getAuthResponse().id_token;
+    var googleId = googleUser.getId();
+    global.id = googleId;
+
+    console.log({ googleId });
+    console.log({ accessToken: id_token });
+    let profile = googleUser.getBasicProfile();
+    firebase
+      .database()
+      .ref("users/" + googleId)
+      .set({
+        fullName: profile.getName(),
+        firstName: profile.getGivenName(),
+        lastName: profile.getFamilyName(),
+        email: profile.getEmail(),     
+      });
+      this.props.signedInIsTrue();
+  }
   
   render() {
-    const { signedInIsTrue } = this.props;
-    function responseGoogle(googleUser) {
-      var id_token = googleUser.getAuthResponse().id_token;
-      var googleId = googleUser.getId();
-
-      console.log({ googleId });
-      console.log({ accessToken: id_token });
-      let profile = googleUser.getBasicProfile();
-      console.log(profile.getName());
-      firebase
-        .database()
-        .ref("users/" + googleId)
-        .set({
-          username: profile.getName(),
-          email: profile.getEmail(),     
-        });
-        signedInIsTrue();
-        //exports.googleId = googleId; returns undefined
-    }
     return (
       <div>
         <GoogleLogin
@@ -34,8 +34,8 @@ class Login extends Component {
           )}
           clientId= {process.env.REACT_APP_LOCAL_GOOGLE_CLIENT_ID}
           buttonText="Login"
-          onSuccess={responseGoogle}
-          onFailure={responseGoogle}
+          onSuccess={this.responseGoogle}
+          onFailure={this.responseGoogle}
           cookiePolicy={"single_host_origin"}
         />
       </div>
@@ -43,8 +43,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
-
-
-
-
+export default GoogleLogInBtn;

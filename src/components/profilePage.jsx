@@ -68,7 +68,8 @@ class Profile extends Component {
 
     render() {
         return (
-            <div className="commentContainer">
+            
+            <div class="flex justify-center pt-3 w-full">
                 <h1>PROFILE PAGE</h1>
                 <label>Username</label>
                 {
@@ -108,6 +109,7 @@ class Profile extends Component {
                 <hr />
                 <button className = "btn-primary" onClick={(e) => this.handleSubmit(e)}>Submit</button>
             </div>
+           
         );
     }
 }

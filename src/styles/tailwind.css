@@ -12,6 +12,9 @@
 	font-family: montserrat-regular;
 }
 
+.button-color-beige {
+    background-color: #C3A37A;
+  }
 
 .rainbow:hover {
     -webkit-animation:rainbow 1s infinite;

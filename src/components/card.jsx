@@ -17,7 +17,7 @@ class Card extends Component {
         return (
             <div class="flex items-end max-w-sm overflow-hidden cursor-pointer text-transparent hover:text-black justify-center" onClick={this.handleClick}>
                 <img class="w-full mb-8" src={imageUrl} alt="Sunset in the mountains"/>
-                <p class="absolute font-sans font-semibold font-base select-none">{movieName}</p>
+                <p class="absolute text-sm font-semibold font-montserrat font-semibold font-base select-none">{movieName}</p>
             </div>
         );
     }
