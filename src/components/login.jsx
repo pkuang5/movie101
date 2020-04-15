@@ -46,7 +46,7 @@ class Login extends Component {
                 <div class="flex flex-col h-screen" style={divStyle}>
                     <div class="flex flex-col m-auto box-content h-64 w-70 p-4">
                         <div class="font-serif font-semibold text-6xl tracking-tight text-white select-none">Screenbook</div>
-                        <div class="font-sans font-semibold text-white text-center select-none">Watch, Enjoy, Record</div>  
+                        <div class="font-montserrat font-semibold text-white text-center select-none">Your personal film capsule</div>  
                         <div class="flex justify-center p-12" ><GoogleLogInBtn signedInIsTrue = {this.isSignedIn}  /></div>
                     </div>
                 </div>

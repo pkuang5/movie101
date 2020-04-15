@@ -5,11 +5,20 @@
     src: url('../assets/fonts/Montserrat-Regular.ttf'); 
 } 
 
+@font-face { 
+    font-family: yesevaone-regular; 
+    src: url('../assets/fonts/YesevaOne-Regular.ttf'); 
+} 
+
 @tailwind component;
 @tailwind utilities; 
 
 .font-montserrat{
 	font-family: montserrat-regular;
+}
+
+.font-yeseva{
+    font-family: yesevaone-regular;
 }
 
 .button-color-beige {
