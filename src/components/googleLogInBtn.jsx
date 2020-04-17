@@ -1,8 +1,6 @@
 import React, { Component} from "react";
 import { GoogleLogin } from "react-google-login";
 import firebase from "../firebaseConfig";
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
-
 require("dotenv").config();
 
 class GoogleLogInBtn extends Component {
@@ -10,10 +8,7 @@ class GoogleLogInBtn extends Component {
   responseGoogle = (googleUser) => {
     var id_token = googleUser.getAuthResponse().id_token;
     var googleId = googleUser.getId();
-    global.id = googleId;
 
-    console.log({ googleId });
-    console.log({ accessToken: id_token });
     let profile = googleUser.getBasicProfile();
     firebase
       .database()
@@ -25,7 +20,7 @@ class GoogleLogInBtn extends Component {
         email: profile.getEmail(),     
       });
       
-      this.props.signedInIsTrue();
+      this.props.signInState(true, googleId);
       
   }
   

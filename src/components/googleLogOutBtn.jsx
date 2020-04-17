@@ -7,34 +7,13 @@ import Login from "./googleLogInBtn.jsx"
 
 class LogOut extends Component {
 
-  responseGoogle = (googleUser) => {
-    
-    console.log("WORKING");
-   
-    this.props.signOffIsTrue();
-    
+  handleLogout = () => {
+    this.props.signInState(false,'')
   }
-  
+
   render() {
-
-    
-    return (
-      // <GoogleLogout
-      //   clientId={process.env.REACT_APP_LOCAL_GOOGLE_CLIENT_ID}
-      //   buttonText="Logout"
-      //   onLogoutSuccess={this.responseGoogle}
-        
-      // ></GoogleLogout>
-      
-      // added routing to login page upon log out
-      
-      <Link to = "/">
-      <button onClick = {this.responseGoogle}>LOGOUT</button>
-      </Link>
-      
-      
-
-      
+    return (      
+      <button onClick = {this.handleLogout}>LOGOUT</button>
     );
   }
 }
