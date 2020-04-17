@@ -10,14 +10,20 @@ class Feed extends Component {
         super(props);
         this.state = {
             firstName: "",
+           
         }
     }
     
     signOff = () => {
         // Clear the local storage
+        //(localStorage.setItem('logMe',false))
+        
         localStorage.clear();
+
+       
         console.log("LOOK AT ME NATE")
      }
+    
     // componentDidMount = () => {
     //     var userInfo = firebase.database().ref('users/' + global.id);
     //     userInfo.on('value', (snapshot) => {

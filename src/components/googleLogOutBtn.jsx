@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import { GoogleLogout } from "react-google-login";
+import { BrowserRouter as Router, Route, Redirect, Link } from 'react-router-dom'
+import Login from "./googleLogInBtn.jsx"
+
 
 
 class LogOut extends Component {
@@ -9,7 +12,9 @@ class LogOut extends Component {
     console.log("WORKING");
    
     this.props.signOffIsTrue();
+    
   }
+  
   render() {
 
     
@@ -20,7 +25,16 @@ class LogOut extends Component {
       //   onLogoutSuccess={this.responseGoogle}
         
       // ></GoogleLogout>
+      
+      // added routing to login page upon log out
+      
+      <Link to = "/">
       <button onClick = {this.responseGoogle}>LOGOUT</button>
+      </Link>
+      
+      
+
+      
     );
   }
 }

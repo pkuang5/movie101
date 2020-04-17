@@ -33,6 +33,7 @@ class Login extends Component {
         this.setState({
             signedIn: true
         });
+       // localStorage.setItem('logMe',true)
     }
     componentDidMount() {
         this.userData = JSON.parse(localStorage.getItem('user'))
@@ -41,6 +42,7 @@ class Login extends Component {
                 signedIn: true
             })
         }
+        
        
     }
     componentWillUpdate(nextProps, nextState)
@@ -49,29 +51,37 @@ class Login extends Component {
     }
     
     render() {
-        if (this.state.signedIn === true){
+        
+        //if (localStorage.getItem('logMe') === "true"){
+         if (this.state.signedIn === true){
             return(
                 <Router>
-                    <Route path="/feed" component={Feed} />
+                    <Route path="/feed" exact component={Feed} />
                     <Redirect to='/feed' />
                 </Router>
+               
             );
         }
         else{
             return (
                 <Router>
-                    <div class="flex flex-col h-screen" style={divStyle}>
-                        <div class="flex flex-col m-auto box-content h-64 w-70 p-4">
-                            <div class="font-serif font-semibold text-6xl tracking-tight text-white select-none">Screenbook</div>
-                            <div class="font-sans font-semibold text-white text-center select-none">Watch, Enjoy, Record</div>  
-                            <div class="flex justify-center p-12" ><GoogleLogInBtn signedInIsTrue = {this.isSignedIn}  /></div>
-                        </div>
+                
+                <div class="flex flex-col h-screen" style={divStyle}>
+                    <div class="flex flex-col m-auto box-content h-64 w-70 p-4">
+                        <div class="font-serif font-semibold text-6xl tracking-tight text-white select-none">Screenbook</div>
+                        <div class="font-montserrat font-semibold text-white text-center select-none">Your personal film capsule</div>  
+                        <div class="flex justify-center p-12" ><GoogleLogInBtn signedInIsTrue = {this.isSignedIn}  /></div>
                     </div>
+                </div>
+              
                 </Router>
             );
         }
+        }
         
-    }
+       
+       
+
 }
 
 export default Login; 

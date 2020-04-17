@@ -1,6 +1,8 @@
 import React, { Component} from "react";
 import { GoogleLogin } from "react-google-login";
 import firebase from "../firebaseConfig";
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
+
 require("dotenv").config();
 
 class GoogleLogInBtn extends Component {
@@ -22,7 +24,9 @@ class GoogleLogInBtn extends Component {
         lastName: profile.getFamilyName(),
         email: profile.getEmail(),     
       });
+      
       this.props.signedInIsTrue();
+      
   }
   
   render() {
