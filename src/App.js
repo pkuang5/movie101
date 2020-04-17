@@ -4,15 +4,50 @@ import "./styles/app.css";
 import Login from "./components/login"
 import LogOut from "./components/googleLogOutBtn"
 import Feed from "./components/feed"
-import Introduction from "./components/introduction"
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 
-function App() {
-  return (
-    <React.Fragment>
-      <Login></Login> ,
-      <Introduction></Introduction>
-    </React.Fragment>
-  ); 
+class App extends Component {
+  state = {
+    signedIn: false,
+    googleId: ''
+  }
+  
+  signInState = (bool,id) => {
+    this.setState({
+      signedIn: bool,
+      googleId: id,
+    })
+  }
+
+  componentDidMount = () => {
+      if (localStorage.getItem('user')) {
+          this.setState ({
+              signedIn: true
+          })
+      }
+  }
+
+  componentWillUpdate = (nextProps, nextState) => {
+      localStorage.setItem('user', JSON.stringify(nextState))
+  }
+
+  render(){
+    if (this.state.signedIn === false){
+      return (
+        <Router>
+          <Route path="/" exact strict component={() => <Login signInState={this.signInState} />}></Route>
+          <Redirect to='/' />
+        </Router>
+      ); 
+    } 
+    else{
+      return (
+        <Router>
+          <Route path="/" exact strict component={() => <Feed signInState={this.signInState} googleId={this.state.googleId} />}></Route>
+          <Redirect to='/' />
+        </Router>
+      ); 
+    }
+  }
 }
 export default App;

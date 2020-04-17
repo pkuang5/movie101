@@ -2,41 +2,27 @@ import React, { Component } from 'react';
 import Navbar from './navbar'
 import MovieRow from './movieRow'
 import firebase from "../firebaseConfig";
-import LogOut from "./googleLogOutBtn"
 
 
 class Feed extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            firstName: "",
-           
-        }
+    state = {
+        firstName: ""
     }
-    
-    signOff = () => {
-        // Clear the local storage
-        //(localStorage.setItem('logMe',false))
-        
-        localStorage.clear();
 
-       
-        console.log("LOOK AT ME NATE")
-     }
-    
-    // componentDidMount = () => {
-    //     var userInfo = firebase.database().ref('users/' + global.id);
-    //     userInfo.on('value', (snapshot) => {
-    //         this.setState({firstName: snapshot.val().firstName});
-    //       });
-    // } this function works once, but after refresh the app crashes
+    componentDidMount = () => {
+        console.log()
+        var userInfo = firebase.database().ref('users/' + this.props.googleId);
+        userInfo.on('value', (snapshot) => {
+            this.setState({firstName: snapshot.val().firstName});
+          })
+    }
 
 
     render() {
         return (
            
             <React.Fragment>
-                <Navbar name={this.state.firstName} />
+                <Navbar name={this.state.firstName} signInState={this.props.signInState}/>
                 <div class="flex justify-center pt-3 w-full">
                     <div class="text-center w-2/3">
                         <p class="font-serif text-3xl font-bold">Screenbook</p>
@@ -49,9 +35,6 @@ class Feed extends Component {
                 <div class="flex w-full justify-center mt-6"> 
                     <div class="w-2/3">
                         <MovieRow />
-                    </div>
-                    <div>
-                    <LogOut signOffIsTrue = {this.signOff}/>
                     </div>
                 </div>
             </React.Fragment>
