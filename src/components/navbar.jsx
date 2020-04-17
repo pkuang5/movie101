@@ -1,4 +1,8 @@
 import React, { Component } from "react";
+import {BrowserRouter as Router, Link} from 'react-router-dom';
+import Route from 'react-router-dom/Route';
+import Profile from "./profilePage";
+
 
 function Navbar(props)  {
   // TODO: have under border for the tab that you are in
@@ -22,6 +26,21 @@ function Navbar(props)  {
           </a>
           <a href="#responsive-header" class="font-montserrat block inline-block text-black mt-0 mr-4 font-semibold">{props.name}</a>
         </div>
+        <Router>     
+              <div className = "App"> 
+
+              <ul>
+                <li>
+                <Link to = "/profile">Profile</Link> 
+                </li>
+              </ul>
+
+              <Route path = "/profile" exact strict component = { 
+              Profile
+              }/>
+
+              </div>
+            </Router>
       </div>
     </nav>  
   );
