@@ -20,9 +20,7 @@ class Feed extends Component {
 
     render() {
         return (
-           
             <React.Fragment>
-                <Navbar name={this.state.firstName} signInState={this.props.signInState}/>
                 <div class="flex justify-center pt-3 w-full">
                     <div class="text-center w-2/3">
                         <p class="font-serif text-3xl font-bold">Screenbook</p>

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import "./styles/app.css";
 import Login from "./components/login"
-import LogOut from "./components/googleLogOutBtn"
+import Navbar from "./components/navbar"
 import Feed from "./components/feed"
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import Profile from "./components/profilePage";
@@ -43,11 +43,14 @@ class App extends Component {
     } 
     else{
       return (
-        <Router>
-          <Route path="/feed" exact strict component={() => <Feed signInState={this.signInState} googleId={this.state.googleId} />}></Route>
-          <Route path="/profile" exact strict component={Profile}></Route>
-          <Redirect to='/feed' />
-        </Router>
+        <React.Fragment>
+          <Router>
+            <Navbar signInState={this.signInState}/>
+            <Route path="/feed" exact strict component={() => <Feed signInState={this.signInState} googleId={this.state.googleId} />}></Route>
+            <Route path="/profile" exact strict component={Profile}></Route>
+            <Redirect to='/feed' />
+          </Router>
+        </React.Fragment>
       ); 
     }
   }

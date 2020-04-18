@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {BrowserRouter as Router, useHistory} from 'react-router-dom';
+import {BrowserRouter as Router, useHistory, NavLink} from 'react-router-dom';
 import LogOut  from "./googleLogOutBtn"
 
 
@@ -33,7 +33,7 @@ function Navbar(props)  {
               </a>
               <a href="#responsive-header" class="font-montserrat block inline-block text-black mt-0 mr-4 font-semibold">{props.name}</a>
             </div>
-            <div className = "App"> 
+            <div> 
               <button onClick={routeToProfile}>Profile</button>
             </div>
             <LogOut signInState = {props.signInState} />
