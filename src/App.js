@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import "./App.css";
 import "./styles/app.css";
+import { BrowserRouter as Router, Route, Redirect, NavLink } from 'react-router-dom'
 import Login from "./components/login"
 import Feed from "./components/feed"
-import { BrowserRouter as Router, Route, Redirect, NavLink } from 'react-router-dom'
+import Editor from "./components/editor"
+import Films from "./components/films"
 import Profile from "./components/profilePage";
 
 class App extends Component {
@@ -55,14 +57,16 @@ class App extends Component {
               </div>
               <div>
                 <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink to="/feed" style={this.navLinkStyle} activeStyle={this.activeStyle}>Feed</NavLink></div>
-                <div class="font-montserrat block inline-block mt-0 text-black cursor-pointer mr-4">Editor</div>
-                <div class="font-montserrat block inline-block mt-0 text-black cursor-pointer mr-6">Films</div>
+                <div class="font-montserrat block inline-block mt-0 text-black cursor-pointer mr-4"><NavLink to="/editor" style={this.navLinkStyle} activeStyle={this.activeStyle}>Editor</NavLink></div>
+                <div class="font-montserrat block inline-block mt-0 text-black cursor-pointer mr-6"><NavLink to="/films" style={this.navLinkStyle} activeStyle={this.activeStyle}>Films</NavLink></div>
                 <div class="font-montserrat block inline-block mt-0 text-black cursor-pointer mr-4"><NavLink to="/profile" style={this.navLinkStyle} activeStyle={this.activeStyle}>Profile</NavLink></div>
                 <div class="font-montserrat block inline-block mt-0 text-black cursor-pointer mr-4" onClick={() => this.signInState(false, '')}>Logout</div>
               </div>
             </div>
           </nav>
           <Route path="/feed" exact strict component={() => <Feed signInState={this.signInState} googleId={this.state.googleId} />}></Route>
+          <Route path="/editor" exact strict component={Editor}></Route>
+          <Route path="/films" exact strict component={Films}></Route>
           <Route path="/profile" exact strict component={Profile}></Route>
           <Redirect to='/feed' />
         </Router>
