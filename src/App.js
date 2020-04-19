@@ -16,6 +16,7 @@ class App extends Component {
 
   navLinkStyle = {color:"black", textDecoration:"none", paddingRight: "0.3rem", paddingLeft: "0.3rem", paddingBottom: "0.1rem"};
   activeStyle = {borderBottom: "1px solid #a0aec0"};
+  navbarTabStyle = "font-montserrat block inline-block mt-0 text-black cursor-pointer mr-4";
 
   signInState = (bool, id) => {
     this.setState({
@@ -25,8 +26,11 @@ class App extends Component {
   }
 
   componentDidMount = () => {
+    console.log("component did mount")
     let localStorageObject = JSON.parse(localStorage.getItem('user'))
-    if (localStorageObject && localStorageObject.signedIn == "true") {
+    console.log(localStorageObject)
+    if (localStorageObject && localStorageObject.signedIn === true) {
+      console.log("inside if block");
       this.setState({
         signedIn: true
       })
@@ -58,10 +62,10 @@ class App extends Component {
               </div>
               <div>
                 <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink to="/feed" style={this.navLinkStyle} activeStyle={this.activeStyle}>Feed</NavLink></div>
-                <div class="font-montserrat block inline-block mt-0 text-black cursor-pointer mr-4"><NavLink to="/editor" style={this.navLinkStyle} activeStyle={this.activeStyle}>Editor</NavLink></div>
-                <div class="font-montserrat block inline-block mt-0 text-black cursor-pointer mr-6"><NavLink to="/films" style={this.navLinkStyle} activeStyle={this.activeStyle}>Films</NavLink></div>
-                <div class="font-montserrat block inline-block mt-0 text-black cursor-pointer mr-4"><NavLink to="/profile" style={this.navLinkStyle} activeStyle={this.activeStyle}>Profile</NavLink></div>
-                <div class="font-montserrat block inline-block mt-0 text-black cursor-pointer mr-4" onClick={() => this.signInState(false, '')}>Logout</div>
+                <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink to="/editor" style={this.navLinkStyle} activeStyle={this.activeStyle}>Editor</NavLink></div>
+                <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink to="/films" style={this.navLinkStyle} activeStyle={this.activeStyle}>Films</NavLink></div>
+                <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink to="/profile" style={this.navLinkStyle} activeStyle={this.activeStyle}>Profile</NavLink></div>
+                <div class="font-montserrat block inline-block mt-0 cursor-pointer mr-4" onClick={() => this.signInState(false, '')}>Logout</div>
               </div>
             </div>
           </nav>
