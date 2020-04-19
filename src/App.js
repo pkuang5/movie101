@@ -11,7 +11,8 @@ import Profile from "./components/profilePage";
 class App extends Component {
   state = {
     signedIn: false,
-    googleId: ''
+    googleId: '',
+    profilePic: ''
   }
 
   navLinkStyle = {color:"black", textDecoration:"none", paddingRight: "0.3rem", paddingLeft: "0.3rem", paddingBottom: "0.1rem"};
@@ -22,25 +23,39 @@ class App extends Component {
       signedIn: bool,
       googleId: id,
     })
+    localStorage.setItem('logKey',bool)
   }
+  setProfilePic = (val) => {
+    this.setState({
+      profilePic: val
+    })
+  }
+  
 
   componentDidMount = () => {
-    if (localStorage.getItem('user')) {
+    let localStorageObject = JSON.parse(localStorage.getItem('user'));
+    if (localStorageObject && localStorageObject.signedIn === true) {
       this.setState({
-        signedIn: true
+        signedIn: true, // used to be true but causes problems upon refresh
+        googleId: localStorage.getItem('id'),
+        profilePic: localStorage.getItem('url')
+        
       })
+     
     }
   }
-
   componentWillUpdate = (nextProps, nextState) => {
     localStorage.setItem('user', JSON.stringify(nextState))
   }
+  finalLogOut = () => {
+    localStorage.clear();
+  }
 
   render() {
-    if (this.state.signedIn === false) {
+    if (this.state.signedIn === false || localStorage.getItem('logKey') === false) {
       return (
         <Router>
-          <Route path="/" exact strict component={() => <Login signInState={this.signInState} />}></Route>
+          <Route path="/" exact strict component={() => <Login signInState={this.signInState} setProfilePic = {this.setProfilePic} />}></Route>
           <Redirect to='/' />
         </Router>
       );
@@ -60,14 +75,14 @@ class App extends Component {
                 <div class="font-montserrat block inline-block mt-0 text-black cursor-pointer mr-4"><NavLink to="/editor" style={this.navLinkStyle} activeStyle={this.activeStyle}>Editor</NavLink></div>
                 <div class="font-montserrat block inline-block mt-0 text-black cursor-pointer mr-6"><NavLink to="/films" style={this.navLinkStyle} activeStyle={this.activeStyle}>Films</NavLink></div>
                 <div class="font-montserrat block inline-block mt-0 text-black cursor-pointer mr-4"><NavLink to="/profile" style={this.navLinkStyle} activeStyle={this.activeStyle}>Profile</NavLink></div>
-                <div class="font-montserrat block inline-block mt-0 text-black cursor-pointer mr-4" onClick={() => this.signInState(false, '')}>Logout</div>
+                <div class="font-montserrat block inline-block mt-0 text-black cursor-pointer mr-4" onClick={ ()=>this.signInState(false,'')}>Logout</div>
               </div>
             </div>
           </nav>
           <Route path="/feed" exact strict component={() => <Feed signInState={this.signInState} googleId={this.state.googleId} />}></Route>
           <Route path="/editor" exact strict component={Editor}></Route>
           <Route path="/films" exact strict component={Films}></Route>
-          <Route path="/profile" exact strict component={Profile}></Route>
+          <Route path="/profile" exact strict component={() => <Profile signInState={this.signInState} googleId={this.state.googleId} profilePic = {this.state.profilePic}/>}></Route>
           <Redirect to='/feed' />
         </Router>
       );

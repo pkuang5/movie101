@@ -8,13 +8,13 @@ class Feed extends Component {
         firstName: ""
     }
 
-    componentDidMount = () => {
-        console.log()
-        var userInfo = firebase.database().ref('users/' + this.props.googleId);
-        userInfo.on('value', (snapshot) => {
-            this.setState({firstName: snapshot.val().firstName});
-          })
-    }
+    // componentDidMount = () => {
+    //     console.log()
+    //     var userInfo = firebase.database().ref('users/' + this.props.googleId);
+    //     userInfo.on('value', (snapshot) => {
+    //         this.setState({firstName: snapshot.val().firstName});
+    //       })
+    // }
 
 
     render() {
