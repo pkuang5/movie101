@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Navbar from './navbar'
 import MovieRow from './movieRow'
 import firebase from "../firebaseConfig";
 
