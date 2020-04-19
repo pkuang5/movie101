@@ -26,11 +26,8 @@ class App extends Component {
   }
 
   componentDidMount = () => {
-    console.log("component did mount")
-    let localStorageObject = JSON.parse(localStorage.getItem('user'))
-    console.log(localStorageObject)
+    let localStorageObject = JSON.parse(localStorage.getItem('user'));
     if (localStorageObject && localStorageObject.signedIn === true) {
-      console.log("inside if block");
       this.setState({
         signedIn: true
       })
