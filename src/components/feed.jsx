@@ -9,7 +9,6 @@ class Feed extends Component {
     }
 
     componentDidMount = () => {
-        console.log()
         var userInfo = firebase.database().ref('users/' + this.props.googleId);
         userInfo.on('value', (snapshot) => {
             this.setState({firstName: snapshot.val().firstName});
