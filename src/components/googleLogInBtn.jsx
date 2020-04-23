@@ -10,22 +10,32 @@ class GoogleLogInBtn extends Component {
     var googleId = googleUser.getId();
 
     let profile = googleUser.getBasicProfile();
+    var stringPart = profile.getEmail().split('@');
     firebase
       .database()
       .ref("users/" + googleId)
-      .set({
+      .update({
         fullName: profile.getName(),
         firstName: profile.getGivenName(),
         lastName: profile.getFamilyName(),
         email: profile.getEmail(),     
+        profileURL: googleUser.profileObj.imageUrl,
+        id: googleUser.getId(),
+
+        //userName:  stringPart[0],
+        
+        //bio: '',
+       
+
       });
       
       this.props.signInState(true, googleId);
       console.log(googleUser.profileObj.imageUrl)
       this.props.setProfilePic(googleUser.profileObj.imageUrl);
       localStorage.setItem('id', googleId)
-      localStorage.setItem('url', googleUser.profileObj.imageUrl)
-      localStorage.setItem('logKey', true)
+      //localStorage.setItem('url', googleUser.profileObj.imageUrl)
+      //localStorage.setItem('logKey', true)
+      //localStorage.clear();
       
   }
   

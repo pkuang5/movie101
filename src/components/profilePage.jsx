@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import firebase from "firebase";
 import '../App.css'
+import axios from 'axios'
 import Login from "./googleLogInBtn"; // need this to use export method for google id
 class Profile extends Component {
     constructor(props) {
@@ -11,10 +12,13 @@ class Profile extends Component {
             fName: '',
             lName: '',
             email: '',
-            bio: ''
+            bio: '',
+            signedIn: '',
+            url: '',
            
         };
     }
+   
     handleChange(e) {
         this.state.username = e.target.value
         // set the changed state
@@ -38,15 +42,8 @@ class Profile extends Component {
         this.setState({ email: this.state.email })
     }
 
-    handleRemove(index) {
-        // remove an item at the index
-        this.state.countries.splice(index, 1)
-        console.log(this.state.countries, "$$");
-        // update the state
-        this.setState({ countries: this.state.countries })
-    }
     handleBio(e) {
-        this.state.lName = e.target.value
+        this.state.bio = e.target.value
         // set the changed state
         this.setState({ bio: this.state.bio })
     }
@@ -59,38 +56,45 @@ class Profile extends Component {
             .ref("users/" + this.props.googleId) 
             .update({  
                 userName: this.state.username,
-                FirstName: this.state.fName,
-                LastName: this.state.lName,
-                email: this.state.email
+                firstName: this.state.fName,
+                lastName: this.state.lName,
+                email: this.state.email,
+                bio: this.state.bio,
+                profileURL: this.props.profilePic,
+
+
             });
             console.log(this.props.googleId)
             console.log(this.props.profilePic)
-            localStorage.setItem('fname', this.state.fName);
-            localStorage.setItem('lname', this.state.lName);
-            localStorage.setItem('username', this.state.username);
-            localStorage.setItem('email', this.state.email);
+        
     }
     componentDidMount = () => {
-        if (localStorage.getItem('user')) {
-          this.setState({
-            fName: localStorage.getItem('fname'),
-            lName: localStorage.getItem('lname'),
-            username: localStorage.getItem('username'),
-            email: localStorage.getItem('email')
+        console.log()
+        var userInfo = firebase.database().ref('users/' + localStorage.getItem('id'));
+        userInfo.on('value', (snapshot) => {
+            this.setState({fName: snapshot.val().firstName});
+            this.setState({lName: snapshot.val().lastName});
+            this.setState({username: snapshot.val().userName});
+            this.setState({email: snapshot.val().email});
+            this.setState({bio: snapshot.val().bio});
+            this.setState({url: snapshot.val().profileURL});
             
           })
+          
+          this.setState({signedIn: true});  // new add to keep page from going back to login upon refresh
+        // this.props.signInState(true, localStorage.getItem('id')); tried using this function from app.js but crashed program
          
-        }
-      }
+    }
       componentWillUpdate = (nextProps, nextState) => {
         localStorage.setItem('user', JSON.stringify(nextState))
       }
       myProfile = "url('" + this.props.profilePic + "')"
+      
+   
     render() {
         return (
     
             <form class="w-screen flex justify-center">
-
                 
             
                  <div class="flex flex-wrap -mx-3 mb-6 flex justify-center w-1/3 font-montserrat font-semibold " >
@@ -106,7 +110,7 @@ class Profile extends Component {
                     <div class = "w-full flex justify-start">
                         <div class = "w-full">
                                <label class="text-left font-bold text-gray-700 text-sm  mb-2 " for="grid-first-name"> Bio </label>
-                                <input onChange={this.handleBio.bind(this)} class="appearance-none block w-full text-gray-700 border-solid border-8 border-black-800 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder={this.state.fName}/>
+                                <input onChange={this.handleBio.bind(this)} class="appearance-none block w-full text-gray-700 border-solid border-8 border-black-800 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder={this.state.bio}/>
                         </div>
                     </div>
                     <div class = "flex w-full">

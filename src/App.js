@@ -7,6 +7,7 @@ import Feed from "./components/feed"
 import Editor from "./components/editor"
 import Films from "./components/films"
 import Profile from "./components/profilePage";
+import firebase from "firebase";
 
 class App extends Component {
   state = {
@@ -25,11 +26,6 @@ class App extends Component {
     })
     localStorage.setItem('logKey',bool)
   }
-  setProfilePic = (val) => {
-    this.setState({
-      profilePic: val
-    })
-  }
   
 
   componentDidMount = () => {
@@ -38,11 +34,16 @@ class App extends Component {
       this.setState({
         signedIn: true, // used to be true but causes problems upon refresh
         googleId: localStorage.getItem('id'),
-        profilePic: localStorage.getItem('url')
+       // profilePic: localStorage.getItem('url')
         
       })
-     
     }
+    var userInfo = firebase.database().ref('users/' + localStorage.getItem('id')); // had to change to local storage b/c
+                                                                                  // id keeps going away upon refresh
+    userInfo.on('value', (snapshot) => {
+        this.setState({googleId: snapshot.val().id});
+        this.setState({profilePic: snapshot.val().profileURL})
+      })
   }
   componentWillUpdate = (nextProps, nextState) => {
     localStorage.setItem('user', JSON.stringify(nextState))
@@ -79,10 +80,10 @@ class App extends Component {
               </div>
             </div>
           </nav>
-          <Route path="/feed" exact strict component={() => <Feed signInState={this.signInState} googleId={this.state.googleId} />}></Route>
-          <Route path="/editor" exact strict component={Editor}></Route>
-          <Route path="/films" exact strict component={Films}></Route>
-          <Route path="/profile" exact strict component={() => <Profile signInState={this.signInState} googleId={this.state.googleId} profilePic = {this.state.profilePic}/>}></Route>
+          <Route exact path="/feed" exact strict component={() => <Feed signInState={this.signInState} googleId={this.state.googleId} />}></Route>
+          <Route exact path="/editor" exact strict component={Editor}></Route>
+          <Route exact path="/films" exact strict component={Films}></Route>
+          <Route exact path="/profile" exact strict component={() => <Profile signInState={this.signInState} googleId={this.state.googleId} profilePic = {this.state.profilePic}/>}></Route>
           <Redirect to='/feed' />
         </Router>
       );
