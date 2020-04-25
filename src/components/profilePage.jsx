@@ -4,6 +4,8 @@ import firebase from "firebase";
 import '../App.css'
 import axios from 'axios'
 import Login from "./googleLogInBtn"; // need this to use export method for google id
+import ImageUpload from './imageUpload'
+
 class Profile extends Component {
     constructor(props) {
         super(props);
@@ -80,7 +82,8 @@ class Profile extends Component {
             this.setState({url: snapshot.val().profileURL});
             
           })
-          
+         
+          console.log(this.props.profilePic)
           this.setState({signedIn: true});  // new add to keep page from going back to login upon refresh
         // this.props.signInState(true, localStorage.getItem('id')); tried using this function from app.js but crashed program
          
@@ -93,9 +96,9 @@ class Profile extends Component {
    
     render() {
         return (
-    
+        
             <form class="w-screen flex justify-center">
-                
+                {/* <ImageUpload/> */}
             
                  <div class="flex flex-wrap -mx-3 mb-6 flex justify-center w-1/3 font-montserrat font-semibold " >
                     <div class = "flex w-full h-24 mb-4">

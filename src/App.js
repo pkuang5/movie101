@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import "./styles/app.css";
-import { BrowserRouter as Router, Route, Redirect, NavLink } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Redirect, NavLink, Switch } from 'react-router-dom'
 import Login from "./components/login"
 import Feed from "./components/feed"
 import Editor from "./components/editor"
@@ -25,6 +25,7 @@ class App extends Component {
       googleId: id,
     })
     localStorage.setItem('logKey',bool)
+    //console.log(this.state.signedIn)
   }
   
 
@@ -33,17 +34,19 @@ class App extends Component {
     if (localStorageObject && localStorageObject.signedIn === true) {
       this.setState({
         signedIn: true, // used to be true but causes problems upon refresh
+        //signedIn: localStorage.getItem('logKey'), this line of code does the same thing as the above
         googleId: localStorage.getItem('id'),
-       // profilePic: localStorage.getItem('url')
-        
+       // profilePic: localStorage.getItem('url')  
       })
     }
+    console.log(this.state.signedIn)
     var userInfo = firebase.database().ref('users/' + localStorage.getItem('id')); // had to change to local storage b/c
                                                                                   // id keeps going away upon refresh
     userInfo.on('value', (snapshot) => {
         this.setState({googleId: snapshot.val().id});
         this.setState({profilePic: snapshot.val().profileURL})
       })
+     
   }
   componentWillUpdate = (nextProps, nextState) => {
     localStorage.setItem('user', JSON.stringify(nextState))
@@ -80,11 +83,14 @@ class App extends Component {
               </div>
             </div>
           </nav>
-          <Route exact path="/feed" exact strict component={() => <Feed signInState={this.signInState} googleId={this.state.googleId} />}></Route>
-          <Route exact path="/editor" exact strict component={Editor}></Route>
-          <Route exact path="/films" exact strict component={Films}></Route>
-          <Route exact path="/profile" exact strict component={() => <Profile signInState={this.signInState} googleId={this.state.googleId} profilePic = {this.state.profilePic}/>}></Route>
-          <Redirect to='/feed' />
+          <Switch>
+            <Route exact path="/feed" exact strict component={() => <Feed signInState={this.signInState} googleId={this.state.googleId} />}></Route>
+            <Route exact path="/editor" exact strict component={Editor}></Route>
+            <Route exact path="/films" exact strict component={Films}></Route>
+            <Route exact path="/profile" exact strict component={() => <Profile signInState={this.signInState} googleId={this.state.googleId} profilePic = {this.state.profilePic}/>}></Route>
+            <Redirect to='/feed' />
+          </Switch>
+         
         </Router>
       );
     }

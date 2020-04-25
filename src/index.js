@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import ImageUpload from './components/imageUpload'
+import Profile from './components/profilePage'
 
 ReactDOM.render(
   <React.StrictMode>
