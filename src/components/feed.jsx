@@ -13,7 +13,6 @@ class Feed extends Component {
         userInfo.on('value', (snapshot) => {
             this.setState({firstName: snapshot.val().firstName});
           })
-         
     }
 
 

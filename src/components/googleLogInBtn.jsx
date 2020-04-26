@@ -12,7 +12,10 @@ class GoogleLogInBtn extends Component {
 
     let profile = googleUser.getBasicProfile();
     var stringPart = profile.getEmail().split('@');
-    firebase
+    var userInfo = firebase.database().ref('users/' + localStorage.getItem('id'));
+    if (userInfo === null)
+    {
+      firebase
       .database()
       .ref("users/" + googleId)
       .update({
@@ -22,14 +25,12 @@ class GoogleLogInBtn extends Component {
         email: profile.getEmail(),     
         profileURL: googleUser.profileObj.imageUrl,
         id: googleUser.getId(),
-
-        //userName:  stringPart[0],
-        
-        //bio: '',
-
+        userName: '',
+        bio: ''
 
       });
-      
+    }
+   
       this.props.signInState(true, googleId);
       this.props.setProfilePic(googleUser.profileObj.imageUrl);
       localStorage.setItem('id', googleId)

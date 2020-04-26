@@ -33,13 +33,12 @@ class App extends Component {
     let localStorageObject = JSON.parse(localStorage.getItem('user'));
     if (localStorageObject && localStorageObject.signedIn === true) {
       this.setState({
-        signedIn: true, // used to be true but causes problems upon refresh
-        //signedIn: localStorage.getItem('logKey'), this line of code does the same thing as the above
+        signedIn: true, 
         googleId: localStorage.getItem('id'),
-       // profilePic: localStorage.getItem('url')  
+       
       })
     }
-    console.log(this.state.signedIn)
+    
     var userInfo = firebase.database().ref('users/' + localStorage.getItem('id')); // had to change to local storage b/c
                                                                                   // id keeps going away upon refresh
     userInfo.on('value', (snapshot) => {

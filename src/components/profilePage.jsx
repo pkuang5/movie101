@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import firebase from "firebase";
 import '../App.css'
-import axios from 'axios'
-import Login from "./googleLogInBtn"; // need this to use export method for google id
-import ImageUpload from './imageUpload'
+
+import {storage} from "../firebaseConfig";
 
 class Profile extends Component {
     constructor(props) {
@@ -17,10 +16,41 @@ class Profile extends Component {
             bio: '',
             signedIn: '',
             url: '',
+            image: '', 
+            
            
         };
     }
-   
+    handleChange = e => {
+        let image = ''
+        if(e.target.files[0]) {
+            image = e.target.files[0];
+            console.log(image);
+        }
+        else {
+            console.log('ERROR')
+        }
+        const uploadTask = storage.ref(`images/${image.name}`).put(image);
+        uploadTask.on('state_changed',
+        
+        
+        () => {
+            
+                storage.ref('images').child(image.name).getDownloadURL().then(url => {
+                    console.log(url);
+                    this.setState({url})
+                    console.log(this.state.url)
+                    firebase
+                    .database()
+                    .ref("users/" + localStorage.getItem('id')) 
+                    .update({  
+                        profileURL: this.state.url,
+
+                    });       
+            })
+            
+        });
+    }
     handleChange(e) {
         this.state.username = e.target.value
         // set the changed state
@@ -55,14 +85,14 @@ class Profile extends Component {
        
         firebase
             .database()
-            .ref("users/" + this.props.googleId) 
+            .ref("users/" + localStorage.getItem('id')) 
             .update({  
                 userName: this.state.username,
                 firstName: this.state.fName,
                 lastName: this.state.lName,
                 email: this.state.email,
                 bio: this.state.bio,
-                profileURL: this.props.profilePic,
+                profileURL: this.state.url,
 
 
             });
@@ -80,29 +110,29 @@ class Profile extends Component {
             this.setState({email: snapshot.val().email});
             this.setState({bio: snapshot.val().bio});
             this.setState({url: snapshot.val().profileURL});
+            console.log(snapshot.val().profileURL)
             
           })
-         
-          console.log(this.props.profilePic)
-          this.setState({signedIn: true});  // new add to keep page from going back to login upon refresh
-        // this.props.signInState(true, localStorage.getItem('id')); tried using this function from app.js but crashed program
+          console.log(this.state)
+          
+          this.setState({signedIn: true});  
          
     }
-      componentWillUpdate = (nextProps, nextState) => {
+    componentWillUpdate = (nextProps, nextState) => {
+        
         localStorage.setItem('user', JSON.stringify(nextState))
-      }
-      myProfile = "url('" + this.props.profilePic + "')"
-      
-   
+    }
+
     render() {
         return (
         
             <form class="w-screen flex justify-center">
-                {/* <ImageUpload/> */}
-            
-                 <div class="flex flex-wrap -mx-3 mb-6 flex justify-center w-1/3 font-montserrat font-semibold " >
+
+                  <div class="flex flex-wrap -mx-3 mb-6 flex justify-center w-1/3 font-montserrat font-semibold " >
                     <div class = "flex w-full h-24 mb-4">
-                        <div class="rounded-full w-1/5 flex items-center justify-center bg-red-100 bg-local mr-8" style={{backgroundImage: this.myProfile}}> </div>
+                        <div  class="rounded-full w-1/5 flex items-center justify-center bg-red-100 bg-local mr-8" style={{backgroundImage: "url('" + this.state.url + "')"}}> 
+                        <input type = "file" onChange = {this.handleChange}/>
+                        </div>
                         <div class = "w-4/5 flex items-end ">
                             <div class = " h-18 w-full">
                                 <label class=" tracking-wide text-gray-700 text-sm font-bold mb-2" for="grid-password"> User Name </label>
@@ -144,7 +174,7 @@ class Profile extends Component {
                         </button>
                     </div>
              </div>
-          </form>
+          </form> 
            
         );
     }
