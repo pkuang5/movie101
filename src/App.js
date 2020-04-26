@@ -29,7 +29,8 @@ class App extends Component {
     let localStorageObject = JSON.parse(localStorage.getItem('user'));
     if (localStorageObject && localStorageObject.signedIn === true) {
       this.setState({
-        signedIn: true
+        signedIn: true,
+        googleId: localStorageObject.googleId
       })
     }
   }
