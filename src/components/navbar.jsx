@@ -1,10 +1,15 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom'
+import { NavLink, useHistory } from 'react-router-dom'
+
 
 function Navbar(props){
+
+    let history = useHistory();
+
     let navLinkStyle = {color:"black", textDecoration:"none", paddingRight: "0.3rem", paddingLeft: "0.3rem", paddingBottom: "0.1rem"};
     let activeStyle = {borderBottom: "1px solid #a0aec0"};
     let navbarTabStyle = "font-montserrat block inline-block mt-0 text-black cursor-pointer mr-4";
+
     return (
         <nav class="flex items-center flex-wrap p-4 px-10 font-serif">
             <div class="w-full block flex-grow flex items-end">
@@ -18,7 +23,10 @@ function Navbar(props){
                 <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink exact to="/editor" style={navLinkStyle} activeStyle={activeStyle}>Editor</NavLink></div>
                 <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink exact to="/films" style={navLinkStyle} activeStyle={activeStyle}>Films</NavLink></div>
                 <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink exact to="/profile" style={navLinkStyle} activeStyle={activeStyle}>Profile</NavLink></div>
-                <div class="font-montserrat block inline-block mt-0 cursor-pointer mr-4" onClick={() => props.signInState(false, '')}>Logout</div>
+                <div class="font-montserrat block inline-block mt-0 cursor-pointer mr-4" onClick={() => {
+                    props.signInState(false, '');
+                    history.push("/");
+                }}>Logout</div>
               </div>
             </div>
         </nav>
