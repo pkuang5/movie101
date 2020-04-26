@@ -14,10 +14,10 @@ function Navbar(props){
                   <line x1="28.1584" y1="25.244" x2="37.256" y2="34.3417" stroke="black" stroke-width="2" stroke-linecap="round" /></svg>
               </div>
               <div>
-                <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink to="/feed" style={navLinkStyle} activeStyle={activeStyle}>Feed</NavLink></div>
-                <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink to="/editor" style={navLinkStyle} activeStyle={activeStyle}>Editor</NavLink></div>
-                <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink to="/films" style={navLinkStyle} activeStyle={activeStyle}>Films</NavLink></div>
-                <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink to="/profile" style={navLinkStyle} activeStyle={activeStyle}>Profile</NavLink></div>
+                <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink exact to="/" style={navLinkStyle} activeStyle={activeStyle}>Feed</NavLink></div>
+                <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink exact to="/editor" style={navLinkStyle} activeStyle={activeStyle}>Editor</NavLink></div>
+                <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink exact to="/films" style={navLinkStyle} activeStyle={activeStyle}>Films</NavLink></div>
+                <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink exact to="/profile" style={navLinkStyle} activeStyle={activeStyle}>Profile</NavLink></div>
                 <div class="font-montserrat block inline-block mt-0 cursor-pointer mr-4" onClick={() => props.signInState(false, '')}>Logout</div>
               </div>
             </div>
