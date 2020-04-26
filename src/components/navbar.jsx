@@ -8,7 +8,6 @@ function Navbar(props){
 
     let navLinkStyle = {color:"black", textDecoration:"none", paddingRight: "0.3rem", paddingLeft: "0.3rem", paddingBottom: "0.1rem"};
     let activeStyle = {borderBottom: "1px solid #a0aec0"};
-    let navbarTabStyle = "font-montserrat block inline-block mt-0 text-black cursor-pointer mr-4";
 
     return (
         <nav class="flex items-center flex-wrap p-4 px-10 font-serif">

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import "./App.css";
 import "./styles/app.css";
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 import Login from "./components/login"
 import Feed from "./components/feed"
 import Editor from "./components/editor"
