@@ -42,10 +42,7 @@ class App extends Component {
   render() {
     if (this.state.signedIn === false) {
       return (
-        <Router>
-          <Route path="/" exact strict component={() => <Login signInState={this.signInState} />}></Route>
-          <Redirect to='/' />
-        </Router>
+        <Login signInState={this.signInState} />
       );
     }
     else {
@@ -59,7 +56,7 @@ class App extends Component {
                   <line x1="28.1584" y1="25.244" x2="37.256" y2="34.3417" stroke="black" stroke-width="2" stroke-linecap="round" /></svg>
               </div>
               <div>
-                <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink to="/feed" style={this.navLinkStyle} activeStyle={this.activeStyle}>Feed</NavLink></div>
+                <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink to="/" style={this.navLinkStyle} activeStyle={this.activeStyle}>Feed</NavLink></div>
                 <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink to="/editor" style={this.navLinkStyle} activeStyle={this.activeStyle}>Editor</NavLink></div>
                 <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink to="/films" style={this.navLinkStyle} activeStyle={this.activeStyle}>Films</NavLink></div>
                 <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink to="/profile" style={this.navLinkStyle} activeStyle={this.activeStyle}>Profile</NavLink></div>
@@ -67,11 +64,10 @@ class App extends Component {
               </div>
             </div>
           </nav>
-          <Route path="/feed" exact strict component={() => <Feed signInState={this.signInState} googleId={this.state.googleId} />}></Route>
+          <Route path="/" exact strict component={() => <Feed signInState={this.signInState} googleId={this.state.googleId} />}></Route>
           <Route path="/editor" exact strict component={Editor}></Route>
           <Route path="/films" exact strict component={Films}></Route>
           <Route path="/profile" exact strict component={Profile}></Route>
-          <Redirect to='/feed' />
         </Router>
       );
     }
