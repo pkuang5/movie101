@@ -6,7 +6,7 @@ import Login from "./components/login"
 import Feed from "./components/feed"
 import Editor from "./components/editor"
 import Films from "./components/films"
-import Profile from "./components/profilePage";
+import Settings from "./components/settings";
 import firebase from "firebase";
 
 class App extends Component {
@@ -18,6 +18,7 @@ class App extends Component {
 
   navLinkStyle = {color:"black", textDecoration:"none", paddingRight: "0.3rem", paddingLeft: "0.3rem", paddingBottom: "0.1rem"};
   activeStyle = {borderBottom: "1px solid #a0aec0"};
+  navbarTabStyle = "font-montserrat block inline-block mt-0 text-black cursor-pointer mr-4";
 
   signInState = (bool, id) => {
     this.setState({
@@ -33,9 +34,8 @@ class App extends Component {
     let localStorageObject = JSON.parse(localStorage.getItem('user'));
     if (localStorageObject && localStorageObject.signedIn === true) {
       this.setState({
-        signedIn: true, 
-        googleId: localStorage.getItem('id'),
-       
+        signedIn: true,
+        googleId: localStorageObject.googleId
       })
     }
     
@@ -75,10 +75,10 @@ class App extends Component {
               </div>
               <div>
                 <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink to="/feed" style={this.navLinkStyle} activeStyle={this.activeStyle}>Feed</NavLink></div>
-                <div class="font-montserrat block inline-block mt-0 text-black cursor-pointer mr-4"><NavLink to="/editor" style={this.navLinkStyle} activeStyle={this.activeStyle}>Editor</NavLink></div>
-                <div class="font-montserrat block inline-block mt-0 text-black cursor-pointer mr-6"><NavLink to="/films" style={this.navLinkStyle} activeStyle={this.activeStyle}>Films</NavLink></div>
-                <div class="font-montserrat block inline-block mt-0 text-black cursor-pointer mr-4"><NavLink to="/profile" style={this.navLinkStyle} activeStyle={this.activeStyle}>Profile</NavLink></div>
-                <div class="font-montserrat block inline-block mt-0 text-black cursor-pointer mr-4" onClick={ ()=>this.signInState(false,'')}>Logout</div>
+                <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink to="/editor" style={this.navLinkStyle} activeStyle={this.activeStyle}>Editor</NavLink></div>
+                <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink to="/films" style={this.navLinkStyle} activeStyle={this.activeStyle}>Films</NavLink></div>
+                <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink to="/profile" style={this.navLinkStyle} activeStyle={this.activeStyle}>Profile</NavLink></div>
+                <div class="font-montserrat block inline-block mt-0 cursor-pointer mr-4" onClick={() => this.signInState(false, '')}>Logout</div>
               </div>
             </div>
           </nav>
@@ -86,7 +86,7 @@ class App extends Component {
             <Route exact path="/feed" exact strict component={() => <Feed signInState={this.signInState} googleId={this.state.googleId} />}></Route>
             <Route exact path="/editor" exact strict component={Editor}></Route>
             <Route exact path="/films" exact strict component={Films}></Route>
-            <Route exact path="/profile" exact strict component={() => <Profile signInState={this.signInState} googleId={this.state.googleId} profilePic = {this.state.profilePic}/>}></Route>
+            <Route exact path="/profile" exact strict component={() => <Settings signInState={this.signInState} googleId={this.state.googleId} profilePic = {this.state.profilePic}/>}></Route>
             <Redirect to='/feed' />
           </Switch>
          

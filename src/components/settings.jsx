@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import firebase from "firebase";
 import '../App.css'
+import Resizer from 'react-image-file-resizer'
 
 import {storage} from "../firebaseConfig";
 
-class Profile extends Component {
+class Settings extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -20,38 +21,67 @@ class Profile extends Component {
             
            
         };
+        this.handleChange = this.handleChange.bind(this)
     }
     handleChange = e => {
         let image = ''
+        let newURI = ''
         if(e.target.files[0]) {
+            Resizer.imageFileResizer(
+                e.target.files[0],
+                125,
+                125,
+                'JPEG',
+                100,
+                0,
+                uri => {
+                    console.log(uri)
+                    //newURI = uri
+                    firebase.database()
+                    .ref("users/" + localStorage.getItem('id')) 
+                    .update({  
+                            profileURL: uri,
+            
+                    });  
+                },
+                'base64'
+            );
+            console.log(newURI)
             image = e.target.files[0];
             console.log(image);
+            // firebase.database()
+            // .ref("users/" + localStorage.getItem('id')) 
+            // .update({  
+            //         profileURL: this.state.url,
+    
+            // });   
+            
         }
         else {
             console.log('ERROR')
         }
-        const uploadTask = storage.ref(`images/${image.name}`).put(image);
-        uploadTask.on('state_changed',
+        // const uploadTask = storage.ref(`images/${image.name}`).put(image);
+        // uploadTask.on('state_changed',
         
         
-        () => {
+        // () => {
             
-                storage.ref('images').child(image.name).getDownloadURL().then(url => {
-                    console.log(url);
-                    this.setState({url})
-                    console.log(this.state.url)
-                    firebase
-                    .database()
-                    .ref("users/" + localStorage.getItem('id')) 
-                    .update({  
-                        profileURL: this.state.url,
+        //         storage.ref('images').child(image.name).getDownloadURL().then(url => {
+                    
+        //             this.setState({url})
+        //             console.log(this.state.url)
+        //             firebase
+        //             .database()
+        //             .ref("users/" + localStorage.getItem('id')) 
+        //             .update({  
+        //                 profileURL: this.state.url,
 
-                    });       
-            })
+        //             });       
+        //     })
             
-        });
+        // });
     }
-    handleChange(e) {
+    handleChangeUserName(e) {
         this.state.username = e.target.value
         // set the changed state
         this.setState({ username: this.state.username })
@@ -136,7 +166,7 @@ class Profile extends Component {
                         <div class = "w-4/5 flex items-end ">
                             <div class = " h-18 w-full">
                                 <label class=" tracking-wide text-gray-700 text-sm font-bold mb-2" for="grid-password"> User Name </label>
-                                <input onChange={this.handleChange.bind(this)} class="appearance-none block w-full text-gray-700  border-solid border-8 border-black-800 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder={this.state.username}/>
+                                <input onChange={this.handleChangeUserName.bind(this)} class="appearance-none block w-full text-gray-700  border-solid border-8 border-black-800 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder={this.state.username}/>
                             </div>
                         </div>
                     </div>
@@ -179,5 +209,5 @@ class Profile extends Component {
         );
     }
 }
-export default Profile;
+export default Settings;
 
