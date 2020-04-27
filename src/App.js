@@ -6,7 +6,7 @@ import Login from "./components/login"
 import Feed from "./components/feed"
 import Editor from "./components/editor"
 import Films from "./components/films"
-import Profile from "./components/profilePage";
+import Profile from "./components/profile";
 import Navbar from "./components/navbar"
 
 class App extends Component {
