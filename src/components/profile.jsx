@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Gallery from './gallery'
 
 class Profile extends Component {
     state = { 
@@ -15,10 +16,13 @@ class Profile extends Component {
                     <p class="text-xl font-montserrat mt-2">{this.state.username}</p>
                     <p class="text-xs font-montserrat mt-1">{this.state.bio}</p>
                 </div>
-                <div class="flex w-3/5 justify-between mt-12">
-                    <button class="text-lg font-montserrat">Featured</button>
-                    <button class="text-lg font-montserrat">Journals</button>
-                    <button class="text-lg font-montserrat">Lists</button>
+                <div class="flex w-4/5 justify-between mt-12">
+                    <button class="w-1/3 text-lg font-montserrat">Featured</button>
+                    <button class="w-1/3 text-lg font-montserrat">Journals</button>
+                    <button class="w-1/3 text-lg font-montserrat">Lists</button>
+                </div>
+                <div class="mt-12 w-4/5 px-8">
+                    <Gallery />
                 </div>
             </div>
         );

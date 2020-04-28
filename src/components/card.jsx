@@ -15,9 +15,9 @@ class Card extends Component {
     render() {
         const { imageUrl, movieName } = this.props;
         return (
-            <div class="flex items-end max-w-sm overflow-hidden cursor-pointer text-transparent hover:text-black justify-center" onClick={this.handleClick}>
+            <div class="flex items-end max-w-sm overflow-hidden cursor-pointer justify-center" onClick={this.handleClick}>
                 <img class="w-full mb-8" src={imageUrl} alt="Sunset in the mountains"/>
-                <p class="absolute text-sm font-semibold font-montserrat font-semibold font-base select-none">{movieName}</p>
+                <p class="absolute text-sm font-montserrat select-none">{movieName}</p>
             </div>
         );
     }
