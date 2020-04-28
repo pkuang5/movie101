@@ -113,18 +113,13 @@ class Settings extends Component {
             this.setState({email: snapshot.val().email});
             this.setState({bio: snapshot.val().bio});
             this.setState({url: snapshot.val().profileURL});
-            console.log(snapshot.val().profileURL)
             
           })
-          console.log(this.state)
-          
+         
           this.setState({signedIn: true});  
          
     }
-    componentWillUpdate = (nextProps, nextState) => {
-        
-        localStorage.setItem('user', JSON.stringify(nextState))
-    }
+   
 
     render() {
         return (

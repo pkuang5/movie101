@@ -8,14 +8,16 @@ import Editor from "./components/editor"
 import Films from "./components/films"
 import Settings from "./components/settings";
 import Navbar from "./components/navbar"
-import firebase from "firebase";
+import firebase from 'firebase'
+
 
 
 class App extends Component {
   state = {
     signedIn: false,
     googleId: '',
-    profilePic: ''
+    
+   
   }
 
   navLinkStyle = {color:"black", textDecoration:"none", paddingRight: "0.3rem", paddingLeft: "0.3rem", paddingBottom: "0.1rem"};
@@ -27,7 +29,7 @@ class App extends Component {
       signedIn: bool,
       googleId: id,
     })
-    //console.log(this.state.signedIn)
+    
   }
   
 
@@ -39,13 +41,6 @@ class App extends Component {
         googleId: localStorageObject.googleId
       })
     }
-    
-    var userInfo = firebase.database().ref('users/' + localStorage.getItem('id')); // had to change to local storage b/c
-                                                                                  // id keeps going away upon refresh
-    userInfo.on('value', (snapshot) => {
-        this.setState({googleId: snapshot.val().id});
-        this.setState({profilePic: snapshot.val().profileURL})
-      })
      
   }
   componentWillUpdate = (nextProps, nextState) => {
