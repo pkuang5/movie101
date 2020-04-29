@@ -8,17 +8,11 @@ import Editor from "./components/editor"
 import Films from "./components/films"
 import Settings from "./components/settings";
 import Navbar from "./components/navbar"
-import firebase from 'firebase'
-
-
 
 class App extends Component {
   state = {
     signedIn: false,
     googleId: '',
-    
-    
-   
   }
 
   navLinkStyle = {color:"black", textDecoration:"none", paddingRight: "0.3rem", paddingLeft: "0.3rem", paddingBottom: "0.1rem"};
@@ -30,11 +24,8 @@ class App extends Component {
       signedIn: bool,
       googleId: id,
     })
-    
     localStorage.setItem('id', this.state.googleId)
-    
   }
-  
 
   componentDidMount = () => {
     let localStorageObject = JSON.parse(localStorage.getItem('user'));
@@ -42,21 +33,16 @@ class App extends Component {
       this.setState({
         signedIn: true,
         googleId: localStorageObject.googleId
-        //googleId: localStorage.getItem('id')
       })
     }
-    console.log(this.state.signedIn)
      
   }
   componentWillUpdate = (nextProps, nextState) => {
     localStorage.setItem('user', JSON.stringify(nextState))
   }
-  finalLogOut = () => {
-    localStorage.clear();
-  }
 
   render() {
-    if (this.state.signedIn === false || localStorage.getItem('logKey') === false) {
+    if (this.state.signedIn === false) {
       return (
         <Login signInState={this.signInState} />
       );
@@ -66,7 +52,7 @@ class App extends Component {
         <Router>
           <Navbar signInState={this.signInState} />
           <Switch>
-            <Route path="/" exact strict component={() => <Feed signIn = {this.state.signedIn}signInState={this.signInState} googleId={this.state.googleId} />}></Route>
+            <Route path="/" exact strict component={() => <Feed signInState={this.signInState} googleId={this.state.googleId} />}></Route>
             <Route path="/editor" exact strict component={Editor}></Route>
             <Route path="/films" exact strict component={Films}></Route>
             <Route path="/profile" exact strict component={() => <Settings signInState={this.signInState} googleId={this.state.googleId} />}></Route>

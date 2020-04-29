@@ -3,8 +3,6 @@ import GoogleLogInBtn from './googleLogInBtn'
 import Images from '../assets/images';
 import Introduction from "./introduction"
 
-
-
 function selectBackgroundImage(){
     let selection = Math.floor(Math.random() * Images.length);
     return "url('"+Images[selection]+"')";
@@ -18,7 +16,6 @@ const divStyle = {
     backgroundPosition: 'center',
 };
 
-
 class Login extends Component {
     render() {
         return (
@@ -27,7 +24,7 @@ class Login extends Component {
                     <div class="flex flex-col m-auto box-content h-64 w-70 p-4">
                         <div class="font-serif font-semibold text-6xl tracking-tight text-white select-none">Screenbook</div>
                         <div class="font-montserrat font-semibold text-white text-center select-none">Your personal film capsule</div>  
-                        <div class="flex justify-center p-12" ><GoogleLogInBtn signInState={this.props.signInState} setProfilePic = {this.props.setProfilePic}/></div>
+                        <div class="flex justify-center p-12" ><GoogleLogInBtn signInState={this.props.signInState}/></div>
                     </div>
                 </div>
                 <Introduction />

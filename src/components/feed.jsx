@@ -8,7 +8,6 @@ class Feed extends Component {
     state = {
         firstName: ""
     }
-
     
     componentDidMount = () => {
         var userInfo = firebase.database().ref('users/' + this.props.googleId)
@@ -17,7 +16,6 @@ class Feed extends Component {
         })
     }
     
-
     render() {
         return (
             <React.Fragment>
