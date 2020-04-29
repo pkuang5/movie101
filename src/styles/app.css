@@ -13182,6 +13182,10 @@ video {
   background-color: #C3A37A;
 }
 
+.border-color-beige {
+  border-color: #C3A37A;
+}
+
 .rainbow:hover {
   -webkit-animation:rainbow 1s infinite;
   animation:rainbow 1s infinite;

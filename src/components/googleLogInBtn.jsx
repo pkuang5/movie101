@@ -1,27 +1,38 @@
 import React, { Component} from "react";
 import { GoogleLogin } from "react-google-login";
 import firebase from "../firebaseConfig";
+
 require("dotenv").config();
 
 class GoogleLogInBtn extends Component {
 
   responseGoogle = (googleUser) => {
+   
     var id_token = googleUser.getAuthResponse().id_token;
     var googleId = googleUser.getId();
-
+   
     let profile = googleUser.getBasicProfile();
-    firebase
-      .database()
-      .ref("users/" + googleId)
-      .set({
-        fullName: profile.getName(),
-        firstName: profile.getGivenName(),
-        lastName: profile.getFamilyName(),
-        email: profile.getEmail(),     
-      });
-      
+    var stringPart = profile.getEmail().split('@');
+    var userInfo = firebase.database().ref('users/' + localStorage.getItem('id'));
+    firebase.database().ref(`users/${googleId}`).once("value", snapshot => {
+      if (!snapshot.exists()){
+        firebase
+        .database()
+        .ref("users/" + googleId)
+        .set({
+          fullName: profile.getName(),
+          firstName: profile.getGivenName(),
+          lastName: profile.getFamilyName(),
+          email: profile.getEmail(),     
+          profileURL: googleUser.profileObj.imageUrl,
+          id: googleUser.getId(),
+          userName: stringPart[0],
+          bio: ''
+
+        });
+      }
+    });
       this.props.signInState(true, googleId);
-      
   }
   
   render() {

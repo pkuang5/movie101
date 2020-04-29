@@ -3,19 +3,19 @@ import MovieRow from './movieRow'
 import firebase from "../firebaseConfig";
 
 
+
 class Feed extends Component {
     state = {
         firstName: ""
     }
-
+    
     componentDidMount = () => {
-        var userInfo = firebase.database().ref('users/' + this.props.googleId);
+        var userInfo = firebase.database().ref('users/' + this.props.googleId)
         userInfo.on('value', (snapshot) => {
-            this.setState({firstName: snapshot.val().firstName});
-          })
+            if (snapshot.val()) this.setState({firstName: snapshot.val().firstName})
+        })
     }
-
-
+    
     render() {
         return (
             <React.Fragment>
