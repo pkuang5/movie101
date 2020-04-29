@@ -15,16 +15,11 @@ class App extends Component {
     googleId: '',
   }
 
-  navLinkStyle = {color:"black", textDecoration:"none", paddingRight: "0.3rem", paddingLeft: "0.3rem", paddingBottom: "0.1rem"};
-  activeStyle = {borderBottom: "1px solid #a0aec0"};
-  navbarTabStyle = "font-montserrat block inline-block mt-0 text-black cursor-pointer mr-4";
-
   signInState = (bool, id) => {
     this.setState({
       signedIn: bool,
       googleId: id,
     })
-    localStorage.setItem('id', this.state.googleId)
   }
 
   componentDidMount = () => {

@@ -30,14 +30,9 @@ class GoogleLogInBtn extends Component {
           bio: ''
 
         });
-      
       }
-     
-    
     });
-   
       this.props.signInState(true, googleId);
-      
   }
   
   render() {
@@ -45,9 +40,7 @@ class GoogleLogInBtn extends Component {
       <div>
         <GoogleLogin
           render={renderProps => (
-           
             <button onClick={renderProps.onClick} disabled={renderProps.disabled} class="bg-white hover:bg-gray-200 font-sans font-semibold text-black py-2 px-4 rounded w-56">Login</button>
-            
           )}
           clientId= {process.env.REACT_APP_LOCAL_GOOGLE_CLIENT_ID}
           buttonText="Login"
