@@ -7,33 +7,40 @@ require("dotenv").config();
 class GoogleLogInBtn extends Component {
 
   responseGoogle = (googleUser) => {
+    localStorage.clear()
     var id_token = googleUser.getAuthResponse().id_token;
     var googleId = googleUser.getId();
-
+    console.log(googleId)
     let profile = googleUser.getBasicProfile();
     var stringPart = profile.getEmail().split('@');
     var userInfo = firebase.database().ref('users/' + localStorage.getItem('id'));
-    if (userInfo === null)
-    {
-      firebase
-      .database()
-      .ref("users/" + googleId)
-      .update({
-        fullName: profile.getName(),
-        firstName: profile.getGivenName(),
-        lastName: profile.getFamilyName(),
-        email: profile.getEmail(),     
-        profileURL: googleUser.profileObj.imageUrl,
-        id: googleUser.getId(),
-        userName: '',
-        bio: ''
+    firebase.database().ref(`users/${googleId}`).once("value", snapshot => {
+      if (snapshot.exists()){
+          console.log("exists");
+      
+      }
+      else {
+          console.log("DNE");
+          firebase
+          .database()
+          .ref("users/" + googleId)
+          .set({
+            fullName: profile.getName(),
+            firstName: profile.getGivenName(),
+            lastName: profile.getFamilyName(),
+            email: profile.getEmail(),     
+            profileURL: googleUser.profileObj.imageUrl,
+            id: googleUser.getId(),
+            userName: stringPart[0],
+            bio: ''
 
-      });
-    }
+          });
+      }
+    
+    });
    
       this.props.signInState(true, googleId);
       this.props.setProfilePic(googleUser.profileObj.imageUrl);
-      localStorage.setItem('id', googleId)
      
       
       

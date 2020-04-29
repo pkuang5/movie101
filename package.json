@@ -11,10 +11,10 @@
     "bootstrap": "^4.1.1",
     "dotenv": "^8.2.0",
     "firebase": "^7.14.2",
+    "noty": "^3.2.0-beta",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-google-login": "^5.1.2",
-    "react-image-file-resizer": "^0.2.3",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "tailwindcss": "^1.2.0"

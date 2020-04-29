@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import firebase from "firebase";
 import '../App.css'
-import Resizer from 'react-image-file-resizer'
+import Noty from 'noty'
+import 'noty/lib/noty.css'
+import 'noty/lib/themes/bootstrap-v4.css'
 
 import {storage} from "../firebaseConfig";
 
@@ -15,7 +17,6 @@ class Settings extends Component {
             lName: '',
             email: '',
             bio: '',
-            signedIn: '',
             url: '',
             image: '', 
             
@@ -23,48 +24,57 @@ class Settings extends Component {
         };
         this.handleChange = this.handleChange.bind(this)
     }
+
+    showNotification() {
+        new Noty({
+            type: 'success',
+            theme: 'bootstrap-v4',
+            layout: 'topRight',
+            text: 'You Changes Have Been Saved!',
+            timeout: 3000
+        }).show()
+    }
+   
     handleChange = e => {
         let image = ''
 
         if(e.target.files[0]) {
-            Resizer.imageFileResizer(
-                e.target.files[0],
-                125,
-                125,
-                'JPEG',
-                100,
-                0,
-                uri => {
-                    console.log(uri)
-                    
-                    firebase.database()
-                    .ref("users/" + localStorage.getItem('id')) 
-                    .update({  
-                            profileURL: uri,
             
-                    });  
-                },
-                'base64'
-            );
             image = e.target.files[0];
             console.log(image);
-            
-        }
-        else {
-            console.log('ERROR')
-        }
+            const uploadTask = storage.ref(`images/${image.name}`).put(image);
+            uploadTask.on('state_changed',
+        
+            () => {
+                    // complete function
+                    
+                    storage.ref('images').child(image.name).getDownloadURL().then(url => {
+                        console.log(url);
+                        this.setState({url: url})
+                        firebase
+                        .database()
+                        .ref("users/" + this.props.googleId) 
+                        .update({  
+                            profileURL: url,
+                        }); 
+                    })
+                
+                });    
+            }
+            else {
+                console.log('ERROR')
+            }
     }
     handleChangeUserName(e) {
-        this.state.username = e.target.value
+       this.state.username = e.target.value
         // set the changed state
         this.setState({ username: this.state.username })
 
-
     }
     handleFirstName(e) {
-        this.state.fName = e.target.value
+       this.state.firstName = e.target.value
         // set the changed state
-        this.setState({ fName: this.state.fName })
+        this.setState({ fName: this.state.firstName })
     }
     handleLastName(e) {
         this.state.lName = e.target.value
@@ -85,10 +95,10 @@ class Settings extends Component {
     
 
     handleSubmit(e) {
-       
+       console.log(this.props.googleId)
         firebase
             .database()
-            .ref("users/" + localStorage.getItem('id')) 
+            .ref("users/" + this.props.googleId) 
             .update({  
                 userName: this.state.username,
                 firstName: this.state.fName,
@@ -96,16 +106,13 @@ class Settings extends Component {
                 email: this.state.email,
                 bio: this.state.bio,
                 profileURL: this.state.url,
-
-
             });
-            console.log(this.props.googleId)
-            console.log(this.props.profilePic)
+        this.showNotification()
         
     }
     componentDidMount = () => {
         console.log()
-        var userInfo = firebase.database().ref('users/' + localStorage.getItem('id'));
+        var userInfo = firebase.database().ref('users/' + this.props.googleId);
         userInfo.on('value', (snapshot) => {
             this.setState({fName: snapshot.val().firstName});
             this.setState({lName: snapshot.val().lastName});
@@ -116,7 +123,7 @@ class Settings extends Component {
             
           })
          
-          this.setState({signedIn: true});  
+          console.log(this.props.googleId) 
          
     }
    
@@ -128,7 +135,7 @@ class Settings extends Component {
 
                   <div class="flex flex-wrap -mx-3 mb-6 flex justify-center w-1/3 font-montserrat font-semibold" >
                     <div class = "flex w-full h-24 mb-4 ">
-                        <div  class="rounded-full w-1/5 flex items-center justify-center bg-red-100 bg-local mr-8 pt-8" style={{backgroundImage: "url('" + this.state.url + "')"}}> 
+                        <div  class="rounded-full w-1/5 flex items-center justify-center bg-red-100 bg-cover items-center justify-center mr-8 pt-8" style={{backgroundImage: "url('" + this.state.url + "')"}}> 
                         <label class = "opacityLevel" for="file"><strong>Choose a file</strong></label>
                         <input type = "file" onChange = {this.handleChange} name="file" id="file" class="inputfile pb-8" data-multiple-caption="{count} files selected" multiple/>
                         </div>
