@@ -3,8 +3,6 @@ import GoogleLogInBtn from './googleLogInBtn'
 import Images from '../assets/images';
 import Introduction from "./introduction"
 
-
-
 function selectBackgroundImage(){
     let selection = Math.floor(Math.random() * Images.length);
     return "url('"+Images[selection]+"')";
@@ -17,7 +15,6 @@ const divStyle = {
     backgroundAttachment: 'fixed',
     backgroundPosition: 'center',
 };
-
 
 class Login extends Component {
     render() {
