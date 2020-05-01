@@ -23,19 +23,16 @@ function Navbar(props){
               <div>
                 <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink exact to="/" style={navLinkStyle} activeStyle={activeStyle}>Feed</NavLink></div>
                 <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink exact to="/editor" style={navLinkStyle} activeStyle={activeStyle}>Editor</NavLink></div>
-                <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink exact to="/films" style={navLinkStyle} activeStyle={activeStyle}>Films</NavLink></div>
-                <div  className="  dropdown font-montserrat block inline-block mt-0 mr-4"  >
-                <div className=" mr-8 button" onClick={()=> setDisplayMenu(!displayMenu)}> <i class="fa fa-lg fa-angle-down"></i> </div>
-                 { displayMenu ? (
-                      <ul class = "absolute mr-12 ">
-                          <div ><NavLink exact to="/profile" style={navLinkStyle} activeStyle={activeStyle}>Settings</NavLink></div>  
-                          <div class="font-montserrat block inline-block  cursor-pointer mr-4" onClick={ () => { props.signInState(false, '');history.push("/"); }}>Logout</div>    
-                      </ul>
-                      ):
-                    (
-                      null
-                    )
-                 }
+                <div class="font-montserrat block inline-block mt-0"><NavLink exact to="/films" style={navLinkStyle} activeStyle={activeStyle}>Films</NavLink></div>
+                <div  className="font-montserrat block inline-block mt-0 ml-4 mr-4"  >
+                  <div className="mr-8" onClick={()=> setDisplayMenu(!displayMenu)}> <i class="fa fa-lg fa-angle-down"></i> </div>
+                  { displayMenu ? (
+                        <div class = "absolute">
+                            <div><NavLink exact to="/profile" style={navLinkStyle} activeStyle={activeStyle}>Settings</NavLink></div>  
+                            <div style={navLinkStyle} onClick={ () => { props.signInState(false, '');history.push("/"); }}>Logout</div>    
+                        </div>
+                        ):( null)
+                  }
               </div>
             </div>
           </div>
