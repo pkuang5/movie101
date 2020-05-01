@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Gallery from './gallery'
 import firebase from '../firebaseConfig'
+import { useReducer } from 'react';
 
 class Profile extends Component {
     state = { 
@@ -10,14 +11,19 @@ class Profile extends Component {
     }
 
     componentDidMount = () => {
-        var userInfo = firebase.database().ref('users/' + this.props.googleId);
-        userInfo.on('value', (snapshot) => {
-          if (snapshot.val()) this.setState({
-              username: snapshot.val().userName,
-              profilePicUrl: snapshot.val().profileURL,
-              bio: snapshot.val().bio,
-            })
-        })
+
+        var userInfo = firebase.database().ref('users');
+        userInfo.orderByChild('userName').equalTo(this.props.username).on("value", (snapshot) => {
+            console.log(snapshot.val())
+            snapshot.forEach((data) => {
+                console.log(data.key);
+                this.setState({
+                    username: data.val().userName,
+                    profilePicUrl: data.val().profileURL,
+                    bio: data.val().bio,
+                })
+            });
+        });
     }
 
     render() {
