@@ -6,7 +6,8 @@ import firebase from "../firebaseConfig";
 
 class Feed extends Component {
     state = {
-        firstName: ""
+        firstName: "",
+       
     }
     
     componentDidMount = () => {
