@@ -1,15 +1,14 @@
 
-import React, { Component } from 'react';
-import { NavLink, useHistory } from 'react-router-dom'
-import Dropdown from 'react-dropdown';
-import 'react-dropdown/style.css';
-import Drop from './dropDown'
+import React, { Component, useState} from 'react';
+import {NavLink, useHistory } from 'react-router-dom'
+import 'font-awesome/css/font-awesome.min.css'
 
 
 function Navbar(props){
-
+  
+    const [displayMenu, setDisplayMenu] = useState(false)
     let history = useHistory();
-
+    
     let navLinkStyle = {color:"black", textDecoration:"none", paddingRight: "0.3rem", paddingLeft: "0.3rem", paddingBottom: "0.1rem"};
     let activeStyle = {borderBottom: "1px solid #a0aec0"};
 
@@ -25,16 +24,21 @@ function Navbar(props){
                 <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink exact to="/" style={navLinkStyle} activeStyle={activeStyle}>Feed</NavLink></div>
                 <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink exact to="/editor" style={navLinkStyle} activeStyle={activeStyle}>Editor</NavLink></div>
                 <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink exact to="/films" style={navLinkStyle} activeStyle={activeStyle}>Films</NavLink></div>
-                <div class="absolute font-montserrat block inline-block mt-0 mr-4"> <Drop /></div>
-               
-                <div class="font-montserrat block inline-block ml-20 mt-0 cursor-pointer mr-4" onClick={() => {
-                    props.signInState(false, '');
-                    history.push("/");
-                }}>Logout</div>
-               
+                <div  className="  dropdown font-montserrat block inline-block mt-0 mr-4"  >
+                <div className=" mr-8 button" onClick={()=> setDisplayMenu(!displayMenu)}> <i class="fa fa-lg fa-angle-down"></i> </div>
+                 { displayMenu ? (
+                      <ul class = "absolute mr-12 ">
+                          <div ><NavLink exact to="/profile" style={navLinkStyle} activeStyle={activeStyle}>Settings</NavLink></div>  
+                          <div class="font-montserrat block inline-block  cursor-pointer mr-4" onClick={ () => { props.signInState(false, '');history.push("/"); }}>Logout</div>    
+                      </ul>
+                      ):
+                    (
+                      null
+                    )
+                 }
               </div>
             </div>
-            
+          </div>
         </nav>
     );
 }

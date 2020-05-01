@@ -7,7 +7,6 @@ import 'noty/lib/noty.css'
 import 'noty/lib/themes/bootstrap-v4.css'
 import {storage} from "../firebaseConfig";
 
-
 class Settings extends Component {
     constructor(props) {
         super(props);
@@ -22,7 +21,6 @@ class Settings extends Component {
             change: false
         };
     }
-
     showNotification = () => {
         new Noty({
             type: 'success',
@@ -32,7 +30,6 @@ class Settings extends Component {
             timeout: 3000
         }).show()
     }
-   
     handleChange = e => {
         if(e.target.files[0]) {
             
@@ -64,7 +61,6 @@ class Settings extends Component {
             username: e.target.value,
             change: true
         })
-
     }
     handleFirstName = (e) => {
         this.setState({ 
@@ -84,15 +80,12 @@ class Settings extends Component {
             change: true
         })
     }
-
     handleBio = (e) => {
         this.setState({ 
             bio: e.target.value,
             change: true 
         })
     }
-    
-
     handleSubmit = (e) => {
        console.log(this.props.googleId)
         firebase
@@ -124,33 +117,32 @@ class Settings extends Component {
             });  
           })
     }
-
     render() {
         return (
             <form class="w-screen flex justify-center">
 
                   <div class="flex flex-wrap -mx-3  flex justify-center w-1/3 font-montserrat font-semibold" >
                     <div class = "flex w-full h-24  ">
-                        <div  class="rounded-full w-1/5 flex items-center justify-center bg-cover items-center justify-center mr-8 pt-8" style={{backgroundImage: "url('" + this.state.url + "')"}}> 
+                        <div  class="rounded-full w-24 h-14 flex bg-cover justify-center mr-8 pt-8" style={{backgroundImage: "url('" + this.state.url + "')"}}> 
                         <input type = "file" onChange = {this.handleChange} name="file" id="file" class="w-full h-full opacity-0" data-multiple-caption="{count} files selected" multiple/>
                         </div>
                         
                         <div class = "w-4/5 flex ">
                             <div class = " h-18 w-full h-full ">
-                                <label class=" tracking-wide text-gray-700 text-sm font-bold mb-3 " for="grid-password"> User Name </label>
+                                <label class=" tracking-wide text-gray-700 text-sm font-bold mb-3 " for="grid-username"> User Name </label>
                                 <input onChange={this.handleChangeUserName} class="self-end appearance-none block w-full text-gray-700  border-solid border-2 border-black-600 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder={this.state.username}/>
                             </div>
                         </div>
                     </div>
                     <div class = "w-full flex justify-start mt-3">
                         <div class = "w-full">
-                               <label class="text-left font-bold text-gray-700 text-sm  mb-2 " for="grid-first-name"> Bio </label>
+                               <label class="text-left font-bold text-gray-700 text-sm  mb-2 " for="grid-bio"> Bio </label>
                                 <input onChange={this.handleBio} class="appearance-none block w-full text-gray-700 border-solid border-2 border-black-600 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-first-name" type="text" placeholder={this.state.bio}/>
                         </div>
                     </div>
                     <div class = "flex w-full">
                         <div class = " w-1/2 mr-2 mb-4">
-                            <label class=" tracking-wide text-gray-700 text-sm font-bold mb-2" for="grid-last-name">
+                            <label class=" tracking-wide text-gray-700 text-sm font-bold mb-2" for="grid-first-name">
                                 First Name
                             </label>
                             <input onChange={this.handleFirstName} class="appearance-none block w-full  text-gray-700 border-solid border-2 border-black-600 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder={this.state.fName}/>
@@ -166,7 +158,7 @@ class Settings extends Component {
                     <div class = "w-full flex justify-start">
                         <div class = "w-full">
                 
-                            <label class=" tracking-wide text-gray-700 text-sm font-bold mb-2" for="grid-city"> Email </label>
+                            <label class=" tracking-wide text-gray-700 text-sm font-bold mb-2" for="grid-email"> Email </label>
                             <input onChange={this.handleEMAIL} class="appearance-none block w-full  text-gray-700 border-solid border-2 border-black-600 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="text"  placeholder={this.state.email}/>
                         </div>
                     </div>
@@ -177,7 +169,6 @@ class Settings extends Component {
                     </div>
              </div>
           </form> 
-           
         );
     }
 }

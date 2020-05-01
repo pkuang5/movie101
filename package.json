@@ -11,6 +11,7 @@
     "bootstrap": "^4.1.1",
     "dotenv": "^8.2.0",
     "firebase": "^7.14.2",
+    "font-awesome": "^4.7.0",
     "noty": "^3.2.0-beta",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
