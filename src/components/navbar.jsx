@@ -21,7 +21,8 @@ function Navbar(props){
                 <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink exact to="/" style={navLinkStyle} activeStyle={activeStyle}>Feed</NavLink></div>
                 <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink exact to="/editor" style={navLinkStyle} activeStyle={activeStyle}>Editor</NavLink></div>
                 <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink exact to="/films" style={navLinkStyle} activeStyle={activeStyle}>Films</NavLink></div>
-                <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink exact to="/profile" style={navLinkStyle} activeStyle={activeStyle}>Profile</NavLink></div>
+                <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink exact to={"/" + props.username} style={navLinkStyle} activeStyle={activeStyle}>Profile</NavLink></div>
+                <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink exact to="/settings" style={navLinkStyle} activeStyle={activeStyle}>Settings</NavLink></div>
                 <div class="font-montserrat block inline-block mt-0 cursor-pointer mr-4" onClick={() => {
                     props.signInState(false, '');
                     history.push("/");
