@@ -40,7 +40,7 @@ class Profile extends Component {
                     <button class="w-1/3 text-lg font-montserrat">Lists</button>
                 </div>
                 <div class="mt-12 w-4/5 px-8">
-                    <Gallery googleId={this.state.id}/>
+                    <Gallery googleId={this.state.id} username={this.state.username}/>
                 </div>
             </div>
         );

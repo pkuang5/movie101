@@ -10,6 +10,7 @@ import Films from "./components/films"
 import Settings from "./components/settings"
 import Profile from "./components/profile"
 import Navbar from "./components/navbar"
+import Movie from "./components/movie"
 
 class App extends Component {
   state = {
@@ -60,10 +61,11 @@ class App extends Component {
           <Navbar signInState={this.signInState} username={this.state.username} />
           <Switch>
             <Route path="/" exact strict component={() => <Feed signInState={this.signInState} googleId={this.state.googleId} />}></Route>
-            <Route path="/editor" exact strict component={Editor}></Route>
+            <Route path="/editor" exact strict component={() => <Editor googleId={this.state.googleId}/>}></Route>
             <Route path="/films" exact strict component={Films}></Route>
             <Route path={"/" + this.state.username} exact strict component={() => <Profile username={this.state.username} />}></Route>
             <Route path="/:username" exact strict render={({match})=><Profile username={match.params.username}/>}/>
+            <Route path="/:username/movies/:id" exact strict render={({match})=><Movie movieId={match.params.id} username={match.params.username} />}/>
             <Route path="/settings" exact strict component={() => <Settings googleId={this.state.googleId} />}></Route>
           </Switch>
         </Router>
