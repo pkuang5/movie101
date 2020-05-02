@@ -6,7 +6,7 @@ import firebase from "../firebaseConfig";
 
 class Feed extends Component {
     state = {
-        firstName: ""
+        firstName: "",
     }
     
     componentDidMount = () => {
@@ -15,7 +15,7 @@ class Feed extends Component {
             if (snapshot.val()) this.setState({firstName: snapshot.val().firstName})
         })
     }
-    
+
     render() {
         return (
             <React.Fragment>
