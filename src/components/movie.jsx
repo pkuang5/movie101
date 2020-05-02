@@ -12,7 +12,6 @@ function Movie(props){
     useEffect(() => {
         var userInfo = firebase.database().ref('users');
         userInfo.orderByChild('userName').equalTo(props.username).on("value", (snapshot) => {
-            console.log("effect called")
             snapshot.forEach((data) => {
                 firebaseCall(data.key, props.movieId);
             });
@@ -22,7 +21,6 @@ function Movie(props){
     function firebaseCall(userId, movieId){
         var userInfo = firebase.database().ref('users/' + userId + '/journals/' + movieId)
         userInfo.on('value', (snapshot) => {
-            console.log(snapshot.val())
             setName(snapshot.val().name)
             setCoverImage(snapshot.val().coverImage)
             setDateOfEntry(snapshot.val().dateOfEntry)
@@ -30,8 +28,6 @@ function Movie(props){
             setDescription(snapshot.val().description)
         })
     }
-
-
 
     return (
         <div class="w-screen text-4xl">
