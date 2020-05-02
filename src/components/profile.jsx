@@ -5,6 +5,7 @@ import { useReducer } from 'react';
 
 class Profile extends Component {
     state = { 
+        id: '',
         username: '',
         profilePicUrl: '',
         bio: ''
@@ -14,10 +15,9 @@ class Profile extends Component {
 
         var userInfo = firebase.database().ref('users');
         userInfo.orderByChild('userName').equalTo(this.props.username).on("value", (snapshot) => {
-            console.log(snapshot.val())
             snapshot.forEach((data) => {
-                console.log(data.key);
                 this.setState({
+                    id: data.key,
                     username: data.val().userName,
                     profilePicUrl: data.val().profileURL,
                     bio: data.val().bio,
@@ -40,7 +40,7 @@ class Profile extends Component {
                     <button class="w-1/3 text-lg font-montserrat">Lists</button>
                 </div>
                 <div class="mt-12 w-4/5 px-8">
-                    <Gallery />
+                    <Gallery googleId={this.state.id}/>
                 </div>
             </div>
         );
