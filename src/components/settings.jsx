@@ -34,8 +34,7 @@ class Settings extends Component {
         if(e.target.files[0]) {
             
             let image = e.target.files[0];
-            console.log(image);
-            const uploadTask = storage.ref(`images/${this.props.googleId}`).put(image);
+            const uploadTask = storage.ref(`images/${this.props.googleId}/profilePic`).put(image);
             uploadTask.on('state_changed',
         
             () => {          
@@ -87,8 +86,9 @@ class Settings extends Component {
         })
     }
     handleSubmit = (e) => {
-       console.log(this.props.googleId)
-        firebase
+        if (this.state.change) {
+            this.showNotification()
+            firebase
             .database()
             .ref("users/" + this.props.googleId) 
             .update({  
@@ -99,12 +99,9 @@ class Settings extends Component {
                 bio: this.state.bio,
                 profileURL: this.state.url,
             });
-        if (this.state.change) {
-            this.showNotification()
         }
     }
     componentDidMount = () => {
-        console.log()
         var userInfo = firebase.database().ref('users/' + this.props.googleId);
         userInfo.on('value', (snapshot) => {
             this.setState({
