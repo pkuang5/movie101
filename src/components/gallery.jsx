@@ -16,7 +16,6 @@ class Gallery extends Component {
         userInfo.on('value', (snapshot) => {
             snapshot.forEach((data) => {
                 let movie = {
-                    id: data.key,
                     name: data.val().name,
                     coverImageURL: data.val().coverImage
                 }
@@ -25,7 +24,6 @@ class Gallery extends Component {
         })
         this.setState({ cards: temp })
     }
-
     //sample firebase function to create movie entry
     sendSampleMovieEntry = (movieID) => {
         firebase.database().ref('users/' + this.props.googleId + '/journals/' + movieID).set({
