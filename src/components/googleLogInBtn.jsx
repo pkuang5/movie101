@@ -8,12 +8,10 @@ class GoogleLogInBtn extends Component {
 
   responseGoogle = (googleUser) => {
    
-    var id_token = googleUser.getAuthResponse().id_token;
     var googleId = googleUser.getId();
    
     let profile = googleUser.getBasicProfile();
-    var stringPart = profile.getEmail().split('@');
-    var userInfo = firebase.database().ref('users/' + localStorage.getItem('id'));
+    var username = profile.getEmail().split('@')[0];
     firebase.database().ref(`users/${googleId}`).once("value", snapshot => {
       if (!snapshot.exists()){
         firebase
@@ -26,7 +24,7 @@ class GoogleLogInBtn extends Component {
           email: profile.getEmail(),     
           profileURL: googleUser.profileObj.imageUrl,
           id: googleUser.getId(),
-          userName: stringPart[0],
+          userName: username,
           bio: ''
 
         });
