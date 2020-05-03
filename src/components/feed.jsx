@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import MovieRow from './movieRow'
 import firebase from "../firebaseConfig";
 
-
-
 class Feed extends Component {
     state = {
         firstName: "",
@@ -34,7 +32,6 @@ class Feed extends Component {
                     </div>
                 </div>
             </React.Fragment>
-            
         );
     }
 }
