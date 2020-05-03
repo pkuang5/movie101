@@ -3,14 +3,11 @@ import Gallery from './gallery'
 import firebase from '../firebaseConfig'
 
 class Profile extends Component {
-    constructor(props) {
-    super(props)
-       this.state = { 
-            id: '',
-            username: '',
-            profilePicUrl: '',
-            bio: ''
-        }
+    state = { 
+        id: '',
+        username: '',
+        profilePicUrl: '',
+        bio: ''
     }
     componentDidMount = () => {   
         var userInfo = firebase.database().ref('users');

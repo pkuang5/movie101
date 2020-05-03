@@ -67,14 +67,14 @@ class Editor extends Component {
                 <label class=" text-gray-700 text-xs font-bold mb-2" >
                   Movie Name
                 </label>
-                <input onChange = {this.handleChangeMovieName} class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="Jane"/>
+                <input onChange = {this.handleChangeMovieName} class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="Screenbook Documentary"/>
                 
               </div>
               <div class="w-full md:w-1/2 px-3">
                 <label class=" text-gray-700 text-xs font-bold mb-2" >
                   Movie Year
                 </label>
-                <input onChange = {this.handleChangeMovieYear} class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Doe"/>
+                <input onChange = {this.handleChangeMovieYear} class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="2000's"/>
               </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-6">
@@ -82,7 +82,7 @@ class Editor extends Component {
                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="review">
                   Review
                 </label>
-                <input onChange = {this.handleChangeMovieReview} class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-password" type="password" placeholder="Description"/>
+                <input onChange = {this.handleChangeMovieReview} class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-password"  placeholder="Description"/>
                 <p class="text-gray-600 text-xs italic">Make it as long and as crazy as you'd like</p>
               </div>
             </div>
