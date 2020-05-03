@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import MovieRow from './movieRow'
 import firebase from "../firebaseConfig";
 
-
-
 class Feed extends Component {
     state = {
         firstName: "",
@@ -13,6 +11,7 @@ class Feed extends Component {
         var userInfo = firebase.database().ref('users/' + this.props.googleId)
         userInfo.on('value', (snapshot) => {
             if (snapshot.val()) this.setState({firstName: snapshot.val().firstName})
+            console.log(snapshot.val())
         })
     }
 
@@ -34,7 +33,6 @@ class Feed extends Component {
                     </div>
                 </div>
             </React.Fragment>
-            
         );
     }
 }

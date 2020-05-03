@@ -29,8 +29,13 @@ class GoogleLogInBtn extends Component {
 
         });
       }
+      else {
+        username = snapshot.val().userName
+        console.log(username)
+      }
+      this.props.signInState(true, googleId, username);
     });
-      this.props.signInState(true, googleId);
+      
   }
   
   render() {

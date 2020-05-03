@@ -17,37 +17,32 @@ class App extends Component {
     googleId: '',
     username: ''
   }
-
-  signInState = (bool, id) => {
+  signInState = (bool, id, name) => {
     this.setState({
       signedIn: bool,
       googleId: id,
-    })
-    var userInfo = firebase.database().ref('users/' + id)
-    userInfo.on('value', (snapshot) => {
-      if (snapshot.val()) this.setState({username: snapshot.val().userName})
+      username: name
     })
   }
-
   componentDidMount = () => {
     let localStorageObject = JSON.parse(localStorage.getItem('user'));
     if (localStorageObject && localStorageObject.signedIn === true) {
-      this.setState({
-        signedIn: true,
-        googleId: localStorageObject.googleId
-      })
+        this.setState({
+          signedIn: true,
+          googleId: localStorageObject.googleId,
+       
+        })
+        var userInfo = firebase.database().ref('users/' + localStorageObject.googleId)
+        userInfo.on('value', (snapshot) => {
+          if (snapshot.val()) {
+            this.setState({username: snapshot.val().userName})
+          }
+        })
     }
-
-    var userInfo = firebase.database().ref('users/' + localStorageObject.googleId)
-    userInfo.on('value', (snapshot) => {
-      if (snapshot.val()) this.setState({username: snapshot.val().userName})
-    })
   }
-
   componentWillUpdate = (nextProps, nextState) => {
     localStorage.setItem('user', JSON.stringify(nextState))
   }
-
   render() {
     if (this.state.signedIn === false) {
       return (
@@ -60,10 +55,11 @@ class App extends Component {
           <Navbar signInState={this.signInState} username={this.state.username} />
           <Switch>
             <Route path="/" exact strict component={() => <Feed signInState={this.signInState} googleId={this.state.googleId} />}></Route>
-            <Route path="/editor" exact strict component={Editor}></Route>
+            <Route path="/editor" exact strict component={() => <Editor signInState={this.signInState} googleId={this.state.googleId} />}></Route>
             <Route path="/films" exact strict component={Films}></Route>
             <Route path="/settings" exact strict component={() => <Settings googleId={this.state.googleId} />}></Route>
-            <Route path={"/" + this.state.username} exact strict component={() => <Profile username={this.state.username} />}></Route>
+            
+            <Route path={"/" + this.state.username} exact strict component={() => <Profile googleId={this.state.googleId} username={this.state.username} />}></Route>
             <Route path="/:username" exact strict render={({match})=><Profile username={match.params.username}/>}/>
           </Switch>
         </Router>
