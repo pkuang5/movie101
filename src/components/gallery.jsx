@@ -1,53 +1,49 @@
-import React, { Component } from 'react';
-import Card from './card'
+import React, { useState, useEffect } from 'react';
 import firebase from '../firebaseConfig'
+import { useHistory } from 'react-router-dom'
 
 
-class Gallery extends Component {
+function Gallery(props) {
 
-    state = {
-        numberOfcards: 0,
-        cards: [],
-    }
+    const [movies, setMovies] = useState([])
+    let history = useHistory();
 
-    firebaseCall = () => {
-        let temp = this.state.cards;
-        var userInfo = firebase.database().ref('users/' + this.props.googleId + '/journals')
+    useEffect(() => {
+        if (props.googleId){
+            firebaseCall();
+        }
+    }, [props.googleId]);
+
+    function firebaseCall() {
+        var userInfo = firebase.database().ref('users/' + props.googleId + '/journals')
         userInfo.on('value', (snapshot) => {
+            let temp = [];
             snapshot.forEach((data) => {
                 let movie = {
+                    id: data.key,
                     name: data.val().name,
                     coverImageURL: data.val().coverImage
                 }
                 temp.push(movie);
             });
-        })
-        this.setState({ cards: temp })
-    }
-    //sample firebase function to create movie entry
-    sendSampleMovieEntry = (movieID) => {
-        firebase.database().ref('users/' + this.props.googleId + '/journals/' + movieID).set({
-            name: 'sample name',
-            coverImage: 'https://ih1.redbubble.net/image.1070926604.0419/flat,750x1000,075,f.jpg',
-            dataOfEntry: '04-20-2020',
-            rating: '10/10',
-            description: 'great movie'
+            setMovies(movies.concat(temp));
         })
     }
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.googleId !== this.props.googleId) {
-            this.firebaseCall();
-        }
+    function handleMovieClick(id) {
+        history.push("/" + props.username + "/movies/" + id);
     }
 
-    render() {
-        return (
-            <div class="grid grid-cols-3 gap-20 grid-rows-2">
-                {this.state.cards.map(movieEntry => <Card imageUrl={movieEntry.coverImageURL} movieName={movieEntry.name} />)}
-            </div>
-        );
-    }
+    return (
+        <div class="grid grid-cols-4 col-gap-20 row-gap-10 grid-rows-2">
+            {movies.map(movieEntry =>
+                <div class="flex flex-col cursor-pointer justify-center" onClick={() => handleMovieClick(movieEntry.id)}>
+                    <img class="w-full" src={movieEntry.coverImageURL} alt={movieEntry.name} />
+                    <p class="w-full text-center text-sm font-montserrat select-none">{movieEntry.name}</p>
+                </div>
+            )}
+        </div>
+    );
 
 }
 
