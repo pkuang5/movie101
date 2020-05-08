@@ -7,7 +7,8 @@ class Profile extends Component {
         id: '',
         username: '',
         profilePicUrl: '',
-        bio: ''
+        bio: '',
+        featured: true,
     }
     componentDidMount = () => {   
         var userInfo = firebase.database().ref('users');
@@ -22,6 +23,11 @@ class Profile extends Component {
             });
         });
      }
+
+    handleFeatured = (bool) => {
+        this.setState({featured: bool})
+    }
+
     render() {
         return (
             <div class="flex flex-col w-screen items-center">
@@ -31,12 +37,11 @@ class Profile extends Component {
                     <p class="text-xs font-montserrat mt-1">{this.state.bio}</p>
                 </div>
                 <div class="flex w-4/5 justify-between mt-12">
-                    <button class="w-1/3 text-lg font-montserrat">Featured</button>
-                    <button class="w-1/3 text-lg font-montserrat">Journals</button>
-                    <button class="w-1/3 text-lg font-montserrat">Lists</button>
+                    <button class="w-1/3 text-lg font-montserrat" onClick={() => this.handleFeatured(true)}>Featured</button>
+                    <button class="w-1/3 text-lg font-montserrat" onClick={() => this.handleFeatured(false)}>Journals</button>
                 </div>
                 <div class="mt-12 w-4/5 px-8">
-                    <Gallery googleId={this.state.id} username={this.state.username}/>
+                    <Gallery googleId={this.state.id} username={this.state.username} featured={this.state.featured}/>
                 </div>
             </div>
         );
