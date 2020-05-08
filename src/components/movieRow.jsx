@@ -16,7 +16,6 @@ class MovieRow extends Component {
             let stateList = this.state.movies;
             var i;
             for (i in data.results){
-                console.log(i)
                 let movieEntry = {
                     title: data.results[i].title,
                     posterImageUrl: 'https://image.tmdb.org/t/p/w500'+data.results[i].poster_path

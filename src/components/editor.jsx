@@ -16,6 +16,7 @@ class Editor extends Component {
            movieYear: '',
            movieImage: '',
            change: '',
+           featured: true,
            images: []
         };
    }
@@ -55,6 +56,7 @@ class Editor extends Component {
                   
                 }
                 this.setState({images: stateList}) 
+                this.setState({movieImage:'https://image.tmdb.org/t/p/w500'+data.results[0].poster_path})
         })
     }
     sendSampleMovieEntry = () => {
@@ -66,7 +68,8 @@ class Editor extends Component {
                 coverImage:  this.state.movieImage,
                 dateOfEntry: this.state.movieYear,
                 rating: this.state.movieRating,
-                description: this.state.movieReview
+                description: this.state.movieReview,
+                featured: this.state.featured
             })  
         }
     }
@@ -94,6 +97,18 @@ class Editor extends Component {
             change: true
         })
     }
+    handleFeatured = (e) => {
+      if (e.target.value === 'Yes') {
+        this.setState({
+          featured: true
+        })
+      }
+      else {
+        this.setState({
+          featured: false
+        })
+      }
+    }
     handleSearch = () => {
       this.getMovieInfo()
     }
@@ -103,7 +118,6 @@ class Editor extends Component {
       })
       this.showImage()
     }
-    
     render() {
         return (
             <form class="w-full max-w-lg">
@@ -152,11 +166,23 @@ class Editor extends Component {
               </div>
               <div class="md:flex md:items-center">
                 <div class="md:w-2/3">
+                  
                     <button onClick = {this.handleSearch}class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
-                        Search
+                        Search: {this.state.featured}
                      </button>
                  </div>          
                 </div>
+                <div class="md:flex md:items-center">
+                <div class="md:w-2/3">
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
+                  Publish in Featured?
+                </label>
+                <select onChange = {this.handleFeatured} class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+                    <option>Yes</option>
+                    <option>No</option>
+                  </select>
+                 </div>          
+                </div> 
               <div class="md:flex md:items-center">
                 <div class="md:w-2/3">
                     <button onClick = {this.sendSampleMovieEntry}class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
