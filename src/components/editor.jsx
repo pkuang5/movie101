@@ -59,7 +59,7 @@ class Editor extends Component {
                 this.setState({movieImage:'https://image.tmdb.org/t/p/w500'+data.results[0].poster_path})
         })
     }
-    sendSampleMovieEntry = () => {
+    handleSubmit = () => {
         if (this.state.change) {
           this.showNotification()
             let movieID = Math.floor(Math.random() * 10000)
@@ -185,7 +185,7 @@ class Editor extends Component {
                 </div> 
               <div class="md:flex md:items-center">
                 <div class="md:w-2/3">
-                    <button onClick = {this.sendSampleMovieEntry}class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
+                    <button onClick = {this.handleSubmit}class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
                         Submit
                      </button>
                  </div>          
