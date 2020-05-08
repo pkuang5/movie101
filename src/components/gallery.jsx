@@ -12,10 +12,12 @@ function Gallery(props) {
         if (props.googleId){
             firebaseCall();
         }
-    }, [props.googleId]);
+    }, [props.googleId, props.featured]);
 
     function firebaseCall() {
+        setMovies(movies.length=0)
         var userInfo = firebase.database().ref('users/' + props.googleId + '/journals')
+        if (props.featured) userInfo = userInfo.orderByChild('featured').equalTo(true)
         userInfo.on('value', (snapshot) => {
             let temp = [];
             snapshot.forEach((data) => {
