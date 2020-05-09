@@ -41,7 +41,6 @@ function Gallery(props) {
             {movies.map(movieEntry =>
                 <div class="flex flex-col cursor-pointer justify-center" onClick={() => handleMovieClick(movieEntry.id)}>
                     <img class="w-full" src={movieEntry.coverImageURL} alt={movieEntry.name} />
-                    <p class="w-full text-center text-sm font-montserrat select-none">{movieEntry.name}</p>
                 </div>
             )}
         </div>
