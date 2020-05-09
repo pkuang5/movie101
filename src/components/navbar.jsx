@@ -30,7 +30,7 @@ function Navbar(props){
                   { displayMenu ? (
                         <div class = "absolute">
                             <div><NavLink exact to="/settings" style={navLinkStyle} activeStyle={activeStyle}>Settings</NavLink></div>  
-                            <div style={navLinkStyle} onClick={ () => { props.signInState(false, '');history.push("/"); }}>Logout</div>    
+                            <div class = "cursor-pointer" style={navLinkStyle} onClick={ () => { props.signInState(false, '');history.push("/"); }}>Logout</div>    
                         </div>
                         ):( null)
                   }
