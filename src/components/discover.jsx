@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import firebase from '../firebaseConfig'
+import { useHistory } from 'react-router-dom'
 
 function Discover(props) {
 
     const [users, setUsers] = useState([])
+    let history = useHistory();
     
     useEffect(() => {
         firebase.database().ref('users').once("value", (snapshot) => {
@@ -18,11 +20,15 @@ function Discover(props) {
         });
     } ,[]);
 
+    const handleUserClick = (username) => {
+        history.push('/' + username)
+    }
+
     return (
         <div class="flex flex-col mt-8 ml-8 font-montserrat">
             <p class="text-xl font-semibold">Discover fellow users!</p>
             {users.map(user => 
-                <div class="flex w-full border h-32 mb-3 pl-3">
+                <div class="flex w-full border h-32 mb-3 pl-3 cursor-pointer" onClick={() => handleUserClick(user.username)}>
                     <div class="self-center rounded-full h-24 w-24 flex bg-cover" style={{backgroundImage: "url('" + user.profilePicURL + "')"}}> </div>
                     <div class="flex flex-col pl-4 pt-3">
                         <p class="text-md">{user.username}</p>
