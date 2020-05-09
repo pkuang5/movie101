@@ -144,9 +144,9 @@ class Editor extends Component {
       this.showImage()
     }
     handleSpecificImgClick = (e) => {
-      console.log(e)
-      this.state.imagesToStore.push(e)
-      console.log(this.state.imagesToStore)
+      let arr = this.state.imagesToStore
+      arr.push(e)
+      this.setState({imagesToStore: arr})
     }
     
     render() {
@@ -227,7 +227,7 @@ class Editor extends Component {
                   <div>
                   {this.state.specificImages.map(movieImageEntry =>    
                   <div class="flex flex-col w-32 h-auto items-end justify-start">
-                           <img class = "hover:opacity-75 focus:shadow-outline" src={movieImageEntry.image} onClick = {() => this.handleSpecificImgClick(movieImageEntry.image)}/>
+                           <div class={this.state.imagesToStore.includes(movieImageEntry.image) ? "border-yellow-400 border-solid border-4" : null }><img class = "hover:opacity-75 focus:shadow-outline"  src={movieImageEntry.image} onClick = {() => this.handleSpecificImgClick(movieImageEntry.image)}/></div>
                   </div>)}
                   </div>
             </div>
