@@ -15,6 +15,7 @@ class Editor extends Component {
            movieReview: '',
            movieYear: '',
            movieImage: '',
+           movieId: '',
            change: '',
            featured: true,
            images: []
@@ -48,7 +49,8 @@ class Editor extends Component {
             
                   let movieEntry = {
                     image: ('https://image.tmdb.org/t/p/w500'+data.results[i].poster_path),
-                    title: data.results[i]
+                    title: data.results[i],
+                    id: data.results[i].id
                   }
                   if (movieEntry.image !== 'https://image.tmdb.org/t/p/w500null'){
                     stateList.push(movieEntry)
@@ -62,8 +64,7 @@ class Editor extends Component {
     handleSubmit = () => {
         if (this.state.change) {
           this.showNotification()
-            let movieID = Math.floor(Math.random() * 10000)
-            firebase.database().ref(`users/${this.props.googleId}/journals/${movieID}`).set({
+            firebase.database().ref(`users/${this.props.googleId}/journals/${this.state.movieId}`).set({
                 name: this.state.movieName,
                 coverImage:  this.state.movieImage,
                 dateOfEntry: this.state.movieYear,
@@ -112,9 +113,10 @@ class Editor extends Component {
     handleSearch = () => {
       this.getMovieInfo()
     }
-    handleImgClick = (e) => {
+    handleImgClick = (e,i) => {
       this.setState({
-        movieImage:e
+        movieImage:e,
+        movieId: i
       })
       this.showImage()
     }
@@ -192,7 +194,7 @@ class Editor extends Component {
                 </div>            
                 {this.state.images.map(movieEntry =>    
                   <div class="flex flex-col w-32 h-auto items-end justify-start">
-                           <img  src={movieEntry.image} alt= {movieEntry.title} onClick = {() => this.handleImgClick(movieEntry.image)}/>
+                           <img  src={movieEntry.image} alt= {movieEntry.title} onClick = {() => this.handleImgClick(movieEntry.image, movieEntry.id)}/>
                   </div>)}
             </div>
           </form>
