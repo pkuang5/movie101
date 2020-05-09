@@ -18,7 +18,9 @@ class Editor extends Component {
            movieId: '',
            change: '',
            featured: true,
-           images: []
+           images: [],
+           specificImages: [],
+           imagesToStore: []
         };
    }
   showNotification = () => {
@@ -41,6 +43,7 @@ class Editor extends Component {
     } 
     getMovieInfo = () => {
         this.state.images.length = 0; // deleted array upon every call
+        this.state.specificImages.length = 0;
         let url = ''.concat('https://api.themoviedb.org/3/', 'search/movie?api_key=', process.env.REACT_APP_MOVIEDB_API_KEY, '&query=', this.state.movieName);
         fetch(url).then(result=>result.json()).then((data)=>{
           let stateList = this.state.images;
@@ -61,6 +64,24 @@ class Editor extends Component {
                 this.setState({movieImage:'https://image.tmdb.org/t/p/w500'+data.results[0].poster_path})
         })
     }
+    getMovieImage = (i) => {
+      this.state.specificImages.length = 0; // deleted array upon every call
+      let url = ''.concat('https://api.themoviedb.org/3/', 'movie/' ,i , '/images', '?api_key=', process.env.REACT_APP_MOVIEDB_API_KEY, '&query=', this.state.movieName);
+      fetch(url).then(result=>result.json()).then((data)=>{
+        let imageList = this.state.specificImages;
+              var i
+              for (i = 0; i < 9; i++) {
+                let movieImageEntry = {
+                  image: ('https://image.tmdb.org/t/p/w500'+data.backdrops[i].file_path),
+                }
+                if (movieImageEntry.image !== 'https://image.tmdb.org/t/p/w500null'){
+                  imageList.push(movieImageEntry)
+                }
+                
+              }
+              this.setState({specificImages: imageList}) 
+      })
+  }
     handleSubmit = () => {
         if (this.state.change) {
           this.showNotification()
@@ -70,7 +91,8 @@ class Editor extends Component {
                 dateOfEntry: this.state.movieYear,
                 rating: this.state.movieRating,
                 description: this.state.movieReview,
-                featured: this.state.featured
+                featured: this.state.featured,
+                images: this.state.imagesToStore
             })  
         }
     }
@@ -118,8 +140,15 @@ class Editor extends Component {
         movieImage:e,
         movieId: i
       })
+      this.getMovieImage(i)
       this.showImage()
     }
+    handleSpecificImgClick = (e) => {
+      console.log(e)
+      this.state.imagesToStore.push(e)
+      console.log(this.state.imagesToStore)
+    }
+    
     render() {
         return (
             <form class="w-full max-w-lg">
@@ -193,8 +222,14 @@ class Editor extends Component {
                 </div>            
                 {this.state.images.map(movieEntry =>    
                   <div class="flex flex-col w-32 h-auto items-end justify-start">
-                           <img  src={movieEntry.image} alt= {movieEntry.title} onClick = {() => this.handleImgClick(movieEntry.image, movieEntry.id)}/>
+                           <img class = "hover:opacity-75 focus:shadow-outline" src={movieEntry.image} alt= {movieEntry.title} onClick = {() => this.handleImgClick(movieEntry.image, movieEntry.id)}/>
                   </div>)}
+                  <div>
+                  {this.state.specificImages.map(movieImageEntry =>    
+                  <div class="flex flex-col w-32 h-auto items-end justify-start">
+                           <img class = "hover:opacity-75 focus:shadow-outline" src={movieImageEntry.image} onClick = {() => this.handleSpecificImgClick(movieImageEntry.image)}/>
+                  </div>)}
+                  </div>
             </div>
           </form>
         );

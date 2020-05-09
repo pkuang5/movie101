@@ -118,7 +118,7 @@ class Settings extends Component {
 
                   <div class="flex flex-wrap -mx-3  flex justify-center w-1/3 font-montserrat font-semibold" >
                     <div class = "flex w-full h-24  ">
-                        <div  class="flex-grow-0 flex-shrink-0 rounded-full w-24 flex bg-cover justify-center mr-8 pt-8" style={{backgroundImage: "url('" + this.state.url + "')"}}> 
+                        <div  class="flex-grow-0 flex-shrink-0 rounded-full w-24 flex bg-cover justify-center mr-8 pt-8 cursor-pointer" style={{backgroundImage: "url('" + this.state.url + "')"}}> 
                         <input type = "file" onChange = {this.handleChange} name="file" id="file" class="w-full h-full opacity-0"  />
                         </div>
                         
