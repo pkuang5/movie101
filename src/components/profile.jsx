@@ -12,7 +12,7 @@ class Profile extends Component {
     }
     componentDidMount = () => {   
         var userInfo = firebase.database().ref('users');
-        userInfo.orderByChild('userName').equalTo(this.props.username).on("value", (snapshot) => {
+        userInfo.orderByChild('userName').equalTo(this.props.username).once("value", (snapshot) => {
             snapshot.forEach((data) => {
                 this.setState({
                     id: data.key,    

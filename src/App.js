@@ -6,7 +6,7 @@ import "./styles/app.css";
 import Login from "./components/login"
 import Feed from "./components/feed"
 import Editor from "./components/editor"
-import Films from "./components/films"
+import Discover from "./components/discover"
 import Settings from "./components/settings"
 import Profile from "./components/profile"
 import Navbar from "./components/navbar"
@@ -57,7 +57,7 @@ class App extends Component {
           <Switch>
             <Route path="/" exact strict component={() => <Feed signInState={this.signInState} googleId={this.state.googleId} />}></Route>
             <Route path="/editor" exact strict component={() => <Editor googleId={this.state.googleId} />}></Route>
-            <Route path="/films" exact strict component={Films}></Route>
+            <Route path="/discover" exact strict component={() => <Discover/>}></Route>
             <Route path="/settings" exact strict component={() => <Settings googleId={this.state.googleId} />}></Route>
             <Route path={"/" + this.state.username} exact strict component={() => <Profile googleId={this.state.googleId} username={this.state.username} />}></Route>
             <Route path="/:username" exact strict render={({match})=><Profile username={match.params.username}/>}/>
