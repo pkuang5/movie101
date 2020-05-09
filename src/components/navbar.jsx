@@ -1,5 +1,5 @@
 
-import React, { Component, useState} from 'react';
+import React, {useState} from 'react';
 import {NavLink, useHistory } from 'react-router-dom'
 import 'font-awesome/css/font-awesome.min.css'
 
