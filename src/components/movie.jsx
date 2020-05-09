@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import firebase from '../firebaseConfig'
+import { useHistory } from 'react-router-dom'
 
 function Movie(props){
 
@@ -8,25 +9,29 @@ function Movie(props){
     const [description, setDescription] = useState('')
     const [name, setName] = useState('')
     const [rating, setRating] = useState('')
+    const [firebaseId, setFirebaseId] = useState('')
+    let history = useHistory();
 
     useEffect(() => {
-        var userInfo = firebase.database().ref('users');
-        userInfo.orderByChild('userName').equalTo(props.username).on("value", (snapshot) => {
+        var userInfo = firebase.database().ref('users').orderByChild('userName').equalTo(props.username);
+        userInfo.once("value", (snapshot) => {
             snapshot.forEach((data) => {
-                firebaseCall(data.key, props.movieId);
+                setFirebaseId(data.key)
+                var movieEntry = firebase.database().ref('users/' + data.key + '/journals/' + props.movieId)
+                movieEntry.once('value').then( (snapshot) => {
+                    setName(snapshot.val().name)
+                    setCoverImage(snapshot.val().coverImage)
+                    setDateOfEntry(snapshot.val().dateOfEntry)
+                    setRating(snapshot.val().rating)
+                    setDescription(snapshot.val().description)
+                })
             });
         });
     }, []);
 
-    function firebaseCall(userId, movieId){
-        var userInfo = firebase.database().ref('users/' + userId + '/journals/' + movieId)
-        userInfo.on('value', (snapshot) => {
-            setName(snapshot.val().name)
-            setCoverImage(snapshot.val().coverImage)
-            setDateOfEntry(snapshot.val().dateOfEntry)
-            setRating(snapshot.val().rating)
-            setDescription(snapshot.val().description)
-        })
+    function handleDeleteMovie(){
+        firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId).remove()
+        history.push("/" + props.username)
     }
 
     return (
@@ -37,6 +42,7 @@ function Movie(props){
             <p>rating: {rating}</p>
             <p>description: {description}</p>
             <p>cover image url: {coverImage}</p>
+            <button class="bg-red-500 text-white px-3" onClick={handleDeleteMovie}>Delete movie</button>
         </div>
     );
 }
