@@ -23,7 +23,7 @@ function Navbar(props){
               <div>
                 <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink exact to="/" style={navLinkStyle} activeStyle={activeStyle}>Feed</NavLink></div>
                 <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink exact to="/editor" style={navLinkStyle} activeStyle={activeStyle}>Editor</NavLink></div>
-                <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink exact to="/discover" style={navLinkStyle} activeStyle={activeStyle}>Films</NavLink></div>
+                <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink exact to="/discover" style={navLinkStyle} activeStyle={activeStyle}>Discover</NavLink></div>
                 <div class="font-montserrat block inline-block mt-0 mr-4"><NavLink exact to={"/" + props.username} style={navLinkStyle} activeStyle={activeStyle}>Profile</NavLink></div>
                 <div  className="font-montserrat block inline-block mt-0 ml-4 mr-4"  >
                   <div className="mr-8" onClick={()=> setDisplayMenu(!displayMenu)}> <i class="fa fa-lg fa-angle-down"></i> </div>

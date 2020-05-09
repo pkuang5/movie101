@@ -10,29 +10,25 @@ function Gallery(props) {
     let history = useHistory();
 
     useEffect(() => {
-        if (props.googleId){
-            firebaseCall();
+        if (props.googleId) {
+            setMovies(movies.length = 0)
+            var userInfo = firebase.database().ref('users/' + props.googleId + '/journals')
+            if (props.featured) userInfo = userInfo.orderByChild('featured').equalTo(true)
+            userInfo.once('value', (snapshot) => {
+                let temp = [];
+                snapshot.forEach((data) => {
+                    let movie = {
+                        id: data.key,
+                        name: data.val().name,
+                        coverImageURL: data.val().coverImage
+                    }
+                    temp.push(movie);
+                });
+                setMovies(movies.concat(temp));
+                setDisplayedMovies(movies.concat(temp));
+            })
         }
     }, [props.googleId, props.featured]);
-
-    function firebaseCall() {
-        setMovies(movies.length=0)
-        var userInfo = firebase.database().ref('users/' + props.googleId + '/journals')
-        if (props.featured) userInfo = userInfo.orderByChild('featured').equalTo(true)
-        userInfo.once('value', (snapshot) => {
-            let temp = [];
-            snapshot.forEach((data) => {
-                let movie = {
-                    id: data.key,
-                    name: data.val().name,
-                    coverImageURL: data.val().coverImage
-                }
-                temp.push(movie);
-            });
-            setMovies(movies.concat(temp));
-            setDisplayedMovies(movies.concat(temp));
-        })
-    }
 
     function handleMovieClick(id) {
         history.push("/" + props.username + "/movies/" + id);
