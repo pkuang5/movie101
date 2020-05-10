@@ -25,9 +25,9 @@ function Navbar(props) {
           <div class="mr-4"><NavLink exact to="/" style={navLinkStyle} activeStyle={activeStyle}>Feed</NavLink></div>
           <div class="mr-4"><NavLink exact to="/editor" style={navLinkStyle} activeStyle={activeStyle}>Editor</NavLink></div>
           <div class="mr-4"><NavLink exact to="/discover" style={navLinkStyle} activeStyle={activeStyle}>Discover</NavLink></div>
-          <div class="mr-4"><NavLink exact to={"/" + props.username} style={navLinkStyle} activeStyle={activeStyle}>Profile</NavLink></div>
-          <div className="mr-4"  >
-            <div onClick={() => setDisplayMenu(!displayMenu)}> <i class="fa fa-lg fa-angle-down"></i> </div>
+          <div><NavLink exact to={"/" + props.username} style={navLinkStyle} activeStyle={activeStyle}>Profile</NavLink></div>
+          <div className="mr-4">
+            <div onClick={() => setDisplayMenu(!displayMenu)}> <i class="fa fa-lg fa-angle-down ml-4"></i> </div>
             {displayMenu ? (
               <div class="absolute mt-1 shadow-sm">
                 <div class="py-1 hover:bg-gray-100" onClick={() => setDisplayMenu(!displayMenu)}><NavLink exact to="/settings" style={navLinkStyle}>Settings</NavLink></div>
