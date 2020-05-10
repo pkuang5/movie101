@@ -24,7 +24,7 @@ function Navbar(props) {
         <div class="flex font-montserrat">
           <div class="mr-4"><NavLink exact to="/" style={navLinkStyle} activeStyle={activeStyle}>Feed</NavLink></div>
           <div class="mr-4"><NavLink exact to="/editor" style={navLinkStyle} activeStyle={activeStyle}>Editor</NavLink></div>
-          <div class="mr-4"><NavLink exact to="/films" style={navLinkStyle} activeStyle={activeStyle}>Films</NavLink></div>
+          <div class="mr-4"><NavLink exact to="/discover" style={navLinkStyle} activeStyle={activeStyle}>Discover</NavLink></div>
           <div class="mr-4"><NavLink exact to={"/" + props.username} style={navLinkStyle} activeStyle={activeStyle}>Profile</NavLink></div>
           <div className="mr-4"  >
             <div onClick={() => setDisplayMenu(!displayMenu)}> <i class="fa fa-lg fa-angle-down"></i> </div>
