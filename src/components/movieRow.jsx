@@ -26,31 +26,26 @@ class MovieRow extends Component {
         })
     }
 
-    backClicked = () => {
-        if (this.state.start > 0) this.setState({start: this.state.start-5, end: this.state.end-5})
+    shiftMovies = (forward) => {
+        if (forward && this.state.end<20) this.setState({start: this.state.start+5, end: this.state.end+5})
+        if (!forward && this.state.start > 0) this.setState({start: this.state.start-5, end: this.state.end-5})
     }
 
-    forwardClicked = () =>{
-        if (this.state.end<20) this.setState({start: this.state.start+5, end: this.state.end+5})
-    } 
     render() {
         return (
-            <React.Fragment>
+            <div class="w-full">
                 <div class="flex pb-1 font-montserrat border-b border-black justify-between"> 
-                    <p>TRENDING FILMS</p>
+                    <div>TRENDING FILMS</div>
                     <div className = "flex">
-                        <img onClick={this.backClicked} class= "mr-3 cursor-pointer" src={backArrow}></img>
-                        <img onClick={this.forwardClicked} class= "cursor-pointer" src={forwardArrow}></img>
+                        <img onClick={() => this.shiftMovies(false)} class= "mr-3 cursor-pointer" src={backArrow}></img>
+                        <img onClick={() => this.shiftMovies(true)} class= "cursor-pointer" src={forwardArrow}></img>
                     </div>
                 </div>
                 <ol class="flex flex-wrap justify-between mt-3">
                     {this.state.movies.slice(this.state.start, this.state.end).map(movieEntry => 
-                        <div class="flex flex-col w-32 h-auto items-end justify-start">
-                            <img src={movieEntry.posterImageUrl} alt={movieEntry.title} />
-                            <p class="w-full text-center text-xs font-montserrat mt-2">{movieEntry.title}</p>
-                        </div>)}
+                        <img class= "w-32" src={movieEntry.posterImageUrl} alt={movieEntry.title} />)}
                 </ol>
-            </React.Fragment>
+            </div>
         );
     }
 }
