@@ -42,8 +42,8 @@ class Editor extends Component {
       }).show()
     } 
     getMovieInfo = () => {
-        this.state.images.length = 0; // deleted array upon every call
-        this.state.specificImages.length = 0;
+        this.setState({images: []})
+        this.setState({specificImages: []})
         let url = ''.concat('https://api.themoviedb.org/3/', 'search/movie?api_key=', process.env.REACT_APP_MOVIEDB_API_KEY, '&query=', this.state.movieName);
         fetch(url).then(result=>result.json()).then((data)=>{
           let stateList = this.state.images;
@@ -65,7 +65,7 @@ class Editor extends Component {
         })
     }
     getMovieImage = (i) => {
-      this.state.specificImages.length = 0; // deleted array upon every call
+      this.setState({specificImages: []})
       let url = ''.concat('https://api.themoviedb.org/3/', 'movie/' ,i , '/images', '?api_key=', process.env.REACT_APP_MOVIEDB_API_KEY, '&query=', this.state.movieName);
       fetch(url).then(result=>result.json()).then((data)=>{
         let imageList = this.state.specificImages;
@@ -77,7 +77,6 @@ class Editor extends Component {
                 if (movieImageEntry.image !== 'https://image.tmdb.org/t/p/w500null'){
                   imageList.push(movieImageEntry)
                 }
-                
               }
               this.setState({specificImages: imageList}) 
       })
