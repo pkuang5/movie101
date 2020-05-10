@@ -27,7 +27,7 @@ function Movie(props){
                 })
             });
         });
-    }, []);
+    }, [props.movieId, props.username]);
 
     function handleDeleteMovie(){
         firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId).remove()
