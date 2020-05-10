@@ -31,7 +31,7 @@ function Navbar(props) {
             {displayMenu ? (
               <div class="absolute mt-1 shadow-sm">
                 <div class="py-1 hover:bg-gray-100" onClick={() => setDisplayMenu(!displayMenu)}><NavLink exact to="/settings" style={navLinkStyle}>Settings</NavLink></div>
-                <div class="py-1 hover:bg-gray-100" onClick={() => setDisplayMenu(!displayMenu)} style={navLinkStyle} onClick={() => { props.signInState(false, ''); history.push("/"); }}>Logout</div>
+                <div class="py-1 hover:bg-gray-100" style={navLinkStyle} onClick={() => {setDisplayMenu(!displayMenu); props.signInState(false, ''); history.push("/"); }}>Logout</div>
               </div>
             ) : (null)
             }
