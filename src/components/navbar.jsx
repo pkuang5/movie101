@@ -7,19 +7,27 @@ import 'font-awesome/css/font-awesome.min.css'
 function Navbar(props) {
 
   const [displayMenu, setDisplayMenu] = useState(false)
+  const [search, setSearch] = useState(false)
   let history = useHistory();
 
   let navLinkStyle = { color: "black", textDecoration: "none", paddingRight: "0.3rem", paddingLeft: "0.3rem", paddingBottom: "0.1rem" };
   let activeStyle = { borderBottom: "1px solid #a0aec0" };
 
+  const handleSearch = (e) => {
+    
+  }
+
   return (
     <nav class="flex items-center py-4 px-10 w-screen">
       <div class="w-full flex justify-between">
-        <div>
-          <svg width="30" height="30" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" fill="white" />
-            <circle cx="20.5" cy="17.5" r="10.5" stroke="black" stroke-width="2" />
-            <line x1="28.1584" y1="25.244" x2="37.256" y2="34.3417" stroke="black" stroke-width="2" stroke-linecap="round" />
-          </svg>
+        <div class="flex">
+          <div onClick={() => setSearch(!search)}>
+            <svg width="30" height="30" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" fill="white" />
+              <circle cx="20.5" cy="17.5" r="10.5" stroke="black" stroke-width="2" />
+              <line x1="28.1584" y1="25.244" x2="37.256" y2="34.3417" stroke="black" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </div>
+          <input onChange={handleSearch} class={search ? "appearance-none w-full text-gray-700 border-black-600 mb-3 focus:outline-none focus:bg-white focus:border-gray-500" : "hidden" } type="text" placeholder="search"/>
         </div>
         <div class="flex font-montserrat">
           <div class="mr-4"><NavLink exact to="/" style={navLinkStyle} activeStyle={activeStyle}>Feed</NavLink></div>
