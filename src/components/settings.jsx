@@ -32,13 +32,11 @@ class Settings extends Component {
     }
     handleChange = e => {
         if(e.target.files[0]) {
-            
             let image = e.target.files[0];
-            const uploadTask = storage.ref(`images/${this.props.googleId}/profilePic`).put(image);
+            const uploadTask = storage.ref(`images/${this.props.googleId}`).put(image);
             uploadTask.on('state_changed',
-        
             () => {          
-                    storage.ref('images').child(this.props.googleId).getDownloadURL().then(url => {
+                     storage.ref('images').child(this.props.googleId).getDownloadURL().then(url => {
                         this.setState({url: url})
                         firebase
                         .database()
@@ -54,6 +52,7 @@ class Settings extends Component {
                 console.log('ERROR')
             }
             this.setState({change: true})
+           
     }
     handleChangeUserName = (e) => {
         this.setState({ 
@@ -97,7 +96,6 @@ class Settings extends Component {
                 lastName: this.state.lName,
                 email: this.state.email,
                 bio: this.state.bio,
-                profileURL: this.state.url,
             });
         }
     }
@@ -121,7 +119,7 @@ class Settings extends Component {
                   <div class="flex flex-wrap -mx-3  flex justify-center w-1/3 font-montserrat font-semibold" >
                     <div class = "flex w-full h-24  ">
                         <div  class="flex-grow-0 flex-shrink-0 rounded-full w-24 flex bg-cover justify-center mr-8 pt-8" style={{backgroundImage: "url('" + this.state.url + "')"}}> 
-                        <input type = "file" onChange = {this.handleChange} name="file" id="file" class="w-full h-full opacity-0" data-multiple-caption="{count} files selected" multiple/>
+                        <input type = "file" onChange = {this.handleChange} name="file" id="file" class="w-full h-full opacity-0"  />
                         </div>
                         
                         <div class = "w-4/5 flex ">
