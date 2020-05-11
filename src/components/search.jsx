@@ -20,30 +20,34 @@ function Search(props) {
         if (search === 'Users') {
             setResults([])
             setPlaceholder('Search for a user')
-            firebase.database().ref('users').orderByChild('userName').once("value", (snapshot) => {
-                snapshot.forEach((data) => {
-                    let userObject = {
-                        username: data.val().userName,
-                        bio: data.val().bio,
-                        profilePicURL: data.val().profileURL
-                    }
-                    setUsers(results => [...results,userObject])
+            if (users.length === 0) {
+                firebase.database().ref('users').orderByChild('userName').once("value", (snapshot) => {
+                    snapshot.forEach((data) => {
+                        let userObject = {
+                            username: data.val().userName,
+                            bio: data.val().bio,
+                            profilePicURL: data.val().profileURL
+                        }
+                        setUsers(results => [...results,userObject])
+                    });
                 });
-            });
+            }
         } 
         if (search === 'Journals') {
             setResults([])
             setPlaceholder('Search through your journals')
-            firebase.database().ref('users/' + props.googleId + '/journals').once('value', (snapshot) => {
-                snapshot.forEach((data) => {
-                    let journal = {
-                        id: data.key,
-                        name: data.val().name,
-                        coverImageURL: data.val().coverImage
-                    }
-                    setJournals(journals => [...journals,journal]);
-                });
-            })
+            if (journals.length === 0) {
+                firebase.database().ref('users/' + props.googleId + '/journals').once('value', (snapshot) => {
+                    snapshot.forEach((data) => {
+                        let journal = {
+                            id: data.key,
+                            name: data.val().name,
+                            coverImageURL: data.val().coverImage
+                        }
+                        setJournals(journals => [...journals,journal]);
+                    });
+                })
+            }
         } 
     }, [search])
 
@@ -60,16 +64,16 @@ function Search(props) {
         }
         if (search === 'Users') {
             if (e.target.value !== '') {
-                let searchUsers = users
-                setResults(searchUsers.filter((user) => { return user.username.toLowerCase().includes(e.target.value.toLowerCase());}))
-                if (results.length) setResults(false)
+                let searchResult = users.filter((user) => { return user.username.toLowerCase().includes(e.target.value.toLowerCase());})
+                if (searchResult.length === 0) setResults(false)
+                else setResults(searchResult)
             } else setResults([])
         }
         if (search === 'Journals') {
             if (e.target.value !== '') {
-                let searchJournals = journals
-                setResults(searchJournals.filter((journal) => { return journal.name.toLowerCase().includes(e.target.value.toLowerCase());}))
-                if (results.length) setResults(false)
+                let searchResult = journals.filter((journal) => { return journal.name.toLowerCase().includes(e.target.value.toLowerCase());})
+                if (searchResult.length === 0) setResults(false)
+                else setResults(searchResult)
             } else setResults([])
         }
     }
@@ -86,7 +90,7 @@ function Search(props) {
                     <p onClick={() => {setSearch('Journals'); document.getElementById('searchBar').value = ''}} class={search === 'Journals' ? "text-black font-semibold cursor-pointer mr-5" : "cursor-pointer mr-5"}>Journals</p>
                 </div>
                 {(results) ? results.map(result => 
-                    <ResultFormat result={result} searchType = {search} />
+                    <ResultFormat result={result} searchType = {search} username={props.username} />
                 ): <div class="font-montserrat my-2">No search results for {query}</div>}
             </div>
         </div>
