@@ -10,6 +10,7 @@ function Search(props) {
     const [placeholder, setPlaceholder] = useState('')
     const [results, setResults] = useState([])
     const [users, setUsers] = useState([])
+    const [journals,setJournals] = useState([])
 
     useEffect(() => {
         if (search === 'Films') {
@@ -33,6 +34,16 @@ function Search(props) {
         if (search === 'Journals') {
             setResults([])
             setPlaceholder('Search through your journals')
+            firebase.database().ref('users/' + props.googleId + '/journals').once('value', (snapshot) => {
+                snapshot.forEach((data) => {
+                    let journal = {
+                        id: data.key,
+                        name: data.val().name,
+                        coverImageURL: data.val().coverImage
+                    }
+                    setJournals(journals => [...journals,journal]);
+                });
+            })
         } 
     }, [search])
 
@@ -49,10 +60,16 @@ function Search(props) {
         }
         if (search === 'Users') {
             if (e.target.value !== '') {
-                setResults(results.length=0)
-                users.map(user => {
-                    if (user.username.includes(e.target.value)) setResults(results.concat(user))
-                })
+                let searchUsers = users
+                setResults(searchUsers.filter((user) => { return user.username.toLowerCase().includes(e.target.value.toLowerCase());}))
+                if (results.length) setResults(false)
+            } else setResults([])
+        }
+        if (search === 'Journals') {
+            if (e.target.value !== '') {
+                let searchJournals = journals
+                setResults(searchJournals.filter((journal) => { return journal.name.toLowerCase().includes(e.target.value.toLowerCase());}))
+                if (results.length) setResults(false)
             } else setResults([])
         }
     }
