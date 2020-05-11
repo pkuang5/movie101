@@ -10,40 +10,33 @@ class Text extends Component {
             items: []
         }
     }
-    getMovieInfo = (value) => {
-        console.log(value)
+    onTextChanged = (e) => {
+
+        var value = e.target.value;
         
-        this.setState({items: []})
-        let url = ''.concat('https://api.themoviedb.org/3/', 'search/movie?api_key=', process.env.REACT_APP_MOVIEDB_API_KEY, '&query=', value);
-        fetch(url).then(result=>result.json()).then((data)=>{
-                console.log('in getmovie')
+        if (value.length > 0) {
+            this.setState({items: []})
+            let url = ''.concat('https://api.themoviedb.org/3/', 'search/movie?api_key=', process.env.REACT_APP_MOVIEDB_API_KEY, '&query=', value);
+            fetch(url).then(result=>result.json()).then((data)=>{
                 var i
                 var title
                 for (i in data.results) {
                     title =  data.results[i].title
                     this.state.items.push(title)
                   }
-                  console.log (this.state.items)
-        })
-    }
-    onTextChanged = (e) => {
-
-        var value = e.target.value;
-        let suggestions = []
-        if (value.length > 0) {
-            console.log('about to get movie')
-            this.getMovieInfo(value)
-            const regex = new RegExp(`^${value}`, 'i')
-            suggestions = this.state.items.sort().filter(v=>regex.test(v))
-            console.log(this.state.items)
-            console.log(suggestions)
-            
+                  this.setState({
+                    suggestions: this.state.items,
+                    text: value
+                })
+             })
         }
-        this.setState({
-            suggestions: suggestions,
-            text: value
-        })
-        
+        else {
+            this.setState({
+                suggestions: [],
+                text: ''
+            })
+        }
+      
     }
     suggestionSelected (value) {
         this.setState({
@@ -51,7 +44,7 @@ class Text extends Component {
             suggestions: []
         })
     }
-    renderSuggestions () {
+    renderSuggestions = () => {
         if (this.state.suggestions.length === 0) {
             return null;
         }
