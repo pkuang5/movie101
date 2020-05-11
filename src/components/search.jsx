@@ -14,10 +14,12 @@ function Search(props) {
     }, [search])
 
     const handleSearch = (e) => {
-        let url = ''.concat('https://api.themoviedb.org/3/', 'search/movie?api_key=', process.env.REACT_APP_MOVIEDB_API_KEY, '&query=', e.target.value);
-        fetch(url).then(result=>result.json()).then((data)=>{
-            setResults(data.results)
-        })
+        if (e.target.value != '') {
+            let url = ''.concat('https://api.themoviedb.org/3/', 'search/movie?api_key=', process.env.REACT_APP_MOVIEDB_API_KEY, '&query=', e.target.value);
+            fetch(url).then(result=>result.json()).then((data)=>{
+                setResults(data.results)
+            })
+        } else setResults([])
     }
 
     return (
@@ -31,8 +33,12 @@ function Search(props) {
                     <p onClick={() => setSearch('Journals')} class={search === 'Journals' ? "text-black font-semibold cursor-pointer mr-5" : "cursor-pointer mr-5"}>Journals</p>
                 </div>
                 {results.map(entry => 
-                    <div class="w-full h-16 font-montserrat bg-gray-200">
-                        <div class="text-md">{entry.title}</div>
+                    <div class="flex w-full h-24 font-montserrat bg-gray-100 my-2">
+                        <img class="flex h-full" src={'https://image.tmdb.org/t/p/w500'+entry.poster_path}></img>
+                        <div class="ml-3 mt-1 flex-col">
+                            <div class="text-md">{entry.title}</div>
+                            <div class="text-xs mt-1">({entry.release_date})</div>
+                        </div>
                     </div>
                 )}
             </div>
