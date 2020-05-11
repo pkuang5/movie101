@@ -52,7 +52,7 @@ class Editor extends Component {
             
                   let movieEntry = {
                     image: ('https://image.tmdb.org/t/p/w500'+data.results[i].poster_path),
-                    title: data.results[i],
+                    title: data.results[i].title,
                     id: data.results[i].id
                   }
                   if (movieEntry.image !== 'https://image.tmdb.org/t/p/w500null'){
@@ -70,7 +70,7 @@ class Editor extends Component {
       fetch(url).then(result=>result.json()).then((data)=>{
         let imageList = this.state.specificImages;
               var i
-              for (i = 0; i < 9; i++) {
+              for (i in data.backdrops) {
                 let movieImageEntry = {
                   image: ('https://image.tmdb.org/t/p/w500'+data.backdrops[i].file_path),
                 }
@@ -134,18 +134,30 @@ class Editor extends Component {
     handleSearch = () => {
       this.getMovieInfo()
     }
-    handleImgClick = (e,i) => {
+    handleImgClick = (e,i,n) => {
+      console.log(n)
       this.setState({
         movieImage:e,
-        movieId: i
+        movieId: i,
+        movieName:n
       })
       this.getMovieImage(i)
       this.showImage()
     }
     handleSpecificImgClick = (e) => {
-      let arr = this.state.imagesToStore
-      arr.push(e)
-      this.setState({imagesToStore: arr})
+      let arr = []
+      if (this.state.imagesToStore.includes(e)) {
+        
+        var index = arr.indexOf(e)
+        const temp = arr.slice(0,index).concat(arr.slice(index+1, arr.length))
+        arr = temp
+        this.setState({imagesToStore:arr})
+      }
+      else {
+        arr = this.state.imagesToStore
+        arr.push(e)
+        this.setState({imagesToStore: arr})
+      }
     }
     
     render() {
@@ -157,7 +169,7 @@ class Editor extends Component {
                 <label class=" text-gray-700 text-xs font-bold mb-2" >
                   Movie Name
                 </label>
-                <input onChange = {this.handleChangeMovieName} class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="Screenbook Documentary"/>
+                <input value = {this.state.movieName} onChange = {this.handleChangeMovieName} class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="Screenbook Documentary"/>
               </div>
               <div class="w-full md:w-1/2 px-3">
                 <label class=" text-gray-700 text-xs font-bold mb-2" >
@@ -221,12 +233,12 @@ class Editor extends Component {
                 </div>            
                 {this.state.images.map(movieEntry =>    
                   <div class="flex flex-col w-32 h-auto items-end justify-start">
-                           <img class = "hover:opacity-75 focus:shadow-outline" src={movieEntry.image} alt= {movieEntry.title} onClick = {() => this.handleImgClick(movieEntry.image, movieEntry.id)}/>
+                           <img class = "hover:opacity-75 focus:shadow-outline" src={movieEntry.image} alt= {movieEntry.title} onClick = {() => this.handleImgClick(movieEntry.image, movieEntry.id, movieEntry.title)}/>
                   </div>)}
                   <div>
                   {this.state.specificImages.map(movieImageEntry =>    
                   <div class="flex flex-col w-32 h-auto items-end justify-start">
-                           <div class={this.state.imagesToStore.includes(movieImageEntry.image) ? "border-yellow-400 border-solid border-4" : null }><img class = "hover:opacity-75 focus:shadow-outline"  src={movieImageEntry.image} onClick = {() => this.handleSpecificImgClick(movieImageEntry.image)}/></div>
+                           <div class={this.state.imagesToStore.includes(movieImageEntry.image) ? "border-yellow-400 border-solid border-4" : null }><img class = "hover:opacity-75 focus:shadow-outline" src={movieImageEntry.image} onClick = {() => this.handleSpecificImgClick(movieImageEntry.image)}/></div>
                   </div>)}
                   </div>
             </div>
