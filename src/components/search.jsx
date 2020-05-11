@@ -4,6 +4,7 @@ require('dotenv').config()
 function Search(props) {
 
     const [search, setSearch] = useState('Films')
+    const [query, setQuery] = useState('')
     const [placeholder, setPlaceholder] = useState('')
     const [results, setResults] = useState([])
 
@@ -14,10 +15,12 @@ function Search(props) {
     }, [search])
 
     const handleSearch = (e) => {
-        if (e.target.value != '') {
+        setQuery(e.target.value)
+        if (e.target.value !== '') {
             let url = ''.concat('https://api.themoviedb.org/3/', 'search/movie?api_key=', process.env.REACT_APP_MOVIEDB_API_KEY, '&query=', e.target.value);
             fetch(url).then(result=>result.json()).then((data)=>{
-                setResults(data.results)
+                if (data.results.length!= 0) setResults(data.results)
+                else setResults(false)
             })
         } else setResults([])
     }
@@ -32,15 +35,15 @@ function Search(props) {
                     <p onClick={() => setSearch('Users')} class={search === 'Users' ? "text-black font-semibold cursor-pointer mr-5" : "cursor-pointer mr-5"}>Users</p>
                     <p onClick={() => setSearch('Journals')} class={search === 'Journals' ? "text-black font-semibold cursor-pointer mr-5" : "cursor-pointer mr-5"}>Journals</p>
                 </div>
-                {results.map(entry => 
-                    <div class="flex w-full h-24 font-montserrat bg-gray-100 my-2">
+                {(results) ? results.map(entry => 
+                    <div class="flex w-full h-24 font-montserrat my-2">
                         <img class="flex h-full" src={'https://image.tmdb.org/t/p/w500'+entry.poster_path}></img>
-                        <div class="ml-3 mt-1 flex-col">
-                            <div class="text-md">{entry.title}</div>
+                        <div class="ml-3 mt-3 flex-col">
+                            <div class="font-montserrat text-md font-semibold">{entry.title}</div>
                             <div class="text-xs mt-1">({entry.release_date})</div>
                         </div>
                     </div>
-                )}
+                ): <div class="font-montserrat my-2">No search results for {query}</div>}
             </div>
         </div>
     );
