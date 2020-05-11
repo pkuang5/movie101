@@ -11,6 +11,7 @@ import Settings from "./components/settings"
 import Profile from "./components/profile"
 import Navbar from "./components/navbar"
 import Movie from "./components/movie"
+import Search from "./components/search"
 
 class App extends Component {
   state = {
@@ -59,6 +60,7 @@ class App extends Component {
             <Route path="/editor" exact strict component={() => <Editor googleId={this.state.googleId} />}></Route>
             <Route path="/discover" exact strict component={() => <Discover/>}></Route>
             <Route path="/settings" exact strict component={() => <Settings googleId={this.state.googleId} />}></Route>
+            <Route path="/search" exact strict component={() => <Search />}></Route>
             <Route path={"/" + this.state.username} exact strict component={() => <Profile googleId={this.state.googleId} username={this.state.username} />}></Route>
             <Route path="/:username" exact strict render={({match})=><Profile username={match.params.username}/>}/>
             <Route path="/:username/movies/:id" exact strict render={({match})=><Movie movieId={match.params.id} username={match.params.username} />}/>

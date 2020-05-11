@@ -30,7 +30,7 @@ class Profile extends Component {
 
     render() {
         return (
-            <div class="flex flex-col w-screen items-center">
+            <div class="flex flex-col w-screen items-center mtt-3">
                 <div class="w-2/3 items-center">
                     <div class="flex flex-col items-center pt-6">
                         <div class="rounded-full h-32 w-32 flex bg-cover" style={{backgroundImage: "url('" + this.state.profilePicUrl + "')"}}> </div>
