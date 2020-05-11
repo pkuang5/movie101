@@ -1,9 +1,11 @@
 import React, { useState, useEffect} from 'react';
+require('dotenv').config()
 
 function Search(props) {
 
     const [search, setSearch] = useState('Films')
     const [placeholder, setPlaceholder] = useState('')
+    const [results, setResults] = useState([])
 
     useEffect(() => {
         if (search === 'Films') setPlaceholder('Search any film')
@@ -12,7 +14,10 @@ function Search(props) {
     }, [search])
 
     const handleSearch = (e) => {
-
+        let url = ''.concat('https://api.themoviedb.org/3/', 'search/movie?api_key=', process.env.REACT_APP_MOVIEDB_API_KEY, '&query=', e.target.value);
+        fetch(url).then(result=>result.json()).then((data)=>{
+            setResults(data.results)
+        })
     }
 
     return (
@@ -25,6 +30,11 @@ function Search(props) {
                     <p onClick={() => setSearch('Users')} class={search === 'Users' ? "text-black font-semibold cursor-pointer mr-5" : "cursor-pointer mr-5"}>Users</p>
                     <p onClick={() => setSearch('Journals')} class={search === 'Journals' ? "text-black font-semibold cursor-pointer mr-5" : "cursor-pointer mr-5"}>Journals</p>
                 </div>
+                {results.map(entry => 
+                    <div class="w-full h-16 font-montserrat bg-gray-200">
+                        <div class="text-md">{entry.title}</div>
+                    </div>
+                )}
             </div>
         </div>
     );
