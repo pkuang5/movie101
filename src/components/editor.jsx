@@ -4,7 +4,7 @@ import { render } from '@testing-library/react';
 import Noty from 'noty'
 import 'noty/lib/noty.css'
 import 'noty/lib/themes/bootstrap-v4.css'
-import Text from './text'
+import DropSearch from './dropSearch'
 require('dotenv').config()
 
 class Editor extends Component {
@@ -42,10 +42,10 @@ class Editor extends Component {
           timeout: 3000
       }).show()
     } 
-    getMovieInfo = () => {
+    getMovieInfo = (title) => {
         this.setState({images: []})
         this.setState({specificImages: []})
-        let url = ''.concat('https://api.themoviedb.org/3/', 'search/movie?api_key=', process.env.REACT_APP_MOVIEDB_API_KEY, '&query=', this.state.movieName);
+        let url = ''.concat('https://api.themoviedb.org/3/', 'search/movie?api_key=', process.env.REACT_APP_MOVIEDB_API_KEY, '&query=', title);
         fetch(url).then(result=>result.json()).then((data)=>{
           let stateList = this.state.images;
                 var i
@@ -60,7 +60,10 @@ class Editor extends Component {
                   }
                 }
                 this.setState({images: stateList}) 
-                this.setState({movieImage:'https://image.tmdb.org/t/p/w500'+data.results[0].poster_path})
+                this.setState({
+                  movieImage:'https://image.tmdb.org/t/p/w500'+data.results[0].poster_path,
+                  movieId: data.results[0].id
+                })
         })
     }
     getMovieImage = (i) => {
@@ -93,6 +96,7 @@ class Editor extends Component {
                 images: this.state.imagesToStore
             })  
         }
+        this.setState({movieRating: '5'})
     }
     handleFeatured = (e) => {
       if (e.target.value === 'Yes') {
@@ -146,7 +150,7 @@ class Editor extends Component {
                 <label class=" text-gray-700 text-xs font-bold mb-2" >
                   Movie Name
                 </label>
-                <Text onChange = {(e) => this.setState({ movieName: e.target.value, change: true}) } onChange2 = {(e, date) => this.setState({movieName: e, change: true, movieYear: date})}></Text>
+                <DropSearch getMovieInfo = {this.getMovieInfo} onChange = {(e) => this.setState({ movieName: e.target.value, change: true}) } onChange2 = {(e, date) => this.setState({movieName: e, change: true, movieYear: date})}></DropSearch>
               </div>
               <div class="w-full md:w-1/2 px-3">
                 <label class=" text-gray-700 text-xs font-bold mb-2" >
@@ -184,7 +188,7 @@ class Editor extends Component {
             </div>
             <div class="md:flex md:items-center">
               <div class="md:w-2/3">
-                  <button onClick = {() => this.getMovieInfo()}class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
+                  <button onClick = {() => this.getMovieInfo(this.state.movieName)}class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
                       Search: 
                     </button>
                 </div>          

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
-class Text extends Component {
+class DropSearch extends Component {
     constructor(props) {
         super(props)
         this.state = {  
             text: '',
             items: [],
-            date: ''
+            date: '',
         }
     }
     onTextChanged = (e) => {
@@ -33,9 +33,10 @@ class Text extends Component {
         this.setState({
             text:title,
             items: [],
-            date: year
+            date: year,
         })
         this.props.onChange2(title, year)
+        this.props.getMovieInfo(title)
     }
     renderSuggestions = () => {
         if (this.state.items.length === 0) {
@@ -44,8 +45,12 @@ class Text extends Component {
             return (
                 <ul>
                     {this.state.items.map((item) => <li class = "hover:opacity-100 focus:shadow-outline  cursor-pointer"onClick = {()=>this.suggestionSelected(item.title, item.release_date)}>
-                     {item.title}
-                        </li>)}
+                        <div  class={item.release_date ? "hover:opacity-100 focus:shadow-outline" : item.release_date = 'N/A' }>
+                            <h6>
+                            {item.title} ({item.release_date.split('-')[0]})
+                            </h6>
+                        </div>
+                    </li>)}
                 </ul>
             )
     }
@@ -59,4 +64,4 @@ class Text extends Component {
         )
     }
 }
-export default Text;
+export default DropSearch;
