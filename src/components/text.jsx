@@ -3,9 +3,8 @@ import React, { Component } from 'react';
 class Text extends Component {
     constructor(props) {
         super(props)
-        
-        this.state = {
-            suggestions: [],
+
+        this.state = {  
             text: '',
             items: []
         }
@@ -25,14 +24,14 @@ class Text extends Component {
                     this.state.items.push(title)
                   }
                   this.setState({
-                    suggestions: this.state.items,
+                    
                     text: value
                 })
              })
         }
         else {
             this.setState({
-                suggestions: [],
+                items: [],
                 text: ''
             })
         }
@@ -41,16 +40,16 @@ class Text extends Component {
     suggestionSelected (value) {
         this.setState({
             text:value,
-            suggestions: []
+            items: []
         })
     }
     renderSuggestions = () => {
-        if (this.state.suggestions.length === 0) {
+        if (this.state.items.length === 0) {
             return null;
         }
             return (
                 <ul>
-                    {this.state.suggestions.map((item) => <li class = "hover:opacity-100 focus:shadow-outline  cursor-pointer"onClick = {()=>this.suggestionSelected(item)}>{item}</li>)}
+                    {this.state.items.map((item) => <li class = "hover:opacity-100 focus:shadow-outline  cursor-pointer"onClick = {()=>this.suggestionSelected(item)}>{item}</li>)}
                 </ul>
             )
         
