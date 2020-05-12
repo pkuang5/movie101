@@ -13,8 +13,6 @@ class Introduction extends Component {
           behavior: "smooth"
         });
     }
-
-
     render() {
         return (
             <React.Fragment>
