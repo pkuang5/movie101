@@ -118,7 +118,7 @@ class Settings extends Component {
 
                   <div class="flex flex-wrap -mx-3  flex justify-center w-1/3 font-montserrat font-semibold" >
                     <div class = "flex w-full h-24  ">
-                        <div  class="flex-grow-0 flex-shrink-0 rounded-full w-24 flex bg-cover justify-center mr-8 pt-8" style={{backgroundImage: "url('" + this.state.url + "')"}}> 
+                        <div  class="flex-grow-0 flex-shrink-0 rounded-full w-24 flex bg-cover justify-center mr-8 pt-8 cursor-pointer" style={{backgroundImage: "url('" + this.state.url + "')"}}> 
                         <input type = "file" onChange = {this.handleChange} name="file" id="file" class="w-full h-full opacity-0"  />
                         </div>
                         
@@ -149,7 +149,6 @@ class Settings extends Component {
                             <input onChange={this.handleLastName} class="appearance-none block w-full  text-gray-700 border-solid border-2 border-black-600 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder={this.state.lName}/>
                         </div>
                     </div>
-                    
                     <div class = "w-full flex justify-start">
                         <div class = "w-full">
                 
