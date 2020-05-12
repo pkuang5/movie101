@@ -25,7 +25,7 @@ function Discover(props) {
     }
 
     return (
-        <div class="flex flex-col mt-8 mx-8 font-montserrat w-screen items-center">
+        <div class="flex flex-col font-montserrat w-screen items-center mt-3">
             <div class="w-2/3">
                 <p class="text-2xl font-semibold">Discover fellow users!</p>
                 {users.map(user => 
