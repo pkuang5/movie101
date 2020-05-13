@@ -9,6 +9,21 @@ class DropSearch extends Component {
             date: '',
         }
     }
+    componentWillMount() {
+        document.addEventListener('mousedown', this.handleClick, false);
+    }
+    componentWillUnmount() {
+        document.removeEventListener('mousedown', this.handleClick, false)
+    }
+    handleClick = (e) => {
+        if (this.node.contains(e.target)) {
+            return;
+        }
+        this.handleClickOutside()
+    }
+    handleClickOutside = (e) => {
+        this.setState({items:[]})
+    }
     onTextChanged = (e) => {
         var value = e.target.value;
         if (value.length > 0) {
@@ -43,7 +58,7 @@ class DropSearch extends Component {
             return null;
         }
             return (
-                <ul class = "absolute border-4 border-grey-600 bg-gray-700 "> 
+                <ul  class = "absolute border-4 border-grey-600 bg-gray-700 "> 
                     {this.state.items.map((item) => <li class = "hover:opacity-100 focus:shadow-outline  cursor-pointer"onClick = {()=>this.suggestionSelected(item.title, item.release_date)}>
                         <div  class={item.release_date ? "hover:opacity-100 focus:shadow-outline" : item.release_date = 'N/A' }>
                             <h6 class = "text-white">
@@ -57,7 +72,7 @@ class DropSearch extends Component {
     render () {
         const {text} = this.state;
         return (
-            <div class = "  border-4 border-grey-800  ">
+            <div ref = {node => this.node = node} class = "  border-4 border-grey-800  ">
                 <input class = " border-grey-800  cursor-pointer w-full " value = {text} onChange = {this.onTextChanged} type = "text"/>
                 {this.renderSuggestions()}
             </div>
