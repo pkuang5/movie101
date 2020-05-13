@@ -43,10 +43,10 @@ class DropSearch extends Component {
             return null;
         }
             return (
-                <ul>
+                <ul class = "absolute border-4 border-grey-600 bg-gray-700 "> 
                     {this.state.items.map((item) => <li class = "hover:opacity-100 focus:shadow-outline  cursor-pointer"onClick = {()=>this.suggestionSelected(item.title, item.release_date)}>
                         <div  class={item.release_date ? "hover:opacity-100 focus:shadow-outline" : item.release_date = 'N/A' }>
-                            <h6>
+                            <h6 class = "text-white">
                             {item.title} ({item.release_date.split('-')[0]})
                             </h6>
                         </div>
