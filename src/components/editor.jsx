@@ -43,6 +43,7 @@ class Editor extends Component {
       }).show()
     } 
     getMovieInfo = (title) => {
+      if (this.state.change) {
         this.setState({images: []})
         this.setState({specificImages: []})
         let url = ''.concat('https://api.themoviedb.org/3/', 'search/movie?api_key=', process.env.REACT_APP_MOVIEDB_API_KEY, '&query=', title);
@@ -66,6 +67,7 @@ class Editor extends Component {
                 })
                 this.getMovieImage(data.results[0].id)
         })
+      }
         
     }
     getMovieImage = (i) => {
@@ -145,36 +147,39 @@ class Editor extends Component {
    
     render() {
         return (
-          <div class="grid grid-cols-2 gap-4">
+          <div class="flex flex-col font-montserrat w-screen items-center mt-3">
+          <div class = "w-2/3  items-center">
+          
+          <div class="flex grid grid-cols-2 gap-4">
           {/* left half */}
-          <div class = " h-16 bg-blue-400 pt-8">
+          <div class = " h-16  pt-8">
               <p class="font-serif text-3xl font-bold ">Editor</p>
               <p class="font-serif  font-bold pb-4">Fill in the information, search, and submit!</p>
-              <div class = "pt-2 grid grid-cols-3 gap-2 border-8 border-yellow-600 ">  
-                  <div >
+              <div class = "pt-2 grid grid-cols-3 gap-2 ">  
+                  <div class>
                       <p>Title</p>
                       <DropSearch getMovieInfo = {this.getMovieInfo} onChange = {(e) => this.setState({ movieName: e.target.value, change: true}) } onChange2 = {(e, date) => this.setState({movieName: e, change: true, movieYear: date})}></DropSearch>
                   </div>
                   <div>
                       <p>Date</p>
-                      <input onChange = {(e) => this.setState({ movieYear: e.target.value, change: true})} class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder={this.state.movieYear}/>
+                      <input onChange = {(e) => this.setState({ movieYear: e.target.value, change: true})} class= "text-sm border-solid border-2 border-color-beige w-11/12 py-2 px-4 rounded"  type="text" placeholder={this.state.movieYear}/>
                   </div>
                   <div>
                       <p>Search</p>
-                      <button onClick = {() => this.getMovieInfo(this.state.movieName)}class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
+                      <button onClick = {() => this.getMovieInfo(this.state.movieName)}class= "text-sm border-solid border-2 border-color-beige  py-2 px-4 rounded" type="button">
                         Search: 
                       </button>
                   </div>
               </div>
-              <div class = "pt-8 border border-8 border-color-green-800 w-full h-48 pb-4 ">
+              <div class = "pt-8  w-full h-48 pb-4 items-center ">
                   <p>Review</p>
-                  <input onChange = {(e) => this.setState({ movieReview: e.target.value, change: true})} class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-password"  placeholder="Description"/>
+                  <input onChange = {(e) => this.setState({ movieReview: e.target.value, change: true})} class="text-sm border-solid border-2 border-color-beige  py-2 px-4 rounded w-11/12 pr-8 h-full" id="grid-password"  placeholder="Description"/>
               </div>
-              <div class = "pt-8 border-8 border-blue-400 h-48">
-              <div class = "pt-2 grid grid-cols-3 gap-2 border-8 border-yellow-600 "> 
+              <div class = "pt-8  h-48">
+              <div class = "pt-2 grid grid-cols-3 gap-2 "> 
                   <div>
                       <p>Rate</p>
-                      <select onChange = {(e) => this.setState({ movieRating: e.target.value, change: true})} class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+                      <select onChange = {(e) => this.setState({ movieRating: e.target.value, change: true})} class="text-sm border-solid border-2 border-color-beige  py-2 px-4 rounded w-20 h-12" id="grid-state">
                         <option>5</option>
                         <option>4</option>
                         <option>3</option>
@@ -184,13 +189,13 @@ class Editor extends Component {
                   </div>
                   <div>
                       <p class ="pl-4">Submit</p>
-                      <button onClick = {this.handleSubmit}class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
+                      <button onClick = {this.handleSubmit} class= "text-sm border-solid border-2 border-color-beige  py-2 px-4 rounded h-12" type="button">
                         Submit
                       </button>
                   </div>
-                  <div>
-                      <p>Publish in Featured</p>
-                      <select onChange = {this.handleFeatured} class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+                  <div class = "items-center">
+                      <p class ="text-sm">Publish in Featured</p>
+                      <select onChange = {this.handleFeatured} class="text-sm border-solid border-2 border-color-beige  py-2 px-4 rounded h-12 w-24" id="grid-state">
                         <option>Yes</option>
                         <option>No</option>
                       </select>
@@ -199,21 +204,22 @@ class Editor extends Component {
               </div>
           </div>
           {/* right half */}
-          <div class = " h-16 bg-blue-400 pt-8">
-              <div class = "pt-16 grid-rows-2 ">
-                  <div class = "flex border-8 border-blue-800 pt-8 pb-8 h-auto ">
-                      <p class = "pb-4">Your serach image results will be here. Take your pick!</p>
-                      <div class = "flex flex-row  items-end justify-start grid grid-cols-4 col-gap-5 row-gap-5 grid-rows-2">
+          <div class = " h-16 pt-8">
+              <div class = "pt-8 grid-rows-2 ">
+                  <div class = "flex border-solid border-2 border-color-beige rounded pt-8 pb-8 h-auto ">
+                      <p class = {!this.state.movieImage ? "visible" : "hidden"}>Your serach image results will be here. Take your pick!</p>
+                      <div class = "flex flex-row items-end justify-start grid grid-cols-6 col-gap-2 row-gap-2 grid-rows-2">
                         {this.state.images.map(movieEntry =>    
-                          <div class={this.state.movieImage === (movieEntry.image) ? "border-yellow-400 border-solid border-4" : null }> <img class = "h-30 w-30 hover:opacity-75 focus:shadow-outline" src={movieEntry.image} alt= {movieEntry.title} onClick = {() => this.handleImgClick(movieEntry.image, movieEntry.id, movieEntry.title)}/> </div>
+                          <div class={this.state.movieImage === (movieEntry.image) ? "border-blue-400 border-solid border-4" : null }> <img class = "cursor-pointer h-36 w-24 hover:opacity-75 focus:shadow-outline" src={movieEntry.image} alt= {movieEntry.title} onClick = {() => this.handleImgClick(movieEntry.image, movieEntry.id, movieEntry.title)}/> </div>
                         )}
                       </div>
                   </div>
-                  <div class = "flex border-8 border-green-800 pt-8 pb-8 h-auto "> 
-                      <p class ="pb-4">Your specific serach image results will be here. Take your pick!</p>
-                      <div class="flex flex-row  items-end justify-between grid grid-cols-4 col-gap-5 row-gap-5 grid-rows-2">
+                  <div class = "pt-8"></div>
+                  <div class = "flex text-sm border-solid border-2 border-color-beige rounded pt-8 pb-8 h-auto "> 
+                      <p class = {!this.state.movieImage ? "visible" : "hidden"}>Your specific serach image results will be here. Take your pick!</p>
+                      <div class="flex flex-row  items-end justify-between grid grid-cols-5 col-gap-2 row-gap-2 grid-rows-2">
                         {this.state.specificImages.map(movieImageEntry =>    
-                          <div class={this.state.imagesToStore.includes(movieImageEntry.image) ? "border-yellow-400 border-solid border-4" : null }><img class = " hover:opacity-75 focus:shadow-outline" src={movieImageEntry.image} onClick = {() => this.handleSpecificImgClick(movieImageEntry.image)}/></div>
+                          <div class={this.state.imagesToStore.includes(movieImageEntry.image) ? "border-blue-400 border-solid border-4" : null }><img class = "cursor-pointer hover:opacity-75 focus:shadow-outline" src={movieImageEntry.image} onClick = {() => this.handleSpecificImgClick(movieImageEntry.image)}/></div>
                         )}
                       </div>
                   </div>
@@ -221,6 +227,8 @@ class Editor extends Component {
           </div>
       
       </div>
+      </div>
+          </div>
         );
     }
 }
