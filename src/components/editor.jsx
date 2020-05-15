@@ -204,24 +204,20 @@ class Editor extends Component {
               </div>
           </div>
           {/* right half */}
-          <div class = " h-16 pt-8">
-              <div class = "pt-8 grid-rows-2 ">
-                  <div class = "flex border-solid border-2 border-color-beige rounded pt-8 pb-8 h-auto ">
-                      <p class = {!this.state.movieImage ? "visible" : "hidden"}>Your serach image results will be here. Take your pick!</p>
-                      <div class = "flex flex-row items-end justify-start grid grid-cols-6 col-gap-2 row-gap-2 grid-rows-2">
-                        {this.state.images.map(movieEntry =>    
-                          <div class={this.state.movieImage === (movieEntry.image) ? "border-blue-400 border-solid border-4" : null }> <img class = "cursor-pointer h-36 w-24 hover:opacity-75 focus:shadow-outline" src={movieEntry.image} alt= {movieEntry.title} onClick = {() => this.handleImgClick(movieEntry.image, movieEntry.id, movieEntry.title)}/> </div>
-                        )}
-                      </div>
-                  </div>
-                  <div class = "pt-8"></div>
-                  <div class = "flex text-sm border-solid border-2 border-color-beige rounded pt-8 pb-8 h-auto "> 
-                      <p class = {!this.state.movieImage ? "visible" : "hidden"}>Your specific serach image results will be here. Take your pick!</p>
-                      <div class="flex flex-row  items-end justify-between grid grid-cols-5 col-gap-2 row-gap-2 grid-rows-2">
-                        {this.state.specificImages.map(movieImageEntry =>    
-                          <div class={this.state.imagesToStore.includes(movieImageEntry.image) ? "border-blue-400 border-solid border-4" : null }><img class = "cursor-pointer hover:opacity-75 focus:shadow-outline" src={movieImageEntry.image} onClick = {() => this.handleSpecificImgClick(movieImageEntry.image)}/></div>
-                        )}
-                      </div>
+          <div class = "pt-8">
+              <p>Your search image results will be here. Take your pick!</p>
+              <div class = "overflow-x-scroll flex flex-no-wrap h-auto border">
+                {this.state.images.map(movieEntry =>    
+                  <img class ={this.state.movieImage === (movieEntry.image) ? "border-blue-400 border-solid border-4 w-24 m-2 h-32 hover:opacity-75" : "w-24 h-32 m-2"}src={movieEntry.image} alt= {movieEntry.title} onClick = {() => this.handleImgClick(movieEntry.image, movieEntry.id, movieEntry.title)}/>
+                )}
+              </div>
+              <div class = "pt-8"></div>
+              <div class = "flex text-sm border-solid border-2 border-color-beige rounded pt-8 pb-8 h-auto "> 
+                  <p class = {!this.state.movieImage ? "visible" : "hidden"}>Your specific serach image results will be here. Take your pick!</p>
+                  <div class="flex flex-row  items-end justify-between grid grid-cols-5 col-gap-2 row-gap-2 grid-rows-2">
+                    {this.state.specificImages.map(movieImageEntry =>    
+                      <div class={this.state.imagesToStore.includes(movieImageEntry.image) ? "border-blue-400 border-solid border-4" : null }><img class = "cursor-pointer hover:opacity-75 focus:shadow-outline" src={movieImageEntry.image} onClick = {() => this.handleSpecificImgClick(movieImageEntry.image)}/></div>
+                    )}
                   </div>
               </div>
           </div>
