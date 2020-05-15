@@ -194,7 +194,7 @@ class Editor extends Component {
                       </button>
                   </div>
                   <div class = "items-center">
-                      <p class ="text-sm">Publish in Featured</p>
+                      <p class ="items-center">Featured?</p>
                       <select onChange = {this.handleFeatured} class="text-sm border-solid border-2 border-color-beige  py-2 px-4 rounded h-12 w-24" id="grid-state">
                         <option>Yes</option>
                         <option>No</option>
@@ -206,15 +206,15 @@ class Editor extends Component {
           {/* right half */}
           <div class = "pt-8">
               <p>Your search image results will be here. Take your pick!</p>
-              <div class = "overflow-x-scroll flex flex-no-wrap h-auto border">
+              <div class = "overflow-x-scroll flex flex-no-wrap border h-48 p-2 ">
                 {this.state.images.map(movieEntry =>    
-                  <img class ={this.state.movieImage === (movieEntry.image) ? "border-blue-400 border-solid border-4 w-24 m-2 h-32 hover:opacity-75" : "w-24 h-32 m-2"}src={movieEntry.image} alt= {movieEntry.title} onClick = {() => this.handleImgClick(movieEntry.image, movieEntry.id, movieEntry.title)}/>
+                  <img class ={this.state.movieImage === (movieEntry.image) ? "border-blue-400 border-solid border-4 w-32 m-2 h-40 hover:opacity-75" : "w-32 h-40 m-2"}src={movieEntry.image} alt= {movieEntry.title} onClick = {() => this.handleImgClick(movieEntry.image, movieEntry.id, movieEntry.title)}/>
                 )}
               </div>
               <div class = "pt-8"></div>
-              <div class = "flex text-sm border-solid border-2 border-color-beige rounded pt-8 pb-8 h-auto "> 
-                  <p class = {!this.state.movieImage ? "visible" : "hidden"}>Your specific serach image results will be here. Take your pick!</p>
-                  <div class="flex flex-row  items-end justify-between grid grid-cols-5 col-gap-2 row-gap-2 grid-rows-2">
+              <p>Your specific serach image results will be here. Take your pick!</p>
+              <div class = "flex text-sm border-solid border-2 border-color-gray  p-2 h-64 "> 
+                  <div class="overflow-auto items-end justify-between grid grid-cols-3 col-gap-2 row-gap-2">
                     {this.state.specificImages.map(movieImageEntry =>    
                       <div class={this.state.imagesToStore.includes(movieImageEntry.image) ? "border-blue-400 border-solid border-4" : null }><img class = "cursor-pointer hover:opacity-75 focus:shadow-outline" src={movieImageEntry.image} onClick = {() => this.handleSpecificImgClick(movieImageEntry.image)}/></div>
                     )}
