@@ -34,6 +34,11 @@ function Movie(props){
         history.push("/" + props.username)
     }
 
+    function handleEditMovie(){
+        history.push('/Editor', props.movieId)
+        console.log(props.movieId)
+    }
+
     return (
         <div class="w-screen text-4xl">
             <p>id: {props.movieId}</p>
@@ -43,6 +48,7 @@ function Movie(props){
             <p>description: {description}</p>
             <p>cover image url: {coverImage}</p>
             <button class="bg-red-500 text-white px-3" onClick={handleDeleteMovie}>Delete movie</button>
+            <button class="bg-blue-500 text-white px-3" onClick={handleEditMovie}>Edit movie</button>
         </div>
     );
 }
