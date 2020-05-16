@@ -88,9 +88,11 @@ function Search(props) {
                     <p onClick={() => {setSearch('Users'); document.getElementById('searchBar').value = ''}} class={search === 'Users' ? "text-black font-semibold cursor-pointer mr-5" : "cursor-pointer mr-5"}>Users</p>
                     <p onClick={() => {setSearch('Journals'); document.getElementById('searchBar').value = ''}} class={search === 'Journals' ? "text-black font-semibold cursor-pointer mr-5" : "cursor-pointer mr-5"}>Journals</p>
                 </div>
-                {(results) ? results.map(result => 
-                    <ResultFormat result={result} searchType = {search} username={props.username} />
-                ): <div class="font-montserrat my-2">No search results for {query}</div>}
+                <div class="overflow-auto h-64 my-2">
+                    {(results) ? results.map(result => 
+                        <ResultFormat result={result} searchType = {search} username={props.username} />
+                    ): <div class="font-montserrat">No search results for {query}</div>}
+                </div>
             </div>
         </div>
     );
