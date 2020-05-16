@@ -78,7 +78,6 @@ function Search(props) {
         }
     }
 
-
     return (
         <div class="flex w-screen justify-center font-montserrat mt-40">
             <div class="flex flex-col w-1/2">

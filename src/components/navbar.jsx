@@ -29,13 +29,13 @@ function Navbar(props) {
           <div class="mr-4"><NavLink exact to="/discover" style={navLinkStyle} activeStyle={activeStyle}>Discover</NavLink></div>
           <div><NavLink exact to={"/" + props.username} style={navLinkStyle} activeStyle={activeStyle}>Profile</NavLink></div>
           <div>
-            <div class="ml-4" onClick={() => setDisplayMenu(!displayMenu)}> <i class="fa fa-lg fa-angle-down"></i> </div>
+          <div class="ml-4" onClick={() => setDisplayMenu(!displayMenu)}> <i class="fa fa-lg fa-angle-down"></i> </div>
             {displayMenu ? (
-              <div class="absolute mt-1 shadow-sm">
-                <div class="py-1 hover:bg-gray-100" onClick={() => setDisplayMenu(!displayMenu)}><NavLink exact to="/settings" style={navLinkStyle}>Settings</NavLink></div>
-                <div class="py-1 hover:bg-gray-100 cursor-pointer" style={navLinkStyle} onClick={() => {setDisplayMenu(!displayMenu); props.signInState(false, ''); history.push("/"); }}>Logout</div>
-              </div>
-            ) : (null)
+                <div class="absolute mt-1 shadow-sm">
+                  <div class="py-1 hover:bg-gray-100" onClick={() => setDisplayMenu(!displayMenu)}><NavLink exact to="/settings" style={navLinkStyle}>Settings</NavLink></div>
+                  <div class="py-1 hover:bg-gray-100 cursor-pointer" style={navLinkStyle} onClick={() => {setDisplayMenu(!displayMenu); props.signInState(false, ''); history.push("/"); }}>Logout</div>
+                </div>
+              ) : (null)
             }
           </div>
         </div>
