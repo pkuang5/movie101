@@ -41,7 +41,7 @@ class Profile extends Component {
                         <div class={this.state.featured ? 'border-b border-black' : null} onClick={() => this.handleFeatured(true)}>Featured</div>
                         <div class={!this.state.featured ? 'border-b border-black' : null} onClick={() => this.handleFeatured(false)}>Journals</div>
                     </div>
-                    <div class="mt-3 px-8">
+                    <div class="my-3 px-8">
                         <Gallery googleId={this.state.id} username={this.state.username} featured={this.state.featured}/>
                     </div>
                 </div>

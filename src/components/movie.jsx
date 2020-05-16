@@ -9,6 +9,7 @@ function Movie(props){
     const [description, setDescription] = useState('')
     const [name, setName] = useState('')
     const [rating, setRating] = useState('')
+    const [images, setImages] = useState([])
     const [firebaseId, setFirebaseId] = useState('')
     let history = useHistory();
 
@@ -24,6 +25,7 @@ function Movie(props){
                     setDateOfEntry(snapshot.val().dateOfEntry)
                     setRating(snapshot.val().rating)
                     setDescription(snapshot.val().description)
+                    setImages(snapshot.val().images)
                 })
             });
         });
@@ -40,32 +42,38 @@ function Movie(props){
     }
 
     return (
-        <div class="w-screen text-4xl">
-            <p>id: {props.movieId}</p>
-            <p>movie name: {name}</p>
-            <p>date of entry: {dateOfEntry}</p>
-            <p>rating: {rating}</p>
-            <p>description: {description}</p>
-            <p>cover image url: {coverImage}</p>
-            <button class="bg-red-500 text-white px-3" onClick={handleDeleteMovie}>Delete movie</button>
-            <button class="bg-blue-500 text-white px-3" onClick={handleEditMovie}>Edit movie</button>
+        <div class="flex w-screen justify-center mt-3">
+            <div class = "w-2/3">
+                <div class="flex justify-between font-montserrat">
+                    <p class="text-3xl font-semibold">{name}</p>
+                    <p class="text-xl">{dateOfEntry}</p>
+                </div>
+                <div class="flex">
+                    <div class = "w-1/4 h-24">
+                        <img src={coverImage}></img>
+                        <p class="mt-3 font-montserrat text-lg text-center">{'Rating: ' + rating + '/5'}</p>
+                        <div class="flex justify-between">
+                            <button class="button-color-beige w-24 text-white px-3" onClick={handleEditMovie}>Edit</button>
+                            <button class="bg-red-400 w-24 text-white px-3" onClick={handleDeleteMovie}>Delete</button>
+                        </div>
+                    </div>
+                    <div class = "w-3/4 pl-5 font-montserrat">
+                        <div class="bg-gray-100 p-3 h-64 overflow-auto">
+                            <p class="text-md font-semibold">Review</p>
+                            <p class="text-sm">{description}</p>
+                        </div>
+                        <div class = "mt-3 p-3 h-64 bg-gray-100 overflow-auto">
+                            <div class = "text-md font-semibold mb-2">Images</div>
+                            <div class="grid grid-cols-2 gap-4">
+                                {images.map(image => 
+                                    <img src={image} alt="movie still" />
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        // <div class="flex w-screen justify-center mt-3">
-        //     <div class = "w-2/3">
-        //         <div class="flex justify-between font-montserrat">
-        //             <p class="text-3xl font-semibold">{name}</p>
-        //             <p class="text-xl">{dateOfEntry}</p>
-        //         </div>
-        //         <div class="flex">
-        //             <div class = "w-1/4 h-24 bg-gray-200">
-        //                 <img src={coverImage}></img>
-        //             </div>
-        //             <div class = "w-3/4 h-24 bg-red-200">
-        //                 <p class="font-montserrat">{description}</p>
-        //             </div>
-        //         </div>
-        //     </div>
-        // </div>
     );
 }
 
