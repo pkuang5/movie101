@@ -1,7 +1,17 @@
 import React, { Component} from 'react';
 // A TESTING COMPONENT FOR EDITOR UI
-class Layout extends Component {
 
+class Layout extends Component {
+    
+      onChange = (date) => {
+          //console.log(date.split(" "))
+          this.setState({date})
+          console.log(date)
+      }
+      onClickDay = (day) => {
+        this.setState({day: day})
+        console.log(day)
+      }
     render () {
         return (
             <div class="grid grid-cols-2 gap-4">

@@ -72,8 +72,8 @@ class DropSearch extends Component {
     render () {
         const {text} = this.state;
         return (
-            <div ref = {node => this.node = node} class= "border-solid border-2 border-color-beige rounded h-10 object-bottom">
-                <input class = "h-full rounded  cursor-pointer w-full " value = {text} onChange = {this.onTextChanged} type = "text"/>
+            <div ref = {node => this.node = node} class= "h-10 object-bottom ">
+                <input id = "searchBar" class = "h-full rounded  cursor-pointer w-full " value = {text} onChange = {this.onTextChanged} type = "text"/>
                 {this.renderSuggestions()}
             </div>
         )
