@@ -125,7 +125,8 @@ class Editor extends Component {
         this.setState({
           movieImage:e,
           movieId: i,
-          movieName:n
+          movieName:n,
+          imagesToStore: []
         })
         this.getMovieImage(i)
         this.showImage()
@@ -203,7 +204,7 @@ class Editor extends Component {
             </div>
             <div class = "pt-8">
                 <p>Your search image results will be here. Take your pick!</p>
-                <div class = "overflow-x-scroll flex flex-no-wrap border h-48 p-2 ">
+                <div class = "overflow-x-scroll flex flex-no-wrap border h-48 p-2 cursor-pointer">
                   {this.state.images.map(movieEntry =>    
                     <img class ={this.state.movieImage === (movieEntry.image) ? "border-blue-400 border-solid border-4 w-32 m-2 h-40 hover:opacity-75" : "w-32 h-40 m-2"}src={movieEntry.image} alt= {movieEntry.title} onClick = {() => this.handleImgClick(movieEntry.image, movieEntry.id, movieEntry.title)}/>
                   )}
@@ -211,9 +212,9 @@ class Editor extends Component {
                 <div class = "pt-8"></div>
                 <p>Your specific serach image results will be here. Take your pick!</p>
                 <div class = "flex text-sm border-solid border-2 border-color-gray  p-2 h-64"> 
-                    <div class="overflow-auto justify-between grid grid-cols-3 col-gap-2 row-gap-2">
+                    <div class="overflow-auto justify-between grid grid-cols-3 col-gap-2 row-gap-2 cursor-pointer">
                       {this.state.specificImages.map(movieImageEntry =>    
-                        <div class={this.state.imagesToStore.includes(movieImageEntry.image) ? "border-blue-400 border-solid border-4" : null }><img class = "cursor-pointer hover:opacity-75 focus:shadow-outline" src={movieImageEntry.image} onClick = {() => this.handleSpecificImgClick(movieImageEntry.image)}/></div>
+                        <img class={this.state.imagesToStore.includes(movieImageEntry.image) ? " border-blue-400 border-solid border-4" : null }src={movieImageEntry.image} onClick = {() => this.handleSpecificImgClick(movieImageEntry.image)}></img>
                       )}
                     </div>
                 </div>
