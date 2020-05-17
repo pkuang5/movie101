@@ -151,7 +151,6 @@ class Editor extends Component {
           <div class="flex flex-col font-montserrat w-screen items-center mt-3">
             <div class = "w-2/3  items-center">
               <div class="flex grid grid-cols-2 gap-4">
-              {/* left half */}
               <div class = " h-16  pt-8 ">
                   <p class="font-serif text-3xl font-bold ">Editor</p>
                   <p class="font-serif  font-bold pb-2">Fill in the information, search, and submit!</p>
@@ -202,7 +201,6 @@ class Editor extends Component {
                   </div>
                </div>
             </div>
-            {/* right half */}
             <div class = "pt-8">
                 <p>Your search image results will be here. Take your pick!</p>
                 <div class = "overflow-x-scroll flex flex-no-wrap border h-48 p-2 ">
