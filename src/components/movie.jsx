@@ -49,27 +49,27 @@ function Movie(props){
                     <p class="text-xl">{dateOfEntry}</p>
                 </div>
                 <div class="flex">
-                    <div class = "w-1/4 h-24">
-                        <img src={coverImage}></img>
-                        <p class="mt-3 font-montserrat text-lg text-center">{'Rating: ' + rating + '/5'}</p>
-                        <div class="flex justify-between">
-                            <button class="button-color-beige w-24 text-white px-3" onClick={handleEditMovie}>Edit</button>
-                            <button class="bg-red-400 w-24 text-white px-3" onClick={handleDeleteMovie}>Delete</button>
-                        </div>
+                    <div class = "w-1/4">
+                        <img src={coverImage} alt="poster"></img>
                     </div>
                     <div class = "w-3/4 pl-5 font-montserrat">
                         <div class="bg-gray-100 p-3 h-64 overflow-auto">
                             <p class="text-md font-semibold">Review</p>
                             <p class="text-sm">{description}</p>
                         </div>
-                        <div class = "mt-3 p-3 h-64 bg-gray-100 overflow-auto">
-                            <div class = "text-md font-semibold mb-2">Images</div>
-                            <div class="grid grid-cols-2 gap-4">
-                                {images.map(image => 
-                                    <img src={image} alt="movie still" />
-                                )}
-                            </div>
+                        <div class="flex w-1/2 justify-between items-center">
+                            <p class="mt-3 font-montserrat text-lg">{'Rating: ' + rating + '/5'}</p>
+                            <button class="button-color-beige h-8 w-24 text-white px-3" onClick={handleEditMovie}>Edit</button>
+                            <button class="bg-red-400 h-8 w-24 text-white px-3" onClick={handleDeleteMovie}>Delete</button>
                         </div>
+                    </div>
+                </div>
+                <div class = "w-full my-5 font-montserrat bg-gray-100 p-8">
+                    <div class = "w-full text-xl font-semibold mb-4">Images</div>
+                    <div class="w-full grid grid-cols-3 gap-8">
+                        {images ? images.map(image => 
+                            <img src={image} alt="movie still" />
+                        ): null}
                     </div>
                 </div>
             </div>
