@@ -5,6 +5,7 @@ import Noty from 'noty'
 import 'noty/lib/noty.css'
 import 'noty/lib/themes/bootstrap-v4.css'
 import DropSearch from './dropSearch'
+
 require('dotenv').config()
 
 class Editor extends Component {
@@ -43,6 +44,7 @@ class Editor extends Component {
       }).show()
     } 
     getMovieInfo = (title) => {
+      if (this.state.change) {
         this.setState({images: []})
         this.setState({specificImages: []})
         let url = ''.concat('https://api.themoviedb.org/3/', 'search/movie?api_key=', process.env.REACT_APP_MOVIEDB_API_KEY, '&query=', title);
@@ -64,7 +66,10 @@ class Editor extends Component {
                   movieImage:'https://image.tmdb.org/t/p/w500'+data.results[0].poster_path,
                   movieId: data.results[0].id
                 })
+                this.getMovieImage(data.results[0].id)
         })
+      }
+        
     }
     getMovieImage = (i) => {
       this.setState({specificImages: []})
@@ -127,7 +132,7 @@ class Editor extends Component {
       }
     }
     handleSpecificImgClick = (e) => {
-      let arr = []
+      let arr = this.state.imagesToStore
       if (this.state.imagesToStore.includes(e)) {
         var index = arr.indexOf(e)
         const temp = arr.slice(0,index).concat(arr.slice(index+1, arr.length))
@@ -143,87 +148,82 @@ class Editor extends Component {
    
     render() {
         return (
-            <form class="w-full max-w-lg">
-              <p>Fill in the following information, Search, and Submit!</p>
-            <div class="flex flex-wrap -mx-3 mb-6">
-              <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label class=" text-gray-700 text-xs font-bold mb-2" >
-                  Movie Name
-                </label>
-                <DropSearch getMovieInfo = {this.getMovieInfo} onChange = {(e) => this.setState({ movieName: e.target.value, change: true}) } onChange2 = {(e, date) => this.setState({movieName: e, change: true, movieYear: date})}></DropSearch>
-              </div>
-              <div class="w-full md:w-1/2 px-3">
-                <label class=" text-gray-700 text-xs font-bold mb-2" >
-                  Movie Year
-                </label>
-                <input onChange = {(e) => this.setState({ movieYear: e.target.value, change: true})} class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder={this.state.movieYear}/>
-              </div>
+          <div class="flex flex-col font-montserrat w-screen items-center mt-3">
+            <div class = "w-2/3  items-center">
+              <div class="flex grid grid-cols-2 gap-4">
+              {/* left half */}
+              <div class = " h-16  pt-8 ">
+                  <p class="font-serif text-3xl font-bold ">Editor</p>
+                  <p class="font-serif  font-bold pb-2">Fill in the information, search, and submit!</p>
+                  <div class = "grid grid-cols-2 gap-2   ">  
+                      <div class = "w-64 border-b border-b-2 border-gray-600">
+                          <p>Title</p>
+                          <DropSearch getMovieInfo = {this.getMovieInfo} onChange = {(e) => this.setState({ movieName: e.target.value, change: true}) } onChange2 = {(e, date) => this.setState({movieName: e, change: true, movieYear: date})}></DropSearch>
+                      </div>
+                      <div class = "w-8 h-4 pt-12 pl-4">
+                        <svg onClick = {() => this.getMovieInfo(this.state.movieName)} class = "cursor-pointer" width="30" height="30" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" fill="white" />
+                          <circle cx="20.5" cy="17.5" r="10.5" stroke="black" stroke-width="2" />
+                          <line x1="28.1584" y1="25.244" x2="37.256" y2="34.3417" stroke="black" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                      </div>
+                  </div>
+                  <div class = "pt-8  w-full h-48 pb-4 items-center ">
+                      <p class>Review</p>
+                      <textarea type = "textarea" onChange = {(e) => this.setState({ movieReview: e.target.value, change: true})} class="whitespace-normal flex-no-wrap text-sm border-2 border-gray-600  pb-24 px-2  w-11/12 pr-8 h-full" placeholder="Description"/>
+                  </div>
+                  <div class = "pt-8  h-48">
+                  <div class = "pt-2 grid grid-cols-3 gap-2 w-11/12"> 
+                      <div class = "w-2/3 ">
+                          <p>Rate</p>
+                          <select onChange = {(e) => this.setState({ movieRating: e.target.value, change: true})} class="w-full text-sm border-b border-b-2 border-gray-600  py-2 px-4  w-20 h-12">
+                            <option>5</option>
+                            <option>4</option>
+                            <option>3</option>
+                            <option>2</option>
+                            <option>1</option>
+                          </select>
+                      </div>
+                      <div class = " w-full ">
+                          <p>Date</p>
+                          <input onChange = {(e) => this.setState({ movieYear: e.target.value, change: true})} class= "w-full h-12 text-sm  w-11/12 py-2 px-4 border-b border-b-2 border-gray-600"  type="text" placeholder={this.state.movieYear}/>
+                      </div>
+                      <div class = "items-center ml-10">
+                          <p class ="">Featured?</p>
+                          <select onChange = {this.handleFeatured} class="w-full text-sm  py-2 px-4  h-12 w-24 border-b border-b-2 border-gray-600">
+                            <option>Yes</option>
+                            <option>No</option>
+                          </select>
+                      </div>
+                  </div>
+                  <div class = "pt-4">
+                          <button onClick = {this.handleSubmit} class= "text-sm border-2 border-gray-600  py-2 px-4 w-11/12  h-12" type="button">
+                            Submit
+                          </button>
+                  </div>
+               </div>
             </div>
-            <div class="flex flex-wrap -mx-3 mb-6">
-              <div class="w-full px-3">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="review">
-                  Review
-                </label>
-                <input onChange = {(e) => this.setState({ movieReview: e.target.value, change: true})} class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-password"  placeholder="Description"/>
-                <p class="text-gray-600 text-xs italic">Make it as long and as crazy as you'd like</p>
-              </div>
-            </div>
-            <div class="flex flex-wrap -mx-3 mb-2">
-            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
-                Rate
-              </label>
-              <div class="relative">
-                <select onChange = {(e) => this.setState({ movieRating: e.target.value, change: true})} class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-                  <option>5</option>
-                  <option>4</option>
-                  <option>3</option>
-                  <option>2</option>
-                  <option>1</option>
-                </select>
-                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                  <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+            {/* right half */}
+            <div class = "pt-8">
+                <p>Your search image results will be here. Take your pick!</p>
+                <div class = "overflow-x-scroll flex flex-no-wrap border h-48 p-2 ">
+                  {this.state.images.map(movieEntry =>    
+                    <img class ={this.state.movieImage === (movieEntry.image) ? "border-blue-400 border-solid border-4 w-32 m-2 h-40 hover:opacity-75" : "w-32 h-40 m-2"}src={movieEntry.image} alt= {movieEntry.title} onClick = {() => this.handleImgClick(movieEntry.image, movieEntry.id, movieEntry.title)}/>
+                  )}
                 </div>
-              </div>
-            </div>
-            <div class="md:flex md:items-center">
-              <div class="md:w-2/3">
-                  <button onClick = {() => this.getMovieInfo(this.state.movieName)}class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
-                      Search: 
-                    </button>
-                </div>          
-              </div>
-              <div class="md:flex md:items-center">
-              <div class="md:w-2/3">
-              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
-                Publish in Featured?
-              </label>
-              <select onChange = {this.handleFeatured} class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-                </div>          
-              </div> 
-            <div class="md:flex md:items-center">
-              <div class="md:w-2/3">
-                  <button onClick = {this.handleSubmit}class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
-                      Submit
-                    </button>
-                </div>          
-              </div>            
-              {this.state.images.map(movieEntry =>    
-                <div class="flex flex-col w-32 h-auto items-end justify-start">
-                          <div class={this.state.movieImage === (movieEntry.image) ? "border-yellow-400 border-solid border-4" : null }> <img class = "hover:opacity-75 focus:shadow-outline" src={movieEntry.image} alt= {movieEntry.title} onClick = {() => this.handleImgClick(movieEntry.image, movieEntry.id, movieEntry.title)}/> </div>
-                </div>)}
-                <div>
-                {this.state.specificImages.map(movieImageEntry =>    
-                <div class="flex flex-col w-32 h-auto items-end justify-start">
-                          <div class={this.state.imagesToStore.includes(movieImageEntry.image) ? "border-yellow-400 border-solid border-4" : null }><img class = "hover:opacity-75 focus:shadow-outline" src={movieImageEntry.image} onClick = {() => this.handleSpecificImgClick(movieImageEntry.image)}/></div>
-                </div>)}
+                <div class = "pt-8"></div>
+                <p>Your specific serach image results will be here. Take your pick!</p>
+                <div class = "flex text-sm border-solid border-2 border-color-gray  p-2 h-64"> 
+                    <div class="overflow-auto items-end justify-between grid grid-cols-3 col-gap-2 row-gap-2">
+                      {this.state.specificImages.map(movieImageEntry =>    
+                        <div class={this.state.imagesToStore.includes(movieImageEntry.image) ? "border-blue-400 border-solid border-4" : null }><img class = "cursor-pointer hover:opacity-75 focus:shadow-outline" src={movieImageEntry.image} onClick = {() => this.handleSpecificImgClick(movieImageEntry.image)}/></div>
+                      )}
+                    </div>
                 </div>
+            </div>
           </div>
-        </form>
+        </div>
+      </div>
         );
-        }
+    }
 }
 export default Editor;
