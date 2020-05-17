@@ -213,7 +213,7 @@ class Editor extends Component {
                 <div class = "pt-8"></div>
                 <p>Your specific serach image results will be here. Take your pick!</p>
                 <div class = "flex text-sm border-solid border-2 border-color-gray  p-2 h-64"> 
-                    <div class="overflow-auto items-end justify-between grid grid-cols-3 col-gap-2 row-gap-2">
+                    <div class="overflow-auto justify-between grid grid-cols-3 col-gap-2 row-gap-2">
                       {this.state.specificImages.map(movieImageEntry =>    
                         <div class={this.state.imagesToStore.includes(movieImageEntry.image) ? "border-blue-400 border-solid border-4" : null }><img class = "cursor-pointer hover:opacity-75 focus:shadow-outline" src={movieImageEntry.image} onClick = {() => this.handleSpecificImgClick(movieImageEntry.image)}/></div>
                       )}
