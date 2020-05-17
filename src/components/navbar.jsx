@@ -17,8 +17,6 @@ function Navbar(props) {
   }) 
   
   function handleClick (e) {
-    console.log(node)
-    console.log(e)
     if (node.current === e.path[6] || node.current==e.path[5]) {
         return;
     }
