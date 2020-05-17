@@ -1,5 +1,5 @@
 
-import React, {useState} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {NavLink, useHistory } from 'react-router-dom'
 import 'font-awesome/css/font-awesome.min.css'
 
@@ -8,12 +8,25 @@ function Navbar(props) {
 
   const [displayMenu, setDisplayMenu] = useState(false)
   let history = useHistory();
-
+  let node = useRef()
   let navLinkStyle = { color: "black", textDecoration: "none", paddingRight: "0.3rem", paddingLeft: "0.3rem", paddingBottom: "0.1rem" };
   let activeStyle = { borderBottom: "1px solid #a0aec0" };
-
+  
+  useEffect (() => {
+    document.addEventListener('mousedown', handleClick, false);
+  }) 
+  
+  function handleClick (e) {
+    if (node.current === e.path[6] || node.current==e.path[5]) {
+        return;
+    }
+    handleClickOutside(e)
+  }
+  function handleClickOutside (e) {
+    setDisplayMenu(false)
+  }
   return (
-    <nav class="flex items-center py-4 px-10 w-screen">
+    <nav ref = {node} class="flex items-center py-4 px-10 w-screen">
       <div class="w-full flex justify-between">
         <div class="flex">
           <div class="cursor-pointer" onClick={() => history.push("/search")}>
