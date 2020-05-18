@@ -66,11 +66,11 @@ function Movie(props){
                         <div class="flex w-full justify-between items-center">
                             <div>{stars}</div>
                             <div>
-                                <button class="button-color-beige h-8 w-24 text-white px-3 mr-3" onClick={handleEditMovie}>Edit</button>
-                                <button class="bg-red-400 h-8 w-24 text-white px-3" onClick={handleDeleteMovie}>Delete</button>
+                                <i class="fa fa-edit fa-lg hover:text-gray-600 cursor-pointer mr-3" onClick={handleEditMovie}></i>
+                                <i class="fa fa-trash fa-lg hover:text-gray-600 cursor-pointer" onClick={handleDeleteMovie}></i>
                             </div>
                         </div>
-                        <div class="bg-gray-100 p-3 h-64 overflow-auto">
+                        <div class="bg-gray-100 p-3 overflow-auto" style={{height:'19rem'}}>
                             <p class="text-md font-semibold">Review</p>
                             <p class="text-sm">{description}</p>
                         </div>
