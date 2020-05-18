@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import firebase from '../firebaseConfig'
 import { useHistory } from 'react-router-dom'
 import 'font-awesome/css/font-awesome.min.css'
+import Noty from 'noty'
 
 function Movie(props){
 
@@ -26,18 +27,30 @@ function Movie(props){
                     setCoverImage(snapshot.val().coverImage)
                     setDateOfEntry(snapshot.val().dateOfEntry)
                     setRating(snapshot.val().rating)
+                    setPreviewRating(snapshot.val().rating)
                     setDescription(snapshot.val().description)
                     setImages(snapshot.val().images)
                 })
             });
         });
-        setPreviewRating(rating)
     }, [props.movieId, props.username]);
 
-    useEffect(() => {
-        console.log("new rating " + rating)
-        setPreviewRating(rating)
-    }, [rating])
+    function updateRating(updatedRating) {
+        setRating(updatedRating)
+        setPreviewRating(updatedRating)
+        firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId).update({rating: updatedRating});
+        showNotification()
+    }
+
+    function showNotification(){
+        new Noty({
+            type: 'success',
+            theme: 'bootstrap-v4',
+            layout: 'bottomRight',
+            text: 'Your Changes Have Been Saved!',
+            timeout: 1000
+        }).show()
+    }
 
     function handleDeleteMovie(){
         firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId).remove()
@@ -51,10 +64,10 @@ function Movie(props){
     function fiveStar(){
         const stars = []
         for (let i = 0; i < previewRating; i++) {
-            stars.push(<i class="fa fa-star fa-2x text-yellow-300 pr-1 cursor-pointer" onMouseOver={() => setPreviewRating(i+1)} onMouseLeave={() => setPreviewRating(rating)} onClick={() => setRating(i+1)}></i>)
+            stars.push(<i class="fa fa-star fa-2x text-yellow-300 pr-1 cursor-pointer" onMouseOver={() => setPreviewRating(i+1)} onMouseLeave={() => setPreviewRating(rating)} onClick={() => updateRating(i+1)}></i>)
         }
         for (let i = previewRating; i < 5; i++) {
-            stars.push(<i class="fa fa-star fa-2x text-gray-300 pr-1 cursor-pointer" onMouseOver={() => setPreviewRating(i+1)} onMouseLeave={() => setPreviewRating(rating)} onClick={() => setRating(i+1)}></i>)
+            stars.push(<i class="fa fa-star fa-2x text-gray-300 pr-1 cursor-pointer" onMouseOver={() => setPreviewRating(i+1)} onMouseLeave={() => setPreviewRating(rating)} onClick={() => updateRating(i+1)}></i>)
         }
         return stars
     }
