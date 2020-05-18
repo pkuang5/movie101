@@ -9,6 +9,7 @@ function Movie(props){
     const [dateOfEntry, setDateOfEntry] = useState('')
     const [description, setDescription] = useState('')
     const [name, setName] = useState('')
+    const [previewRating, setPreviewRating] = useState('')
     const [rating, setRating] = useState('')
     const [images, setImages] = useState([])
     const [firebaseId, setFirebaseId] = useState('')
@@ -30,7 +31,13 @@ function Movie(props){
                 })
             });
         });
+        setPreviewRating(rating)
     }, [props.movieId, props.username]);
+
+    useEffect(() => {
+        console.log("new rating " + rating)
+        setPreviewRating(rating)
+    }, [rating])
 
     function handleDeleteMovie(){
         firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId).remove()
@@ -39,15 +46,17 @@ function Movie(props){
 
     function handleEditMovie(){
         history.push('/Editor', props.movieId)
-        console.log(props.movieId)
     }
 
-    const stars = []
-    for (let i = 0; i < rating; i++) {
-        stars.push(<i class="fa fa-star fa-2x text-yellow-300 mr-1"></i>)
-    }
-    for (let i = 0; i < 5-rating; i++) {
-        stars.push(<i class="fa fa-star fa-2x text-gray-300 mr-1"></i>)
+    function fiveStar(){
+        const stars = []
+        for (let i = 0; i < previewRating; i++) {
+            stars.push(<i class="fa fa-star fa-2x text-yellow-300 pr-1 cursor-pointer" onMouseOver={() => setPreviewRating(i+1)} onMouseLeave={() => setPreviewRating(rating)} onClick={() => setRating(i+1)}></i>)
+        }
+        for (let i = previewRating; i < 5; i++) {
+            stars.push(<i class="fa fa-star fa-2x text-gray-300 pr-1 cursor-pointer" onMouseOver={() => setPreviewRating(i+1)} onMouseLeave={() => setPreviewRating(rating)} onClick={() => setRating(i+1)}></i>)
+        }
+        return stars
     }
 
 
@@ -64,7 +73,7 @@ function Movie(props){
                     </div>
                     <div class = "flex flex-col justify-between w-3/4 pl-5 font-montserrat">
                         <div class="flex w-full justify-between items-center">
-                            <div>{stars}</div>
+                            <div>{fiveStar()}</div>
                             <div>
                                 <i class="fa fa-edit fa-lg hover:text-gray-600 cursor-pointer mr-3" onClick={handleEditMovie}></i>
                                 <i class="fa fa-trash fa-lg hover:text-gray-600 cursor-pointer" onClick={handleDeleteMovie}></i>
