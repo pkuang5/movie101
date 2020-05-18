@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import firebase from '../firebaseConfig'
 import { useHistory } from 'react-router-dom'
+import 'font-awesome/css/font-awesome.min.css'
 
 function Movie(props){
 
@@ -41,6 +42,15 @@ function Movie(props){
         console.log(props.movieId)
     }
 
+    const stars = []
+    for (let i = 0; i < rating; i++) {
+        stars.push(<i class="fa fa-star fa-2x text-yellow-300 mr-1"></i>)
+    }
+    for (let i = 0; i < 5-rating; i++) {
+        stars.push(<i class="fa fa-star fa-2x text-gray-300 mr-1"></i>)
+    }
+
+
     return (
         <div class="flex w-screen justify-center mt-3">
             <div class = "w-2/3">
@@ -52,15 +62,17 @@ function Movie(props){
                     <div class = "w-1/4">
                         <img src={coverImage} alt="poster"></img>
                     </div>
-                    <div class = "w-3/4 pl-5 font-montserrat">
+                    <div class = "flex flex-col justify-between w-3/4 pl-5 font-montserrat">
+                        <div class="flex w-full justify-between items-center">
+                            <div>{stars}</div>
+                            <div>
+                                <button class="button-color-beige h-8 w-24 text-white px-3 mr-3" onClick={handleEditMovie}>Edit</button>
+                                <button class="bg-red-400 h-8 w-24 text-white px-3" onClick={handleDeleteMovie}>Delete</button>
+                            </div>
+                        </div>
                         <div class="bg-gray-100 p-3 h-64 overflow-auto">
                             <p class="text-md font-semibold">Review</p>
                             <p class="text-sm">{description}</p>
-                        </div>
-                        <div class="flex w-1/2 justify-between items-center">
-                            <p class="mt-3 font-montserrat text-lg">{'Rating: ' + rating + '/5'}</p>
-                            <button class="button-color-beige h-8 w-24 text-white px-3" onClick={handleEditMovie}>Edit</button>
-                            <button class="bg-red-400 h-8 w-24 text-white px-3" onClick={handleDeleteMovie}>Delete</button>
                         </div>
                     </div>
                 </div>
