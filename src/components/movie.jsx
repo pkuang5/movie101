@@ -14,6 +14,7 @@ function Movie(props){
     const [rating, setRating] = useState('')
     const [images, setImages] = useState([])
     const [firebaseId, setFirebaseId] = useState('')
+    const [readOnly, setReadOnly] = useState(true)
     let history = useHistory();
 
     useEffect(() => {
@@ -72,7 +73,6 @@ function Movie(props){
         return stars
     }
 
-
     return (
         <div class="flex w-screen justify-center mt-3">
             <div class = "w-2/3">
@@ -93,8 +93,20 @@ function Movie(props){
                             </div>
                         </div>
                         <div class="bg-gray-100 p-3 overflow-auto" style={{height:'19rem'}}>
-                            <p class="text-md font-semibold">Review</p>
-                            <p class="text-sm">{description}</p>
+                            <div class="flex justify-between">
+                                <p class="text-md font-semibold mr-2">Review</p>
+                            {readOnly ? 
+                                <i class="fa fa-pencil fa-sm hover:text-gray-600 cursor-pointer mr-3" onClick={() => setReadOnly(false)}></i>
+                                : 
+                                <div class="flex">
+                                    <i class="fa fa-times fa-sm hover:text-gray-600 cursor-pointer mr-3" onClick={() => setReadOnly(true)}></i> 
+                                    <i class="fa fa-check fa-sm hover:text-gray-600 cursor-pointer" onClick={() => setReadOnly(true)}></i> 
+                                </div>
+                            }
+                            </div>
+                        <div>
+                        </div>
+                            <textarea type = "textarea" class={readOnly ? "p-2 text-sm w-full h-full bg-gray-100 outline-none": "p-2 text-sm w-full h-full bg-white-100"} defaultValue={description} readOnly={readOnly}/>
                         </div>
                     </div>
                 </div>
