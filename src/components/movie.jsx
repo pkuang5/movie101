@@ -13,9 +13,12 @@ function Movie(props){
     const [previewRating, setPreviewRating] = useState('')
     const [rating, setRating] = useState('')
     const [images, setImages] = useState([])
+    const [displayedImages, setDisplayedImages] = useState([])
     const [firebaseId, setFirebaseId] = useState('')
     const [readOnly, setReadOnly] = useState(true)
     const [edited, setEdited] = useState(false)
+    const [editImage, setEditImage] = useState(false)
+    const [editedImages, setEditedImages] = useState(false)
     let history = useHistory();
 
     useEffect(() => {
@@ -32,10 +35,25 @@ function Movie(props){
                     setPreviewRating(Number(snapshot.val().rating))
                     setDescription(snapshot.val().description)
                     setImages(snapshot.val().images)
+                    setDisplayedImages(snapshot.val().images)
                 })
             });
         });
     }, [props.movieId, props.username]);
+
+    function getMovieImages() {
+        let url = ''.concat('https://api.themoviedb.org/3/', 'movie/' ,props.movieId , '/images', '?api_key=', process.env.REACT_APP_MOVIEDB_API_KEY);
+        fetch(url).then(result=>result.json()).then((data)=>{
+            let imageList = [];
+            for (var i in data.backdrops) {
+                let imageUrl = 'https://image.tmdb.org/t/p/w500'+data.backdrops[i].file_path
+                if (imageUrl !== 'https://image.tmdb.org/t/p/w500null'){
+                    imageList.push(imageUrl)
+                }
+            }
+            setDisplayedImages(imageList)
+        })
+    }
 
     function updateRating(updatedRating) {
         setRating(updatedRating)
@@ -118,11 +136,36 @@ function Movie(props){
                         </div>
                     </div>
                 </div>
-                <div class = "w-full my-5 font-montserrat bg-gray-100 p-8">
-                    <div class = "w-full text-xl font-semibold mb-4">Images</div>
+                <div class = "flex flex-col w-full my-5 font-montserrat bg-gray-100 p-8">
+                    <div class="flex justify-between">
+                        <p class = "text-xl font-semibold mb-4">Images</p>
+                        {editImage ?
+                            <i class="fa fa-check fa-sm hover:text-gray-600 cursor-pointer" onClick={() => {
+                                if (displayedImages !== images) {
+                                    setEditImage(false)
+                                    setDisplayedImages(images)
+                                    if (editedImages){
+                                        showNotification()
+                                        firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId).update({images: images})
+                                        setEditedImages(false)
+                                    }
+                                }
+                            }}></i>
+                        :
+                            <i class="fa fa-pencil fa-sm hover:text-gray-600 cursor-pointer" onClick={() => {getMovieImages(); setEditImage(true);}}></i>
+                        }
+                    </div>
                     <div class="w-full grid grid-cols-3 gap-8">
-                        {images ? images.map(image => 
-                            <img src={image} alt="movie still" />
+                        {displayedImages ? displayedImages.map(image => 
+                            <img src={image} alt="movie still" class={images && images.includes(image) && editImage ? "cursor-pointer border-yellow-400 border-solid border-4" : "cursor-pointer"} 
+                            onClick={() => {
+                                if (images.includes(image)) setImages(images.filter(url => url !== image))
+                                else {
+                                    if (!images) setImages([image])
+                                    else if (!images.includes(image)) setImages([...images,image])
+                                }
+                                setEditedImages(true)
+                            }}/>
                         ): null}
                     </div>
                 </div>
