@@ -31,7 +31,11 @@ function Gallery(props) {
     }, [props.googleId, props.featured]);
 
     function handleMovieClick(id) {
-        history.push("/" + props.username + "/movies/" + id);
+        history.push({
+            pathname: "/" + props.username + "/movies/" + id,
+            localUser: props.localUser,
+        });
+        // history.push("/" + props.username + "/movies/" + id, props.localUser);
     }
 
     const handleSearch = (e) => {

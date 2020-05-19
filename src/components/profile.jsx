@@ -9,11 +9,13 @@ class Profile extends Component {
         profilePicUrl: '',
         bio: '',
         featured: true,
+        localUser: false,
     }
     componentDidMount = () => {   
         var userInfo = firebase.database().ref('users');
         userInfo.orderByChild('userName').equalTo(this.props.username).once("value", (snapshot) => {
             snapshot.forEach((data) => {
+                if (this.props.appId === data.key) this.setState({localUser: true})
                 this.setState({
                     id: data.key,    
                     username: data.val().userName,
@@ -42,7 +44,7 @@ class Profile extends Component {
                         <div class={!this.state.featured ? 'border-b border-black' : null} onClick={() => this.handleFeatured(false)}>Journals</div>
                     </div>
                     <div class="my-3 px-8">
-                        <Gallery googleId={this.state.id} username={this.state.username} featured={this.state.featured}/>
+                        <Gallery googleId={this.state.id} username={this.state.username} featured={this.state.featured} localUser={this.state.localUser}/>
                     </div>
                 </div>
             </div>
