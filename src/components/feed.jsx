@@ -49,18 +49,18 @@ function Feed (props) {
     }
 
     return (
-            <div class="flex w-screen justify-center mt-3 px-6">
-                <div class="flex flex-col lg:w-2/3 md:w-4/5 w-full items-center">
-                    <p class="font-serif text-3xl font-bold">Screenbook</p>
-                    <p class="font-montserrat text-sm text-center w-3/5"> Welcome, {firstName}! This is your feed. <br></br> See what movies are popular in the Screenbook community and follow other members to see their journals. Or, get started on your own journal. </p>
-                    <button onClick = {() => history.push('/editor')} class="button-color-beige hover:opacity-75 font-montserrat font-semibold text-white py-2 px-4 rounded w-40">+ add entry</button>
-                    {movieRow(trendingMovies, 'Trending Films')}
-                    {movieRow(popularMovies, 'Popular Films')}
-                    {movieRow(nowPlayingMovies, 'Now Playing')}
-                    {movieRow(topRatedMovies, 'Top Rated Films')}
-                    {movieRow(upcomingMovies, 'Upcoming Films')}
-                </div>
+        <div class="flex w-screen justify-center mt-3 px-6">
+            <div class="flex flex-col lg:w-2/3 md:w-4/5 w-full items-center">
+                <p class="font-serif text-3xl font-bold">Screenbook</p>
+                <p class="font-montserrat text-sm text-center w-3/5"> Welcome, {firstName}! This is your feed. See what movies are popular in the Screenbook community and follow other members to see their journals. Or, get started on your own journal. </p>
+                <button onClick = {() => history.push('/editor')} class="button-color-beige hover:opacity-75 font-montserrat font-semibold text-white py-2 px-4 rounded w-40">+ add entry</button>
+                {movieRow(trendingMovies, 'Trending Films')}
+                {movieRow(popularMovies, 'Popular Films')}
+                {movieRow(nowPlayingMovies, 'Now Playing')}
+                {movieRow(topRatedMovies, 'Top Rated Films')}
+                {movieRow(upcomingMovies, 'Upcoming Films')}
             </div>
+        </div>
     );
  }
 

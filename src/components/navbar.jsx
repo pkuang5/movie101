@@ -13,20 +13,20 @@ function Navbar(props) {
   let navLinkStyle = { color: "black", textDecoration: "none", paddingRight: "0.3rem", paddingLeft: "0.3rem", paddingBottom: "0.1rem" };
   let activeStyle = { fontWeight: 'bolder' };
   
-  useEffect (() => {
-    document.addEventListener('mousedown', handleClick, false);
-  }, []) 
+  // useEffect (() => {
+  //   document.addEventListener('mousedown', handleClick, false);
+  // }, []) 
   
-  function handleClick (e) {
-    if (node.current === e.path[6] || node.current==e.path[5]) {
-        return;
-    }
-    handleClickOutside(e)
-  }
+  // function handleClick (e) {
+  //   if (node.current === e.path[6] || node.current==e.path[5]) {
+  //       return;
+  //   }
+  //   handleClickOutside(e)
+  // }
 
-  function handleClickOutside (e) {
-    setDisplayMenu(false)
-  }
+  // function handleClickOutside (e) {
+  //   setDisplayMenu(false)
+  // }
 
   return (
     <React.Fragment>
@@ -52,9 +52,9 @@ function Navbar(props) {
             <div onClick={() => setDisplayMenu(!displayMenu)}> <i class="fa fa-lg fa-angle-down" /> </div>
         </div>
       </div>
-      <div class="flex w-screen justify-end absolute">
+      <div class="flex w-screen justify-end">
         {displayMenu ? (
-            <div class="shadow-sm border rounded font-montserrat mt-1 mr-2">
+            <div class="shadow-sm absolute bg-white border rounded font-montserrat mt-1 mr-2">
               <div class="py-2 px-3 hover:bg-gray-100 cursor-pointer" onClick={() => {history.push('/settings'); setDisplayMenu(!displayMenu);}}>Settings</div>
               <div class="py-2 px-3 hover:bg-gray-100 cursor-pointer" style={navLinkStyle} onClick={() => {setDisplayMenu(!displayMenu); props.signInState(false, ''); history.push("/"); }}>Logout</div>
             </div>

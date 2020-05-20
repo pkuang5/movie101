@@ -13,10 +13,10 @@ function Login(props) {
 
     return (
         <React.Fragment>
-            <div class="flex flex-col h-screen w-screen bg-cover bg-local" style={{backgroundImage: "url('" + backgroundImage + "')"}}>>
-                <div class="flex flex-col m-auto h-64 w-70 p-4">
-                    <div class="font-serif font-semibold text-6xl tracking-tight text-white">Screenbook</div>
-                    <div class="font-montserrat font-semibold text-white text-center">Your personal film capsule</div>
+            <div class="flex h-screen w-screen items-center justify-center bg-cover bg-local bg-center" style={{backgroundImage: "url('" + backgroundImage + "')"}}>
+                <div class="flex flex-col text-center">
+                    <p class="font-serif font-semibold md:text-6xl text-5xl text-white">Screenbook</p>
+                    <div class="font-montserrat font-semibold text-white">Your personal film capsule</div>
                     <div class="flex justify-center p-12" ><GoogleLogInBtn signInState={props.signInState} /></div>
                 </div>
             </div>
