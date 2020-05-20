@@ -61,8 +61,8 @@ class App extends Component {
             <Route path="/discover" exact strict component={() => <Discover/>}></Route>
             <Route path="/settings" exact strict component={() => <Settings googleId={this.state.googleId} />}></Route>
             <Route path="/search" exact strict component={() => <Search googleId={this.state.googleId} username={this.state.username} />}></Route>
-            <Route path={"/" + this.state.username} exact strict component={() => <Profile googleId={this.state.googleId} username={this.state.username} />}></Route>
-            <Route path="/:username" exact strict render={({match})=><Profile username={match.params.username}/>}/>
+            {/* <Route path={"/" + this.state.username} exact strict component={() => <Profile googleId={this.state.googleId} username={this.state.username} />}></Route> */}
+            <Route path="/:username" exact strict render={({match})=><Profile username={match.params.username} appId={this.state.googleId}/>}/>
             <Route path="/:username/movies/:id" exact strict render={({match})=><Movie movieId={match.params.id} username={match.params.username} />}/>
           </Switch>
         </Router>
