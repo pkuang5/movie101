@@ -18,13 +18,13 @@ function Introduction(props) {
 
     return (
         <div class="flex flex-col w-full">
-            <div class="flex lg:text-5xl md:text-3xl sm:text-lg py-20 font-yeseva">
-                <div class="flex w-2/5 justify-end" data-aos="fade-up">
-                    <p class="text-right pr-2">Keep track of the<br></br>movies you</p>
+            <div class="flex lg:text-5xl md:text-3xl sm:text-lg text-sm py-20 font-yeseva">
+                <div class="flex w-2/5 justify-end pt-3" data-aos="fade-up">
+                    <p class="text-right px-2">Keep track of the<br></br>movies you</p>
                 </div>
                 <div class="w-3/5" data-aos="fade-down">
                     <div class="w-5/6">
-                        <p class="absolute text-white pl-1"><br></br>love.</p>
+                        <p class="absolute text-white pl-1 pt-3"><br></br>love.</p>
                         <div class= "flex justify-end">
                             <img src= "https://film-grab.com/wp-content/uploads/2019/11/Castle-in-the-Sky-010.jpg" alt="castle in the sky 1"></img>
                             <p class="text-transparent font-montserrat text-white absolute self-end pr-2 pb-2 text-mobile">Castle in the Sky (1986) dir. Hayao Miyazaki</p>
@@ -39,7 +39,7 @@ function Introduction(props) {
                     </div>
                 </div>
                 <div class="flex w-1/2 justify-start" data-aos="fade-down">
-                    <p class="w-5/6 lg:text-xl md:text-lg text-xs font-montserrat pl-4">Screenbook allows you to quiuckly add anything you've watched and create lists to organize films however you please.</p>
+                    <p class="w-5/6 lg:text-xl md:text-lg text-mobile font-montserrat pl-4">Screenbook allows you to quiuckly add anything you've watched and create lists to organize films however you please.</p>
                 </div>
             </div>
 
@@ -52,7 +52,7 @@ function Introduction(props) {
                     <p class="w-7/12 text-right self-end text-mobile">Her (2013) dir. Spike Jonze</p>
                 </div>
             </div>
-            <div class="flex lg:text-4xl md:text-2xl sm:text-lg text-md py-20 font-yeseva">
+            <div class="flex lg:text-4xl md:text-2xl sm:text-lg text-xs py-20 font-yeseva">
                 <div class="flex justify-end w-3/5" data-aos="fade-down">
                     <div class="flex w-5/6 justify-end">
                         <p class="absolute text-right pr-1 font-yeseva text-white"><br></br>A personalized capsule for <br></br> made by</p>
