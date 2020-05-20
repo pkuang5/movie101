@@ -36,8 +36,8 @@ function Feed (props) {
 
     function movieRow(list, listName){
         return(
-            <div>
-                <p class="w-full font-montserrat text-lg font-semibold mt-3">{listName}</p>
+            <div class="w-full my-3">
+                <p class="font-montserrat text-lg font-semibold">{listName}</p>
                 <div class="overflow-x-scroll flex flex-no-wrap bg-gray-200 h-auto">
                 {list.map(movie =>  movie.poster_path ?  
                     <img class ="w-40 h-full m-4 my-2 h-40 hover:opacity-75 transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-105 " src={'https://image.tmdb.org/t/p/w500' + movie.poster_path} alt= {movie.title} />
@@ -49,13 +49,11 @@ function Feed (props) {
     }
 
     return (
-            <div class="flex w-screen justify-center mt-3">
-                <div class="flex flex-col w-2/3 items-center">
-                    <div class="flex flex-col items-center">
-                        <p class="font-serif text-3xl font-bold">Screenbook</p>
-                        <p class="font-montserrat text-sm text-center w-1/2"> Welcome, {firstName}! This is your feed. <br></br> See what movies are popular in the Screenbook community and follow other members to see their journals. Or, get started on your own journal. </p>
-                        <button onClick = {() => history.push('/editor')} class="button-color-beige hover:opacity-75 font-montserrat font-semibold text-white py-2 px-4 rounded w-40">+ add entry</button>
-                    </div>
+            <div class="flex w-screen justify-center mt-3 px-6">
+                <div class="flex flex-col lg:w-2/3 md:w-4/5 w-full items-center">
+                    <p class="font-serif text-3xl font-bold">Screenbook</p>
+                    <p class="font-montserrat text-sm text-center w-3/5"> Welcome, {firstName}! This is your feed. <br></br> See what movies are popular in the Screenbook community and follow other members to see their journals. Or, get started on your own journal. </p>
+                    <button onClick = {() => history.push('/editor')} class="button-color-beige hover:opacity-75 font-montserrat font-semibold text-white py-2 px-4 rounded w-40">+ add entry</button>
                     {movieRow(trendingMovies, 'Trending Films')}
                     {movieRow(popularMovies, 'Popular Films')}
                     {movieRow(nowPlayingMovies, 'Now Playing')}
