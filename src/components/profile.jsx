@@ -40,8 +40,8 @@ class Profile extends Component {
                         <p class="text-xs font-montserrat mt-1">{this.state.bio}</p>
                     </div>
                     <div class="flex text-lg font-montserrat justify-around select-none mt-3">
-                        <div class={this.state.featured ? 'border-b border-black' : null} onClick={() => this.handleFeatured(true)}>Featured</div>
-                        <div class={!this.state.featured ? 'border-b border-black' : null} onClick={() => this.handleFeatured(false)}>Journals</div>
+                        <div class={this.state.featured ? 'border-b border-black cursor-pointer' : 'cursor-pointer'} onClick={() => this.handleFeatured(true)}>Featured</div>
+                        <div class={!this.state.featured ? 'border-b border-black cursor-pointer' : 'cursor-pointer'} onClick={() => this.handleFeatured(false)}>Journals</div>
                     </div>
                     <div class="my-3 px-8">
                         <Gallery googleId={this.state.id} username={this.state.username} featured={this.state.featured} localUser={this.state.localUser}/>
