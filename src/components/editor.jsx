@@ -4,6 +4,7 @@ import { render } from '@testing-library/react';
 import Noty from 'noty'
 import 'noty/lib/noty.css'
 import 'noty/lib/themes/bootstrap-v4.css'
+import Switch from "react-switch";
 import DropSearch from './dropSearch'
 
 require('dotenv').config()
@@ -22,7 +23,8 @@ class Editor extends Component {
            featured: true,
            images: [],
            specificImages: [],
-           imagesToStore: []
+           imagesToStore: [],
+           checked: true
         };
    }
   showNotification = () => {
@@ -113,7 +115,8 @@ class Editor extends Component {
         this.setState({movieRating: '5'})
     }
     handleFeatured = (e) => {
-      if (e.target.value === 'Yes') {
+      this.setState({checked: !this.state.checked})
+      if (this.state.checked === true) {
         this.setState({
           featured: true
         })
@@ -123,6 +126,7 @@ class Editor extends Component {
           featured: false
         })
       }
+      console.log(this.state.featured)
     }
     handleImgClick = (e,i,n) => {
       if (this.state.movieImage === e) {
@@ -197,11 +201,15 @@ class Editor extends Component {
                           <input onChange = {(e) => this.setState({ movieYear: e.target.value, change: true})} class= "w-full h-12 text-me  w-11/12 py-2 px-4 border-b border-b-2 border-gray-600"  type="text" placeholder={this.getCurrentDate('/')}/>
                       </div>
                       <div class = "items-center ml-10">
-                          <p class ="">Featured?</p>
-                          <select onChange = {this.handleFeatured} class="w-full text-sm  py-2 px-4  h-12 w-24 border-b border-b-2 border-gray-600">
+                          {/* <p class ="">Featured?</p> */}
+                          {/* <select onChange = {this.handleFeatured} class="w-full text-sm  py-2 px-4  h-12 w-24 border-b border-b-2 border-gray-600">
                             <option>Yes</option>
                             <option>No</option>
-                          </select>
+                          </select> */}
+                          <label>
+                          <span>Featured?</span>
+                          <Switch onChange={this.handleFeatured} checked={this.state.checked} />
+                        </label>
                       </div>
                   </div>
                   <div class = "pt-4">
