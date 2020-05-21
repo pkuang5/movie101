@@ -43,6 +43,15 @@ class Editor extends Component {
           timeout: 3000
       }).show()
     } 
+    getCurrentDate = (separator='') => {
+
+      let newDate = new Date()
+      let date = newDate.getDate();
+      let month = newDate.getMonth() + 1;
+      let year = newDate.getFullYear();
+      
+      return `${month<10?`0${month}`:`${month}`}${separator}${date}${separator}${year}`
+      }
     getMovieInfo = (title) => {
       if (this.state.change) {
         this.setState({images: []})
@@ -185,7 +194,7 @@ class Editor extends Component {
                       </div>
                       <div class = " w-full ">
                           <p>Date</p>
-                          <input onChange = {(e) => this.setState({ movieYear: e.target.value, change: true})} class= "w-full h-12 text-sm  w-11/12 py-2 px-4 border-b border-b-2 border-gray-600"  type="text" placeholder={this.state.movieYear}/>
+                          <input onChange = {(e) => this.setState({ movieYear: e.target.value, change: true})} class= "w-full h-12 text-me  w-11/12 py-2 px-4 border-b border-b-2 border-gray-600"  type="text" placeholder={this.getCurrentDate('/')}/>
                       </div>
                       <div class = "items-center ml-10">
                           <p class ="">Featured?</p>
