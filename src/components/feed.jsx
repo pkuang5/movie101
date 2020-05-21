@@ -38,9 +38,9 @@ function Feed (props) {
         return(
             <div class="w-full my-3">
                 <p class="font-montserrat text-lg font-semibold">{listName}</p>
-                <div class="overflow-x-scroll flex flex-no-wrap bg-gray-200 h-auto">
+                <div class="overflow-x-scroll overflow-y-hidden flex flex-no-wrap bg-gray-200 h-auto">
                 {list.map(movie =>  movie.poster_path ?  
-                    <img class ="w-40 h-full m-4 my-2 h-40 hover:opacity-75 transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-105 " src={'https://image.tmdb.org/t/p/w500' + movie.poster_path} alt= {movie.title} />
+                    <img class ="w-40 h-full m-4 my-2 h-40 cursor-pointer transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-105 " src={'https://image.tmdb.org/t/p/w500' + movie.poster_path} alt= {movie.title} />
                     : null
                 )}
                 </div>

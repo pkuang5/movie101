@@ -50,9 +50,9 @@ function Navbar(props) {
               <div class="mr-3">
                 <NavLink exact to={"/" + props.username} >
                   {location.pathname === "/" + props.username ?
-                  <i class="fa fa-user fa-lg" />
+                  <i class="fa fa-user fa-lg text-black" />
                   :
-                  <i class="fa fa-user-o" />}
+                  <i class="fa fa-user-o text-black" />}
                 </NavLink>
               </div>
               <div  onClick={() => setDisplayMenu(!displayMenu)}> <i class="fa fa-lg fa-angle-down" /> </div>
@@ -73,21 +73,25 @@ function Navbar(props) {
           <div class="cursor-pointer" onClick={() => history.push("/search")}>
             <i class="fa fa-search text-white fa-lg" />
           </div>
-          <i class="fa fa-bars text-white fa-lg" onClick={() => setDisplayMenu(!displayMenu)} />
+          {displayMenu ?
+            <i class="fa fa-times text-white fa-lg" onClick={() => setDisplayMenu(!displayMenu)} />
+            :
+            <i class="fa fa-bars text-white fa-lg" onClick={() => setDisplayMenu(!displayMenu)} />
+          }
         </div>
+      </div>
       {displayMenu ?
-        <div class="flex w-full justify-end">
-          <div class="flex flex-col text-white text-right">
-              <p ref={node} onClick={() => history.push('/')} class={location.pathname === "/" ? "font-extrabold": null}>Feed</p>
-              <p ref={node2} onClick={() => history.push('/editor')} class={location.pathname === "/editor" ? "font-extrabold": null}>Editor</p>
-              <p ref={node3} onClick={() => history.push('/discover')} class={location.pathname === "/discover" ? "font-extrabold": null}>Discover</p>
-              <p ref={node4} onClick={() => history.push('/' + props.username)} class={location.pathname === "/" + props.username ? "font-extrabold": null}>Profile</p>
-              <p ref={node5} onClick={() => history.push('/settings')} class={location.pathname === "/settings" ? "font-extrabold": null}>Settings</p>
-              <p ref={node6} onClick={() => {history.push('/'); props.signInState(false, '');}} class={location.pathname === "/" + props.username ? "font-extrabold": null}>Logout</p>
+        <div class="flex w-full bg-black absolute justify-end transition-opacity ease-linear duration-1000 opacity-100 sm:hidden">
+          <div class="flex flex-col text-white text-right px-3">
+              <p ref={node} onClick={() => {history.push('/'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/" ? "font-extrabold": null}>Feed</p>
+              <p ref={node2} onClick={() => {history.push('/editor'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/editor" ? "font-extrabold": null}>Editor</p>
+              <p ref={node3} onClick={() => {history.push('/discover'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/discover" ? "font-extrabold": null}>Discover</p>
+              <p ref={node4} onClick={() => {history.push('/' + props.username); setDisplayMenu(!displayMenu)}} class={location.pathname === "/" + props.username ? "font-extrabold": null}>Profile</p>
+              <p ref={node5} onClick={() => {history.push('/settings'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/settings" ? "font-extrabold": null}>Settings</p>
+              <p ref={node6} onClick={() => {history.push('/'); props.signInState(false, ''); setDisplayMenu(!displayMenu)}} class={location.pathname === "/" + props.username ? "font-extrabold": null}>Logout</p>
           </div>
         </div>
         : null}
-      </div>
     </React.Fragment>
   );
 }
