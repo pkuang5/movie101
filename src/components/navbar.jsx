@@ -10,27 +10,30 @@ function Navbar(props) {
   let history = useHistory()
   let location = useLocation()
   let node = useRef()
+  let node2 = useRef()
   let navLinkStyle = { color: "black", textDecoration: "none", paddingRight: "0.3rem", paddingLeft: "0.3rem", paddingBottom: "0.1rem" };
   let activeStyle = { fontWeight: 'bolder' };
   
-  // useEffect (() => {
-  //   document.addEventListener('mousedown', handleClick, false);
-  // }, []) 
+  useEffect (() => {
+    document.addEventListener('mousedown', handleClick, false);
+  }, []) 
   
-  // function handleClick (e) {
-  //   if (node.current === e.path[6] || node.current==e.path[5]) {
-  //       return;
-  //   }
-  //   handleClickOutside(e)
-  // }
+  function handleClick (e) {
+    console.log(node2)
+    console.log(e)
+    if (node.current === e.path[0] || node2.current === e.path[0] ) {
+        return;
+    }
+    handleClickOutside(e)
+  }
 
-  // function handleClickOutside (e) {
-  //   setDisplayMenu(false)
-  // }
+  function handleClickOutside (e) {
+    setDisplayMenu(false)
+  }
 
   return (
     <React.Fragment>
-      <div ref = {node} class="flex items-center justify-between pt-4 px-6 w-screen">
+      <div  class="flex items-center justify-between pt-4 px-6 w-screen">
         <div class="cursor-pointer" onClick={() => history.push("/search")}>
           <svg width="30" height="30" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" fill="white" />
             <circle cx="20.5" cy="17.5" r="10.5" stroke="black" stroke-width={location.pathname === "/search" ? "4" : "2"}/>
@@ -49,14 +52,14 @@ function Navbar(props) {
                 <i class="fa fa-user-o" style={{color: 'black'}}/>}
               </NavLink>
             </div>
-            <div onClick={() => setDisplayMenu(!displayMenu)}> <i class="fa fa-lg fa-angle-down" /> </div>
+            <div  onClick={() => setDisplayMenu(!displayMenu)}> <i class="fa fa-lg fa-angle-down" /> </div>
         </div>
       </div>
       <div class="flex w-screen justify-end">
         {displayMenu ? (
-            <div class="shadow-sm absolute bg-white border rounded font-montserrat mt-1 mr-2">
-              <div class="py-2 px-3 hover:bg-gray-100 cursor-pointer" onClick={() => {history.push('/settings'); setDisplayMenu(!displayMenu);}}>Settings</div>
-              <div class="py-2 px-3 hover:bg-gray-100 cursor-pointer" style={navLinkStyle} onClick={() => {setDisplayMenu(!displayMenu); props.signInState(false, ''); history.push("/"); }}>Logout</div>
+            <div  class="shadow-sm absolute bg-white border rounded font-montserrat mt-1 mr-2">
+              <div ref = {node} class="py-2 px-3 hover:bg-gray-100 cursor-pointer" onClick={() => {history.push('/settings'); setDisplayMenu(!displayMenu);}}>Settings</div>
+              <div ref = {node2} class="py-2 px-3 hover:bg-gray-100 cursor-pointer" style={navLinkStyle} onClick={() => {setDisplayMenu(!displayMenu); props.signInState(false, ''); history.push("/"); }}>Logout</div>
             </div>
           ) : null
         }
