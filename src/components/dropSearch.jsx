@@ -44,27 +44,32 @@ class DropSearch extends Component {
             })
         }
     }
-    suggestionSelected (title, year) {
+    suggestionSelected (title, year, id) {
         this.setState({
             text:title,
             items: [],
             date: year,
         })
         this.props.onChange2(title, year)
-        this.props.getMovieInfo(title)
+        this.props.getMovieInfo(title, id)
     }
     renderSuggestions = () => {
         if (this.state.items.length === 0) {
             return null;
         }
             return (
-                <ul  class = "absolute border-4 border-grey-600 bg-gray-700 "> 
-                    {this.state.items.map((item) => <li class = "hover:opacity-100 focus:shadow-outline  cursor-pointer"onClick = {()=>this.suggestionSelected(item.title, item.release_date)}>
-                        <div  class={item.release_date ? "hover:opacity-100 focus:shadow-outline" : item.release_date = 'N/A' }>
-                            <h6 class = "text-white">
-                            {item.title} ({item.release_date.split('-')[0]})
-                            </h6>
+                <ul  class = "absolute overflow-scroll h-64  border-4 border-grey-800 bg-gray-200 w-64 "> 
+                    {this.state.items.map((item) => <li class = "hover:opacity-100 focus:shadow-outline  cursor-pointer" onClick = {()=>this.suggestionSelected(item.title, item.release_date, item.id)}>
+                        <div  class={item.release_date ? "hover:opacity-100 focus:shadow-outline" : item.release_date = '-' }>
+                            <div class=" self-center  h-24 w-64 flex bg-cover "> 
+                                <img class = "h-24 w-16" src = {item.poster_path!==null ?'https://image.tmdb.org/t/p/w500'+ item.poster_path : "http://pngimg.com/uploads/mario/mario_PNG53.png"}/>
+                                <div class="flex flex-col pl-4 ">
+                                    <p class="text-md font-semibold text-black">{item.title}</p>
+                                    <p class="text-xs text-black">{(item.release_date.split('-')[0])}</p>
+                                </div> 
+                            </div>    
                         </div>
+                        <br/>
                     </li>)}
                 </ul>
             )
