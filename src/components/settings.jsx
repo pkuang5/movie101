@@ -157,7 +157,7 @@ class Settings extends Component {
                         </div>
                     </div>
                     <div class = "flex mt-6">
-                        <button  onClick={(e) => this.handleSubmit(e)} class="  text-sm border-solid border-2 border-color-beige  py-2 px-4 rounded" type="button">
+                        <button  onClick={(e) => this.handleSubmit(e)} class="  text-sm border-solid border-2 border-color-beige  py-2 px-4 rounded hover:opacity-75" type="button">
                             Save Changes
                         </button>
                     </div>

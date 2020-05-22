@@ -22,11 +22,9 @@ class Layout extends Component {
                         </div>
                     </div>
                     <div class = " h-full mt-24 bg-orange-400" >
-                        {/* <div class = "h-64 w-full border border-blue-800 border-width-4 bg-red-400"> */}
                             <div class = "bg-blue-300 mt-24 h-auto">
                                 movies images
                             </div>
-                        {/* </div> */}
                         <button class = "text-sm border-2 border-gray-600 mt-8 py-2 px-4 w-1/2  h-12">submit</button>
                         <button class = "pl-40">featured</button>
                     </div>

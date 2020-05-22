@@ -57,7 +57,7 @@ class App extends Component {
           <Navbar signInState={this.signInState} username={this.state.username} />
           <Switch>
             <Route path="/" exact strict component={() => <Feed signInState={this.signInState} googleId={this.state.googleId} />}></Route>
-            <Route path="/editor" exact strict component={() => <Editor googleId={this.state.googleId} />}></Route>
+            <Route path="/editor" exact strict component={() => <Editor googleId={this.state.googleId} username = {this.state.username}/>}></Route>
             <Route path="/discover" exact strict component={() => <Discover/>}></Route>
             <Route path="/settings" exact strict component={() => <Settings googleId={this.state.googleId} />}></Route>
             <Route path="/search" exact strict component={() => <Search googleId={this.state.googleId} username={this.state.username} />}></Route>

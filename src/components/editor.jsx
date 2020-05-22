@@ -4,6 +4,8 @@ import { render } from '@testing-library/react';
 import Noty from 'noty'
 import 'noty/lib/noty.css'
 import 'noty/lib/themes/bootstrap-v4.css'
+import 'font-awesome/css/font-awesome.min.css'
+import {Link} from 'react-router-dom'
 import Switch from "react-switch";
 import DropSearch from './dropSearch'
 
@@ -21,12 +23,25 @@ class Editor extends Component {
            movieId: '',
            change: '',
            featured: true,
-           images: [],
            specificImages: [],
            imagesToStore: [],
-           checked: true
+           checked: true,
+           previewRating: 5,
+           
         };
    }
+  
+  
+   fiveStar = () => {
+    const stars = []
+    for (let i = 0; i < this.state.previewRating; i++) {
+        stars.push(<i class="fa fa-star fa-2x text-blue-300 pr-1 cursor-pointer" onMouseOver={() => this.setState({previewRating:(i+1)})} onMouseLeave={() => this.setState({previewRating:(this.state.movieRating)})} onClick={() => this.setState({movieRating:(i+1),previewRating:(i+1), change: true})}></i>)
+    }
+    for (let i = this.state.previewRating; i < 5; i++) {
+        stars.push(<i class="fa fa-star fa-2x text-gray-300 pr-1 cursor-pointer" onMouseOver={() => this.setState({previewRating:(i+1)})} onMouseLeave={() => this.setState({previewRating:(this.state.movieRating)})} onClick={() => this.setState({movieRating:(i+1),previewRating:(i+1), change: true})} ></i>)
+    }
+    return stars
+}
   showNotification = () => {
       new Noty({
           type: 'success',
@@ -54,13 +69,12 @@ class Editor extends Component {
       
       return `${month<10?`0${month}`:`${month}`}${separator}${date}${separator}${year}`
       }
-    getMovieInfo = (title) => {
+    getMovieInfo = (title, id) => {
       if (this.state.change) {
         this.setState({images: []})
         this.setState({specificImages: []})
         let url = ''.concat('https://api.themoviedb.org/3/', 'search/movie?api_key=', process.env.REACT_APP_MOVIEDB_API_KEY, '&query=', title);
         fetch(url).then(result=>result.json()).then((data)=>{
-          let stateList = this.state.images;
                 var i
                 for (i in data.results) {
                   let movieEntry = {
@@ -68,19 +82,22 @@ class Editor extends Component {
                     title: data.results[i].title,
                     id: data.results[i].id
                   }
-                  if (movieEntry.image !== 'https://image.tmdb.org/t/p/w500null'){
-                    stateList.push(movieEntry)
+                  if (movieEntry.id === id && movieEntry.image === 'https://image.tmdb.org/t/p/w500null'){
+                    this.setState({
+                      movieImage: "http://pngimg.com/uploads/mario/mario_PNG53.png",
+                      movieId: movieEntry.id
+                    })
+                  }
+                  else if (movieEntry.id === id) {
+                    this.setState({
+                      movieImage: movieEntry.image,
+                      movieId: movieEntry.id
+                    })
                   }
                 }
-                this.setState({images: stateList}) 
-                this.setState({
-                  movieImage:'https://image.tmdb.org/t/p/w500'+data.results[0].poster_path,
-                  movieId: data.results[0].id
-                })
-                this.getMovieImage(data.results[0].id)
+                this.getMovieImage(id)
         })
       }
-        
     }
     getMovieImage = (i) => {
       this.setState({specificImages: []})
@@ -126,7 +143,6 @@ class Editor extends Component {
           featured: false
         })
       }
-      console.log(this.state.featured)
     }
     handleImgClick = (e,i,n) => {
       if (this.state.movieImage === e) {
@@ -164,82 +180,67 @@ class Editor extends Component {
         return (
           <div class="flex flex-col font-montserrat w-screen items-center mt-3">
             <div class = "w-2/3  items-center">
-              <div class="flex grid grid-cols-2 gap-4">
-              <div class = " h-16  pt-8 ">
-                  <p class="font-serif text-3xl font-bold ">Editor</p>
-                  <p class="font-serif  font-bold pb-2">Fill in the information, search, and submit!</p>
-                  <div class = "grid grid-cols-2 gap-2   ">  
-                      <div class = "w-64 border-b border-b-2 border-gray-600">
-                          <p>Title</p>
-                          <DropSearch getMovieInfo = {this.getMovieInfo} onChange = {(e) => this.setState({ movieName: e.target.value, change: true}) } onChange2 = {(e, date) => this.setState({movieName: e, change: true, movieYear: date})}></DropSearch>
+              <div class = "pt-8 grid grid-row-2 ">
+                <div class = "grid grid-cols-2 h-64 mb-12">
+                  <div class = "w-full h-full pt-8  ">
+                        <p class="font-serif text-3xl font-bold pl-20">Editor</p>
+                        <div class = "grid grid-cols-2 gap-2 pl-20  ">  
+                          <div class = "w-56 border-b border-b-2 border-teal-300">
+                              <p>Title</p>
+                              <DropSearch getMovieInfo = {this.getMovieInfo} onChange = {(e) => this.setState({ movieName: e.target.value, change: true}) } onChange2 = {(e, date) => this.setState({movieName: e, change: true, movieYear: date})}></DropSearch>
+                          </div>
+                          <div class = "w-8 h-4 pt-12 pl-4">
+                              <svg onClick = {() => this.getMovieInfo(this.state.movieName)} class = "cursor-pointer" width="30" height="30" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" fill="white" />
+                                <circle cx="20.5" cy="17.5" r="10.5" stroke="black" stroke-width="2" />
+                                <line x1="28.1584" y1="25.244" x2="37.256" y2="34.3417" stroke="black" stroke-width="2" stroke-linecap="round" />
+                              </svg>
+                          </div>
                       </div>
-                      <div class = "w-8 h-4 pt-12 pl-4">
-                        <svg onClick = {() => this.getMovieInfo(this.state.movieName)} class = "cursor-pointer" width="30" height="30" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" fill="white" />
-                          <circle cx="20.5" cy="17.5" r="10.5" stroke="black" stroke-width="2" />
-                          <line x1="28.1584" y1="25.244" x2="37.256" y2="34.3417" stroke="black" stroke-width="2" stroke-linecap="round" />
-                        </svg>
+                      <div class = "pt-8  w-full h-64 items-center pl-20">
+                          <p class>Review</p>
+                          <textarea type = "textarea" onChange = {(e) => this.setState({ movieReview: e.target.value, change: true})} class="whitespace-normal flex-no-wrap text-sm border-2 border-teal-200  pb-24 px-2  w-full pr-8 h-full" placeholder="Description"/>
                       </div>
-                  </div>
-                  <div class = "pt-8  w-full h-48 pb-4 items-center ">
-                      <p class>Review</p>
-                      <textarea type = "textarea" onChange = {(e) => this.setState({ movieReview: e.target.value, change: true})} class="whitespace-normal flex-no-wrap text-sm border-2 border-gray-600  pb-24 px-2  w-11/12 pr-8 h-full" placeholder="Description"/>
-                  </div>
-                  <div class = "pt-8  h-48">
-                  <div class = "pt-2 grid grid-cols-3 gap-2 w-11/12"> 
-                      <div class = "w-2/3 ">
-                          <p>Rate</p>
-                          <select onChange = {(e) => this.setState({ movieRating: e.target.value, change: true})} class="w-full text-sm border-b border-b-2 border-gray-600  py-2 px-4  w-20 h-12">
-                            <option>5</option>
-                            <option>4</option>
-                            <option>3</option>
-                            <option>2</option>
-                            <option>1</option>
-                          </select>
-                      </div>
-                      <div class = " w-full ">
-                          <p>Date</p>
-                          <input onChange = {(e) => this.setState({ movieYear: e.target.value, change: true})} class= "w-full h-12 text-me  w-11/12 py-2 px-4 border-b border-b-2 border-gray-600"  type="text" placeholder={this.getCurrentDate('/')}/>
-                      </div>
-                      <div class = "items-center ml-10">
-                          {/* <p class ="">Featured?</p> */}
-                          {/* <select onChange = {this.handleFeatured} class="w-full text-sm  py-2 px-4  h-12 w-24 border-b border-b-2 border-gray-600">
-                            <option>Yes</option>
-                            <option>No</option>
-                          </select> */}
-                          <label>
-                          <span>Featured?</span>
-                          <Switch onChange={this.handleFeatured} checked={this.state.checked} />
-                        </label>
-                      </div>
-                  </div>
-                  <div class = "pt-4">
-                          <button onClick = {this.handleSubmit} class= "text-sm border-2 border-gray-600  py-2 px-4 w-11/12  h-12" type="button">
-                            Submit
-                          </button>
-                  </div>
-               </div>
-            </div>
-            <div class = "pt-8">
-                <p>Your search image results will be here. Take your pick!</p>
-                <div class = "overflow-x-scroll flex flex-no-wrap border h-48 p-2 cursor-pointer">
-                  {this.state.images.map(movieEntry =>    
-                    <img class ={this.state.movieImage === (movieEntry.image) ? "border-blue-400 border-solid border-4 w-32 m-2 h-40 hover:opacity-75" : "w-32 h-40 m-2"}src={movieEntry.image} alt= {movieEntry.title} onClick = {() => this.handleImgClick(movieEntry.image, movieEntry.id, movieEntry.title)}/>
-                  )}
                 </div>
-                <div class = "pt-8"></div>
-                <p>Your specific serach image results will be here. Take your pick!</p>
-                <div class = "flex text-sm border-solid border-2 border-color-gray  p-2 h-64"> 
-                    <div class="overflow-auto justify-between grid grid-cols-3 col-gap-2 row-gap-2 cursor-pointer">
+                <div class = "h-full pt-8 pb-8 mb-64 w-full">
+                  <div class = " ml-32 h-full w-1/2 border-2 border-teal-200 border-2 bg-cover" style={{backgroundImage: "url('" + this.state.movieImage + "')"}}/>
+                      <div class = "pt-8 pl-40">{this.fiveStar()}</div>
+                  </div>
+                </div>
+                <div class = "w-full h-full mt-24 " >    
+                  <div class = "flex text-sm border-solid border-2 border-teal-200  p-2 bg-gray-200 mt-24 h-auto w-4/5 ml-20">
+                    <div class="overflow-auto justify-between grid grid-cols-3 gap-8 cursor-pointer ">
                       {this.state.specificImages.map(movieImageEntry =>    
-                        <img class={this.state.imagesToStore.includes(movieImageEntry.image) ? " border-blue-400 border-solid border-4" : null }src={movieImageEntry.image} onClick = {() => this.handleSpecificImgClick(movieImageEntry.image)}></img>
+                        <div class = "hover:opacity-75 transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-105">
+                          <img class={this.state.imagesToStore.includes(movieImageEntry.image) ? " border-blue-400 border-solid border-4 " : null }src={movieImageEntry.image} onClick = {() => this.handleSpecificImgClick(movieImageEntry.image)}></img>
+                        </div>
                       )}
                     </div>
+                 </div>
+                  <div class = "flex grid grid-cols-3 pl-8 items-end ml-20 w-4/5 pt-2">
+                    <div class = "">
+                      <p class = "pt-2 pl-12">Date</p>
+                      <input onChange = {(e) => this.setState({ movieYear: e.target.value, change: true})} class= "w-3/5 h-12 text-lg  py-2 px-4 border-b border-b-2 border-teal-300"  type="text" placeholder={this.getCurrentDate('/')}/>
+                  </div>
+                  <Link to = {this.state.change?this.props.username + '/movies/' + this.state.movieId:'/editor'}>
+                    <button onClick = {this.handleSubmit} class= "hover:opacity-75 text-sm border-2 border-teal-200  py-2 px-4 w-11/12  h-12" type="button">
+                        Submit
+                    </button>
+                  </Link>
+                  <div class = "w-full items-center ml-16 ">
+                      <label>
+                          <p class = "pl-2 ">Featured?</p>
+                          <div class = " px-2">
+                             <Switch onChange={this.handleFeatured} checked={this.state.checked} onColor = "#1E90FF" height = {36} width = {88}/>
+                          </div>
+                      </label>
+                  </div>
                 </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
         );
     }
 }
 export default Editor;
+
