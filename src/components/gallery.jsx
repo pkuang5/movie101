@@ -8,6 +8,7 @@ function Gallery(props) {
     const [movies, setMovies] = useState([])
     const [displayedMovies, setDisplayedMovies] = useState([])
     const [moviesLoaded, setMoviesLoaded] = useState(true)
+    const [searchQuery, setSearchQuery] = useState('')
     let history = useHistory();
 
     useEffect(() => {
@@ -27,7 +28,7 @@ function Gallery(props) {
                 })
                 setMovies(movies.concat(temp))
                 setDisplayedMovies(movies.concat(temp))
-                if (movies.length !== 0) setMoviesLoaded(true)
+                if (!temp || !temp.length) setMoviesLoaded(false)
             })
         }
     }, [props.googleId, props.featured]);
@@ -40,6 +41,7 @@ function Gallery(props) {
     }
 
     const handleSearch = (e) => {
+        setSearchQuery(e.target.value)
         let tempArr = movies;
         setDisplayedMovies(tempArr.filter(function(value){ return value.name.toLowerCase().includes(e.target.value.toLowerCase());}))
     }
@@ -54,13 +56,15 @@ function Gallery(props) {
                 <input onChange={handleSearch} class="appearance-none w-full text-gray-700 border-black-600 mb-3 focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="search"/>
             </div>
             {moviesLoaded ?
-                <div class="grid grid-cols-3 md:grid-cols-4 lg:col-gap-12 md:col-gap-6 col-gap-2 lg:row-gap-10 md:row-gap-5 row-gap-2 grid-rows-2 mb-5">
-                {displayedMovies.map(movieEntry =>
-                    <div class="transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110 flex flex-col cursor-pointer justify-center" onClick={() => handleMovieClick(movieEntry.id)}>
-                        <img class="w-full" src={movieEntry.coverImageURL} alt={movieEntry.name} />
+                displayedMovies && displayedMovies.length ? 
+                    <div class="grid grid-cols-3 md:grid-cols-4 lg:col-gap-12 md:col-gap-6 col-gap-2 lg:row-gap-10 md:row-gap-5 row-gap-2 grid-rows-2 mb-5">
+                    {displayedMovies.map(movieEntry =>
+                        <div class="transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110 flex flex-col cursor-pointer justify-center" onClick={() => handleMovieClick(movieEntry.id)}>
+                            <img class="w-full" src={movieEntry.coverImageURL} alt={movieEntry.name} />
+                        </div>)}
                     </div>
-                )}
-                </div>
+                    :
+                    <p> No search results for {searchQuery}</p>
                 : 
                 props.localUser ? 
                 <div class="transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110 flex flex-col cursor-pointer w-40 h-56 bg-gray-200 justify-center items-center text-gray-700 hover:bg-gray-300" onClick={() => history.push('/editor')}>
