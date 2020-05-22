@@ -19,12 +19,9 @@ function Movie(props){
     const [edited, setEdited] = useState(false)
     const [editImage, setEditImage] = useState(false)
     const [editedImages, setEditedImages] = useState(false)
-    const [localUser, setLocalUser] = useState(false)
     let history = useHistory();
-    const location = useLocation();
 
     useEffect(() => {
-        if (location.localUser) setLocalUser(true)
         var userInfo = firebase.database().ref('users').orderByChild('userName').equalTo(props.username);
         userInfo.once("value", (snapshot) => {
             snapshot.forEach((data) => {
@@ -42,7 +39,7 @@ function Movie(props){
                 })
             });
         });
-    }, [props.movieId, props.username, location.localUser]);
+    }, [props.movieId, props.username]);
 
     function getMovieImages() {
         let url = ''.concat('https://api.themoviedb.org/3/', 'movie/' ,props.movieId , '/images', '?api_key=', process.env.REACT_APP_MOVIEDB_API_KEY);
@@ -83,10 +80,10 @@ function Movie(props){
     function fiveStar(){
         const stars = []
         for (let i = 0; i < previewRating; i++) {
-            stars.push(<i class="fa fa-star fa-2x text-yellow-300 pr-1 cursor-pointer" onMouseOver={() => localUser ? setPreviewRating(i+1): null} onMouseLeave={() => localUser ? setPreviewRating(rating): null} onClick={() => localUser? updateRating(i+1):null}></i>)
+            stars.push(<i class="fa fa-star fa-2x text-yellow-300 pr-1 cursor-pointer" onMouseOver={() => props.localUser ? setPreviewRating(i+1): null} onMouseLeave={() => props.localUser ? setPreviewRating(rating): null} onClick={() => props.localUser? updateRating(i+1):null}></i>)
         }
         for (let i = previewRating; i < 5; i++) {
-            stars.push(<i class="fa fa-star fa-2x text-gray-300 pr-1 cursor-pointer" onMouseOver={() => localUser ? setPreviewRating(i+1): null} onMouseLeave={() => localUser ? setPreviewRating(rating): null} onClick={() => localUser? updateRating(i+1):null}></i>)
+            stars.push(<i class="fa fa-star fa-2x text-gray-300 pr-1 cursor-pointer" onMouseOver={() => props.localUser ? setPreviewRating(i+1): null} onMouseLeave={() => props.localUser ? setPreviewRating(rating): null} onClick={() => props.localUser? updateRating(i+1):null}></i>)
         }
         return stars
     }
@@ -107,12 +104,12 @@ function Movie(props){
                     <div class = "flex flex-col justify-between w-3/4 pl-5 font-montserrat">
                         <div class="flex w-full justify-between items-center">
                             <div>{fiveStar()}</div>
-                            {localUser ? <i class="fa fa-trash fa-lg hover:text-gray-600 cursor-pointer" onClick={handleDeleteMovie}></i>:null}
+                            {props.localUser ? <i class="fa fa-trash fa-lg hover:text-gray-600 cursor-pointer" onClick={handleDeleteMovie}></i>:null}
                         </div>
                         <div class="flex flex-col bg-gray-100 p-3" style={{height:'19rem'}}>
                             <div class="flex justify-between">
                                 <p class="text-md font-semibold mr-2">Review</p>
-                            {localUser ?
+                            {props.localUser ?
                                 readOnly ? 
                                     <i class="fa fa-pencil fa-sm hover:text-gray-600 cursor-pointer" onClick={() => setReadOnly(false)}></i>
                                     : 
@@ -140,7 +137,7 @@ function Movie(props){
                     <div class="flex justify-between">
                         <p class = "text-xl font-semibold mb-4">Images</p>
                         {
-                            localUser ?
+                            props.localUser ?
                                 editImage ?
                                     <i class="fa fa-check fa-sm hover:text-gray-600 cursor-pointer" onClick={() => {
                                         if (displayedImages !== images) {
@@ -178,7 +175,7 @@ function Movie(props){
         <div class="flex flex-col items-center w-screen p-6 font-montserrat sm:hidden">
             <div class="flex w-full justify-between">
                 <p class="text-sm">{dateOfEntry}</p>
-                {localUser ? <i class="fa fa-trash fa-lg hover:text-gray-600 cursor-pointer" onClick={handleDeleteMovie}></i>:null}
+                {props.localUser ? <i class="fa fa-trash fa-lg hover:text-gray-600 cursor-pointer" onClick={handleDeleteMovie}></i>:null}
             </div>
             <p class="text-3xl text-center font-semibold my-2">{name}</p>
             <img class="w-2/3"src={coverImage} alt="poster"></img>
@@ -188,7 +185,7 @@ function Movie(props){
             <div class="flex flex-col w-full my-3" style={{height:'19rem'}}>
                 <div class="flex justify-between">
                     <p class="text-xl font-semibold">Review</p>
-                {localUser ?
+                {props.localUser ?
                     readOnly ? 
                         <i class="fa fa-pencil fa-sm hover:text-gray-600 cursor-pointer" onClick={() => setReadOnly(false)}></i>
                         : 
@@ -214,7 +211,7 @@ function Movie(props){
                     <div class="flex justify-between">
                         <p class = "text-xl font-semibold mb-4">Images</p>
                         {
-                            localUser ?
+                            props.localUser ?
                                 editImage ?
                                     <i class="fa fa-check fa-sm hover:text-gray-600 cursor-pointer" onClick={() => {
                                         if (displayedImages !== images) {

@@ -9,6 +9,7 @@ function Gallery(props) {
     const [displayedMovies, setDisplayedMovies] = useState([])
     const [moviesLoaded, setMoviesLoaded] = useState(true)
     const [searchQuery, setSearchQuery] = useState('')
+    const [imagesLoaded, setImagesLoaded] = useState(false)
     let history = useHistory();
 
     useEffect(() => {
@@ -29,15 +30,13 @@ function Gallery(props) {
                 setMovies(movies.concat(temp))
                 setDisplayedMovies(movies.concat(temp))
                 if (!temp || !temp.length) setMoviesLoaded(false)
+                setImagesLoaded(true)
             })
         }
     }, [props.googleId, props.featured]);
 
     function handleMovieClick(id) {
-        history.push({
-            pathname: "/" + props.username + "/movies/" + id,
-            localUser: props.localUser,
-        });
+        history.push("/" + props.username + "/movies/" + id);
     }
 
     const handleSearch = (e) => {
@@ -64,7 +63,7 @@ function Gallery(props) {
                         </div>)}
                     </div>
                     :
-                    <p> No search results for {searchQuery}</p>
+                    imagesLoaded ? <p> No search results for {searchQuery}</p> : null
                 : 
                 props.localUser ? 
                 <div class="transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110 flex flex-col cursor-pointer w-40 h-56 bg-gray-200 justify-center items-center text-gray-700 hover:bg-gray-300" onClick={() => history.push('/editor')}>
