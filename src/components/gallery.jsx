@@ -7,6 +7,9 @@ function Gallery(props) {
 
     const [movies, setMovies] = useState([])
     const [displayedMovies, setDisplayedMovies] = useState([])
+    const [moviesLoaded, setMoviesLoaded] = useState(true)
+    const [searchQuery, setSearchQuery] = useState('')
+    const [imagesLoaded, setImagesLoaded] = useState(false)
     let history = useHistory();
 
     useEffect(() => {
@@ -23,21 +26,21 @@ function Gallery(props) {
                         coverImageURL: data.val().coverImage
                     }
                     temp.push(movie);
-                });
-                setMovies(movies.concat(temp));
-                setDisplayedMovies(movies.concat(temp));
+                })
+                setMovies(movies.concat(temp))
+                setDisplayedMovies(movies.concat(temp))
+                if (!temp || !temp.length) setMoviesLoaded(false)
+                setImagesLoaded(true)
             })
         }
     }, [props.googleId, props.featured]);
 
     function handleMovieClick(id) {
-        history.push({
-            pathname: "/" + props.username + "/movies/" + id,
-            localUser: props.localUser,
-        });
+        history.push("/" + props.username + "/movies/" + id);
     }
 
     const handleSearch = (e) => {
+        setSearchQuery(e.target.value)
         let tempArr = movies;
         setDisplayedMovies(tempArr.filter(function(value){ return value.name.toLowerCase().includes(e.target.value.toLowerCase());}))
     }
@@ -51,14 +54,16 @@ function Gallery(props) {
                 </svg>
                 <input onChange={handleSearch} class="appearance-none w-full text-gray-700 border-black-600 mb-3 focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="search"/>
             </div>
-            {movies.length !== 0 ?
-                <div class="grid grid-cols-4 lg:col-gap-12 md:col-gap-6 col-gap-2 lg:row-gap-10 md:row-gap-5 row-gap-2 grid-rows-2">
-                {displayedMovies.map(movieEntry =>
-                    <div class="transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110 flex flex-col cursor-pointer justify-center" onClick={() => handleMovieClick(movieEntry.id)}>
-                        <img class="w-full" src={movieEntry.coverImageURL} alt={movieEntry.name} />
+            {moviesLoaded ?
+                displayedMovies && displayedMovies.length ? 
+                    <div class="grid grid-cols-3 md:grid-cols-4 lg:col-gap-12 md:col-gap-6 col-gap-2 lg:row-gap-10 md:row-gap-5 row-gap-2 grid-rows-2 mb-5">
+                    {displayedMovies.map(movieEntry =>
+                        <div class="transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110 flex flex-col cursor-pointer justify-center" onClick={() => handleMovieClick(movieEntry.id)}>
+                            <img class="w-full" src={movieEntry.coverImageURL} alt={movieEntry.name} />
+                        </div>)}
                     </div>
-                )}
-                </div>
+                    :
+                    imagesLoaded ? <p> No search results for {searchQuery}</p> : null
                 : 
                 props.localUser ? 
                 <div class="transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110 flex flex-col cursor-pointer w-40 h-56 bg-gray-200 justify-center items-center text-gray-700 hover:bg-gray-300" onClick={() => history.push('/editor')}>
