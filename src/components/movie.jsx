@@ -92,7 +92,9 @@ function Movie(props){
     }
 
     return (
-        <div class="flex w-screen justify-center mt-3">
+        <React.Fragment>
+        {/* non-mobile UI */}
+        <div class="sm:flex w-screen justify-center mt-3 hidden">
             <div class = "w-2/3">
                 <div class="flex justify-between font-montserrat">
                     <p class="text-3xl font-semibold">{name}</p>
@@ -161,11 +163,9 @@ function Movie(props){
                         {displayedImages ? displayedImages.map(image => 
                             <img src={image} alt="movie still" class={images && images.includes(image) && editImage ? "cursor-pointer border-yellow-400 border-solid border-4" : "cursor-pointer"} 
                             onClick={() => {
+                                if (!images) setImages([image])
                                 if (images.includes(image)) setImages(images.filter(url => url !== image))
-                                else {
-                                    if (!images) setImages([image])
-                                    else if (!images.includes(image)) setImages([...images,image])
-                                }
+                                else if (!images.includes(image)) setImages([...images,image])
                                 setEditedImages(true)
                             }}/>
                         ): null}
@@ -173,6 +173,80 @@ function Movie(props){
                 </div>
             </div>
         </div>
+
+        {/* mobile UI */}
+        <div class="flex flex-col items-center w-screen p-6 font-montserrat sm:hidden">
+            <div class="flex w-full justify-between">
+                <p class="text-sm">{dateOfEntry}</p>
+                {localUser ? <i class="fa fa-trash fa-lg hover:text-gray-600 cursor-pointer" onClick={handleDeleteMovie}></i>:null}
+            </div>
+            <p class="text-3xl text-center font-semibold my-2">{name}</p>
+            <img class="w-2/3"src={coverImage} alt="poster"></img>
+            <div class="my-3">
+                {fiveStar()}
+            </div>
+            <div class="flex flex-col w-full my-3" style={{height:'19rem'}}>
+                <div class="flex justify-between">
+                    <p class="text-xl font-semibold">Review</p>
+                {localUser ?
+                    readOnly ? 
+                        <i class="fa fa-pencil fa-sm hover:text-gray-600 cursor-pointer" onClick={() => setReadOnly(false)}></i>
+                        : 
+                        <i class="fa fa-check fa-sm hover:text-gray-600 cursor-pointer" onClick={() => {
+                            setReadOnly(true)
+                            if (edited) {
+                                showNotification()
+                                firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId).update({description: description})
+                            }
+                        }}></i> 
+                    : null
+                }
+                </div>
+                <textarea type = "textarea" 
+                onChange={(e) => {
+                    setDescription(e.target.value)
+                    setEdited(true)
+                }}
+                class={readOnly ? "p-2 text-sm w-full h-full outline-none resize-none": "p-2 text-sm w-full h-full bg-gray-100 resize-none"} 
+                defaultValue={description} readOnly={readOnly}/>
+            </div>
+            <div class = "flex flex-col w-full my-3">
+                    <div class="flex justify-between">
+                        <p class = "text-xl font-semibold mb-4">Images</p>
+                        {
+                            localUser ?
+                                editImage ?
+                                    <i class="fa fa-check fa-sm hover:text-gray-600 cursor-pointer" onClick={() => {
+                                        if (displayedImages !== images) {
+                                            setEditImage(false)
+                                            setDisplayedImages(images)
+                                            if (editedImages){
+                                                showNotification()
+                                                firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId).update({images: images})
+                                                setEditedImages(false)
+                                            }
+                                        }
+                                    }}></i>
+                                :
+                                    <i class="fa fa-pencil fa-sm hover:text-gray-600 cursor-pointer" onClick={() => {getMovieImages(); setEditImage(true);}}></i>
+                            :
+                            null
+                        }
+                    </div>
+                    <div class="w-full grid grid-cols-1 gap-3">
+                        {displayedImages ? displayedImages.map(image => 
+                            <img src={image} alt="movie still" class={images && images.includes(image) && editImage ? "cursor-pointer border-yellow-400 border-solid border-4" : "cursor-pointer"} 
+                            onClick={() => {
+                                if (!images) setImages([image])
+                                if (images.includes(image)) setImages(images.filter(url => url !== image))
+                                else if (!images.includes(image)) setImages([...images,image])
+                                setEditedImages(true)
+                            }}/>
+                        ): null}
+                    </div>
+                </div>
+        </div>
+        </React.Fragment>
     );
 }
 

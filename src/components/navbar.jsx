@@ -11,10 +11,6 @@ function Navbar(props) {
   let location = useLocation()
   let node = useRef()
   let node2 = useRef()
-  let node3 = useRef()
-  let node4 = useRef()
-  let node5 = useRef()
-  let node6 = useRef()
   let navLinkStyle = { color: "black", textDecoration: "none", paddingRight: "0.3rem", paddingLeft: "0.3rem", paddingBottom: "0.1rem" };
   let activeStyle = { fontWeight: 'bolder' };
   
@@ -23,7 +19,7 @@ function Navbar(props) {
   // }, []) 
   
   // function handleClick (e) {
-  //   if (node.current === e.path[0] || node2.current === e.path[0] || node3.current === e.path[0] || node4.current === e.path[0]) {
+  //   if (node.current === e.path[0] || node2.current === e.path[0]) {
   //       return;
   //   }
   //   handleClickOutside(e)
@@ -81,14 +77,14 @@ function Navbar(props) {
         </div>
       </div>
       {displayMenu ?
-        <div class="flex w-full bg-black absolute justify-end transition-opacity ease-linear duration-1000 opacity-100 sm:hidden">
-          <div class="flex flex-col text-white text-right px-3">
-              <p ref={node} onClick={() => {history.push('/'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/" ? "font-extrabold": null}>Feed</p>
-              <p ref={node2} onClick={() => {history.push('/editor'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/editor" ? "font-extrabold": null}>Editor</p>
-              <p ref={node3} onClick={() => {history.push('/discover'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/discover" ? "font-extrabold": null}>Discover</p>
-              <p ref={node4} onClick={() => {history.push('/' + props.username); setDisplayMenu(!displayMenu)}} class={location.pathname === "/" + props.username ? "font-extrabold": null}>Profile</p>
-              <p ref={node5} onClick={() => {history.push('/settings'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/settings" ? "font-extrabold": null}>Settings</p>
-              <p ref={node6} onClick={() => {history.push('/'); props.signInState(false, ''); setDisplayMenu(!displayMenu)}} class={location.pathname === "/" + props.username ? "font-extrabold": null}>Logout</p>
+        <div class="flex w-screen bg-black absolute p-3 sm:hidden">
+          <div class="grid grid-cols-1 gap-2 text-white">
+              <p onClick={() => {history.push('/'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/" ? "font-extrabold w-full": "w-full"}>Feed</p>
+              <p onClick={() => {history.push('/editor'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/editor" ? "font-extrabold w-full": "w-full"}>Editor</p>
+              <p onClick={() => {history.push('/discover'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/discover" ? "font-extrabold w-full": "w-full"}>Discover</p>
+              <p onClick={() => {history.push('/' + props.username); setDisplayMenu(!displayMenu)}} class={location.pathname === "/" + props.username ? "font-extrabold w-full": "w-full"}>Profile</p>
+              <p onClick={() => {history.push('/settings'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/settings" ? "font-extrabold w-full": "w-full"}>Settings</p>
+              <p onClick={() => {history.push('/'); props.signInState(false, ''); setDisplayMenu(!displayMenu)}} >Logout</p>
           </div>
         </div>
         : null}
