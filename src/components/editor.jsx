@@ -27,10 +27,13 @@ class Editor extends Component {
            imagesToStore: [],
            checked: true,
            previewRating: 5,
+           presentDay: ''
            
         };
    }
-  
+   componentDidMount = () => {
+    this.setState({presentDay: this.getCurrentDate('/')})
+   }
   
    fiveStar = () => {
     const stars = []
@@ -68,6 +71,7 @@ class Editor extends Component {
       let year = newDate.getFullYear();
       
       return `${month<10?`0${month}`:`${month}`}${separator}${date}${separator}${year}`
+
       }
     getMovieInfo = (title, id) => {
       if (this.state.change) {
@@ -122,11 +126,12 @@ class Editor extends Component {
             firebase.database().ref(`users/${this.props.googleId}/journals/${this.state.movieId}`).set({
                 name: this.state.movieName,
                 coverImage:  this.state.movieImage,
-                dateOfEntry: this.state.movieYear,
+                dateOfEntry: this.state.presentDay,
                 rating: this.state.movieRating,
                 description: this.state.movieReview,
                 featured: this.state.featured,
-                images: this.state.imagesToStore
+                images: this.state.imagesToStore,
+                movieYear: this.state.movieYear
             })  
         }
         this.setState({movieRating: '5'})
@@ -142,23 +147,6 @@ class Editor extends Component {
         this.setState({
           featured: false
         })
-      }
-    }
-    handleImgClick = (e,i,n) => {
-      if (this.state.movieImage === e) {
-        this.setState({
-          movieImage: '',
-        })
-      }
-      else {
-        this.setState({
-          movieImage:e,
-          movieId: i,
-          movieName:n,
-          imagesToStore: []
-        })
-        this.getMovieImage(i)
-        this.showImage()
       }
     }
     handleSpecificImgClick = (e) => {
@@ -219,7 +207,7 @@ class Editor extends Component {
                   <div class = "flex grid grid-cols-3 pl-8 items-end ml-20 w-4/5 pt-2">
                     <div class = "">
                       <p class = "pt-2 pl-12">Date</p>
-                      <input onChange = {(e) => this.setState({ movieYear: e.target.value, change: true})} class= "w-3/5 h-12 text-lg  py-2 px-4 border-b border-b-2 border-teal-300"  type="text" placeholder={this.getCurrentDate('/')}/>
+                      <input onChange = {(e) => this.setState({ presentDay: e.target.value, change: true,})} class= "w-3/5 h-12 text-lg  py-2 px-4 border-b border-b-2 border-teal-300"  type="text" placeholder={this.state.presentDay}/>
                   </div>
                   <Link to = {this.state.change?this.props.username + '/movies/' + this.state.movieId:'/editor'}>
                     <button onClick = {this.handleSubmit} class= "hover:opacity-75 text-sm border-2 border-teal-200  py-2 px-4 w-11/12  h-12" type="button">
