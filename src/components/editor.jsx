@@ -181,7 +181,7 @@ class Editor extends Component {
               <div class = "grid grid-row-2 ">
                 <div class = "grid grid-cols-2 h-64 mb-12">
                   <div class = "w-full h-full ">
-                        <p class="font-serif text-3xl font-bold pb-4 ">Editor</p>
+                        <p class="font-montserrat text-3xl font-bold pb-4 ">Editor</p>
                         <div class = "grid grid-cols-2 gap-2 ">  
                           <div class = "w-64 border-b border-b-2 border-teal-300">
                               <p>Title</p>

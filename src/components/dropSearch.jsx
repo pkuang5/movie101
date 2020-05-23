@@ -58,7 +58,7 @@ class DropSearch extends Component {
             return null;
         }
             return (
-                <ul  class = "absolute overflow-scroll h-64  border-4 border-grey-800 bg-gray-200 w-64 "> 
+                <ul  class = "absolute overflow-scroll h-64  border-4 border-grey-800 bg-gray-100 w-64 "> 
                     {this.state.items.map((item) => <li class = "hover:opacity-100 focus:shadow-outline  cursor-pointer" onClick = {()=>this.suggestionSelected(item.title, item.release_date, item.id)}>
                         <div  class={item.release_date ? "hover:opacity-100 focus:shadow-outline" : item.release_date = '-' }>
                             <div class=" self-center  h-24 w-64 flex bg-cover "> 
@@ -78,7 +78,7 @@ class DropSearch extends Component {
         const {text} = this.state;
         return (
             <div ref = {node => this.node = node} class= "h-10 object-bottom ">
-                <input id = "searchBar" class = "h-full rounded  cursor-pointer w-full " value = {text} onChange = {this.onTextChanged} type = "text"/>
+                <input autocomplete="off" id = "searchBar" class = "h-full rounded  cursor-pointer w-full " value = {text} onChange = {this.onTextChanged} type = "text"/>
                 {this.renderSuggestions()}
             </div>
         )
