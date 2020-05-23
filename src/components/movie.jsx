@@ -91,7 +91,7 @@ function Movie(props){
     return (
         <React.Fragment>
         {/* non-mobile UI */}
-        <div class="sm:flex w-screen justify-center mt-3 hidden">
+        <div class="md:flex w-screen justify-center mt-3 hidden">
             <div class = "w-2/3">
                 <div class="flex justify-between font-montserrat">
                     <p class="text-3xl font-semibold">{name}</p>
@@ -172,7 +172,7 @@ function Movie(props){
         </div>
 
         {/* mobile UI */}
-        <div class="flex flex-col items-center w-screen p-6 font-montserrat sm:hidden">
+        <div class="flex flex-col items-center w-screen p-6 font-montserrat md:hidden">
             <div class="flex w-full justify-between">
                 <p class="text-sm">{dateOfEntry}</p>
                 {props.localUser ? <i class="fa fa-trash fa-lg hover:text-gray-600 cursor-pointer" onClick={handleDeleteMovie}></i>:null}
