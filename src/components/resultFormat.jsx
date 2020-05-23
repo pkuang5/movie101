@@ -7,8 +7,7 @@ function ResultFormat(props) {
 
     if (props.searchType === 'Films') {
         return (
-            //TODO: implement movie page and route to that 
-            <div  class="flex w-full h-24 font-montserrat my-2 cursor-pointer">
+            <div onClick={() => history.push('/films/' + props.result.id)} class="flex w-full h-24 font-montserrat my-2 cursor-pointer">
                 <img class="flex h-full" src={'https://image.tmdb.org/t/p/w500' + props.result.poster_path}></img>
                 <div class="ml-3 mt-3 flex-col">
                     <div class="font-montserrat text-md font-semibold">{props.result.title}</div>
