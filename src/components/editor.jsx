@@ -27,7 +27,8 @@ class Editor extends Component {
            imagesToStore: [],
            checked: true,
            previewRating: 5,
-           presentDay: ''
+           presentDay: '',
+           searched: false
            
         };
    }
@@ -75,6 +76,8 @@ class Editor extends Component {
       }
     getMovieInfo = (title, id) => {
       if (this.state.change) {
+        let flag = false
+        this.setState({searched: true})
         this.setState({images: []})
         this.setState({specificImages: []})
         let url = ''.concat('https://api.themoviedb.org/3/', 'search/movie?api_key=', process.env.REACT_APP_MOVIEDB_API_KEY, '&query=', title);
@@ -92,14 +95,21 @@ class Editor extends Component {
                       movieId: movieEntry.id
                     })
                   }
-                  else if (movieEntry.id === id) {
+                  else if (movieEntry.id === id ) {
                     this.setState({
                       movieImage: movieEntry.image,
                       movieId: movieEntry.id
                     })
+                    flag = true
                   }
                 }
-                this.getMovieImage(id)
+                if (flag === false) {
+                  this.setState ({
+                    movieImage: ('https://image.tmdb.org/t/p/w500'+data.results[0].poster_path),
+                    movieId: data.results[0].id
+                  })
+                }
+                this.getMovieImage(this.state.movieId)
         })
       }
     }
@@ -118,8 +128,8 @@ class Editor extends Component {
                 }
               }
               this.setState({specificImages: imageList}) 
-      })
-  }
+        })
+    }
     handleSubmit = () => {
         if (this.state.change) {
           this.showNotification()
@@ -168,12 +178,12 @@ class Editor extends Component {
         return (
           <div class="flex flex-col font-montserrat w-screen items-center mt-3">
             <div class = "w-2/3  items-center">
-              <div class = "pt-8 grid grid-row-2 ">
+              <div class = "grid grid-row-2 ">
                 <div class = "grid grid-cols-2 h-64 mb-12">
-                  <div class = "w-full h-full pt-8  ">
-                        <p class="font-serif text-3xl font-bold pl-20">Editor</p>
-                        <div class = "grid grid-cols-2 gap-2 pl-20  ">  
-                          <div class = "w-56 border-b border-b-2 border-teal-300">
+                  <div class = "w-full h-full ">
+                        <p class="font-serif text-3xl font-bold pb-4 ">Editor</p>
+                        <div class = "grid grid-cols-2 gap-2 ">  
+                          <div class = "w-64 border-b border-b-2 border-teal-300">
                               <p>Title</p>
                               <DropSearch getMovieInfo = {this.getMovieInfo} onChange = {(e) => this.setState({ movieName: e.target.value, change: true}) } onChange2 = {(e, date) => this.setState({movieName: e, change: true, movieYear: date})}></DropSearch>
                           </div>
@@ -184,27 +194,29 @@ class Editor extends Component {
                               </svg>
                           </div>
                       </div>
-                      <div class = "pt-8  w-full h-64 items-center pl-20">
-                          <p class>Review</p>
-                          <textarea type = "textarea" onChange = {(e) => this.setState({ movieReview: e.target.value, change: true})} class="whitespace-normal flex-no-wrap text-sm border-2 border-teal-200  pb-24 px-2  w-full pr-8 h-full" placeholder="Description"/>
+                      <div class = "pt-8 mt-8 w-full h-full items-center">
+                          <p >Review</p>
+                          <textarea type = "textarea" onChange = {(e) => this.setState({ movieReview: e.target.value, change: true})} class="resize-none whitespace-normal flex-no-wrap text-sm border-2 border-teal-200 px-2  w-full h-64" placeholder="Description"/>
+                          <div class = " pt-4 ">{this.fiveStar()}</div>
                       </div>
+                     
                 </div>
-                <div class = "h-full pt-8 pb-8 mb-64 w-full">
-                  <div class = " ml-32 h-full w-1/2 border-2 border-teal-200 border-2 bg-cover" style={{backgroundImage: "url('" + this.state.movieImage + "')"}}/>
-                      <div class = "pt-8 pl-40">{this.fiveStar()}</div>
+                <div class = "h-full w-full pt-12 ">
+                  <div class = " ml-24 h-full w-4/5 border-2 border-teal-200 border-2 bg-cover" style={{backgroundImage: "url('" + this.state.movieImage + "')"}}/>
+                    
                   </div>
                 </div>
-                <div class = "w-full h-full mt-24 " >    
-                  <div class = "flex text-sm border-solid border-2 border-teal-200  p-2 bg-gray-200 mt-24 h-auto w-4/5 ml-20">
+                <div class = "w-full h-0 mt-64 bg-green-200 " >    
+                  <div class =  {this.state.searched === false ? "flex text-sm border-solid border-2 border-teal-200  p-2 bg-gray-200 mt-16 h-auto w-full" : "flex text-sm border-solid border-2 border-teal-200  p-8 bg-gray-200 mt-16 h-auto w-full"}>
                     <div class="overflow-auto justify-between grid grid-cols-3 gap-8 cursor-pointer ">
                       {this.state.specificImages.map(movieImageEntry =>    
-                        <div class = "hover:opacity-75 transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-105">
-                          <img class={this.state.imagesToStore.includes(movieImageEntry.image) ? " border-blue-400 border-solid border-4 " : null }src={movieImageEntry.image} onClick = {() => this.handleSpecificImgClick(movieImageEntry.image)}></img>
-                        </div>
+                       
+                          <img class={this.state.imagesToStore.includes(movieImageEntry.image) ? "border-blue-400 border-solid border-4" : "hover:opacity-75 transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-105" }src={movieImageEntry.image} onClick = {() => this.handleSpecificImgClick(movieImageEntry.image)}></img>
+                        
                       )}
                     </div>
                  </div>
-                  <div class = "flex grid grid-cols-3 pl-8 items-end ml-20 w-4/5 pt-2">
+                  <div class = "flex grid grid-cols-3 pl-8 items-end ml-20 w-4/5 pt-2 pb-2">
                     <div class = "">
                       <p class = "pt-2 pl-12">Date</p>
                       <input onChange = {(e) => this.setState({ presentDay: e.target.value, change: true,})} class= "w-3/5 h-12 text-lg  py-2 px-4 border-b border-b-2 border-teal-300"  type="text" placeholder={this.state.presentDay}/>
