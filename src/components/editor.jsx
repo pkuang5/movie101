@@ -95,7 +95,7 @@ class Editor extends Component {
                       movieId: movieEntry.id
                     })
                   }
-                  else if (movieEntry.id === id ) {
+                  else if (movieEntry.id === id) {
                     this.setState({
                       movieImage: movieEntry.image,
                       movieId: movieEntry.id

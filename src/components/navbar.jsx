@@ -14,20 +14,20 @@ function Navbar(props) {
   let navLinkStyle = { color: "black", textDecoration: "none", paddingRight: "0.3rem", paddingLeft: "0.3rem", paddingBottom: "0.1rem" };
   let activeStyle = { fontWeight: 'bolder' };
   
-  // useEffect (() => {
-  //   document.addEventListener('mousedown', handleClick, false);
-  // }, []) 
+  useEffect (() => {
+    document.addEventListener('mousedown', handleClick, false);
+  }, []) 
   
-  // function handleClick (e) {
-  //   if (node.current === e.path[0] || node2.current === e.path[0]) {
-  //       return;
-  //   }
-  //   handleClickOutside(e)
-  // }
+  function handleClick (e) {
+    if (node.current === e.path[0] || node2.current === e.path[0]) {
+        return;
+    }
+    handleClickOutside(e)
+  }
 
-  // function handleClickOutside (e) {
-  //   setDisplayMenu(false)
-  // }
+  function handleClickOutside (e) {
+    setDisplayMenu(false)
+  }
 
   return (
     <React.Fragment>
