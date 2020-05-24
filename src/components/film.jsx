@@ -69,7 +69,7 @@ function Film(props) {
                         {/* <p class="w-3/4 font-montserrat text-xs sm:text-lg mt-3">Description:</p> */}
                         <p class="w-3/4 font-montserrat text-xs sm:text-lg">{details.overview}</p>
                         <p class="w-3/4 font-montserrat text-sm sm:text-lg my-1">{'Release Date: ' + details.release_date}</p>
-                        <button onClick={() => history.push({pathname: '/editor', movieId: props.movieId})} class="h-10 w-32 transition duration-500 ease-in-out button-color-beige rounded transform hover:-translate-y-1 hover:scale-110 font-montserrat font-bold text-white">Add entry</button>
+                        <button onClick={() => history.push({pathname: '/editor', movieId: props.movieId, title: details.title})} class="h-10 w-32 transition duration-500 ease-in-out button-color-beige rounded transform hover:-translate-y-1 hover:scale-110 font-montserrat font-bold text-white">Add entry</button>
                     </div>
 
 
