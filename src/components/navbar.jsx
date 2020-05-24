@@ -14,20 +14,20 @@ function Navbar(props) {
   let navLinkStyle = { color: "black", textDecoration: "none", paddingRight: "0.3rem", paddingLeft: "0.3rem", paddingBottom: "0.1rem" };
   let activeStyle = { fontWeight: 'bolder' };
   
-  useEffect (() => {
-    document.addEventListener('mousedown', handleClick, false);
-  }, []) 
+  // useEffect (() => {
+  //   document.addEventListener('mousedown', handleClick, false);
+  // }, []) 
   
-  function handleClick (e) {
-    if (node.current === e.path[0] || node2.current === e.path[0]) {
-        return;
-    }
-    handleClickOutside(e)
-  }
+  // function handleClick (e) {
+  //   if (node.current === e.path[0] || node2.current === e.path[0]) {
+  //       return;
+  //   }
+  //   handleClickOutside(e)
+  // }
 
-  function handleClickOutside (e) {
-    setDisplayMenu(false)
-  }
+  // function handleClickOutside (e) {
+  //   setDisplayMenu(false)
+  // }
 
   return (
     <React.Fragment>
@@ -35,8 +35,8 @@ function Navbar(props) {
         <div  class="flex items-center justify-between pt-4 px-6 w-screen">
           <div class="cursor-pointer" onClick={() => history.push("/search")}>
             <svg width="30" height="30" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" fill="white" />
-              <circle cx="20.5" cy="17.5" r="10.5" stroke="black" stroke-width={location.pathname === "/search" ? "4" : "2"}/>
-              <line x1="28.1584" y1="25.244" x2="37.256" y2="34.3417" stroke="black" stroke-width={location.pathname === "/search" ? "4" : "2"} stroke-linecap="round" />
+              <circle cx="20.5" cy="17.5" r="10.5" stroke="black" strokeWidth={location.pathname === "/search" ? "4" : "2"}/>
+              <line x1="28.1584" y1="25.244" x2="37.256" y2="34.3417" stroke="black" strokeWidth={location.pathname === "/search" ? "4" : "2"} strokeLinecap="round" />
             </svg>
           </div>
           <div class="flex font-montserrat">

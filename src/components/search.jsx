@@ -82,7 +82,7 @@ function Search(props) {
         <div class="flex w-screen justify-center font-montserrat mt-32 px-6">
             <div class="flex flex-col lg:w-1/2 md:w-4/5 w-full ">
                 <p class="text-2xl font-semibold mb-3">Search</p>
-                <input autocomplete="off" id="searchBar" onChange={handleSearch} class="w-full text-md text-gray-700 border-b focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder={placeholder}/>
+                <input autoComplete="off" id="searchBar" onChange={handleSearch} class="w-full text-md text-gray-700 border-b focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder={placeholder}/>
                 <div class="flex text-sm mt-3 text-gray-500">
                     <p onClick={() => {setSearch('Films'); document.getElementById('searchBar').value = ''}} class={search === 'Films' ? "text-black font-semibold cursor-pointer mr-5" : "cursor-pointer mr-5"}>Films</p>
                     <p onClick={() => {setSearch('Users'); document.getElementById('searchBar').value = ''}} class={search === 'Users' ? "text-black font-semibold cursor-pointer mr-5" : "cursor-pointer mr-5"}>Users</p>
