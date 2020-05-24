@@ -44,7 +44,7 @@ class DropSearch extends Component {
             })
         }
     }
-    suggestionSelected (title, year, id) {
+    suggestionSelected = (title, year, id) => {
         this.setState({
             text:title,
             items: [],
@@ -78,7 +78,7 @@ class DropSearch extends Component {
         const {text} = this.state;
         return (
             <div ref = {node => this.node = node} class= "h-10 object-bottom ">
-                <input autocomplete="off" id = "searchBar" class = "h-full rounded  cursor-pointer w-full " value = {text} onChange = {this.onTextChanged} type = "text"/>
+                <input autocomplete = "off" id = "searchBar" class = "h-full rounded  cursor-pointer w-full " value = {text} onChange = {this.onTextChanged} type = "text" placeholder = {this.props.name?this.props.name:null}/>
                 {this.renderSuggestions()}
             </div>
         )
