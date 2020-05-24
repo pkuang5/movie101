@@ -11,23 +11,26 @@ function Navbar(props) {
   let location = useLocation()
   let node = useRef()
   let node2 = useRef()
+  let node3 = useRef()
+  let node4 = useRef()
   let navLinkStyle = { color: "black", textDecoration: "none", paddingRight: "0.3rem", paddingLeft: "0.3rem", paddingBottom: "0.1rem" };
   let activeStyle = { fontWeight: 'bolder' };
   
-  // useEffect (() => {
-  //   document.addEventListener('mousedown', handleClick, false);
-  // }, []) 
+  useEffect (() => {
+    document.addEventListener('mousedown', handleClick, false);
+  }, []) 
   
-  // function handleClick (e) {
-  //   if (node.current === e.path[0] || node2.current === e.path[0]) {
-  //       return;
-  //   }
-  //   handleClickOutside(e)
-  // }
+  function handleClick (e) {
+    
+    if (node.current === e.path[0] || node2.current === e.path[0] || node3.current === e.path[0] || node4.current === e.path[1]) {
+        return;
+    }
+    handleClickOutside(e)
+  }
 
-  // function handleClickOutside (e) {
-  //   setDisplayMenu(false)
-  // }
+  function handleClickOutside (e) {
+    setDisplayMenu(false)
+  }
 
   return (
     <React.Fragment>
@@ -77,8 +80,8 @@ function Navbar(props) {
         </div>
       </div>
       {displayMenu ?
-        <div class="flex w-screen bg-black absolute p-3 sm:hidden">
-          <div class="grid grid-cols-1 gap-2 text-white">
+        <div ref = {node3} class="flex w-screen bg-black absolute p-3 sm:hidden">
+          <div ref = {node4} class="grid grid-cols-1 gap-2 text-white">
               <p onClick={() => {history.push('/'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/" ? "font-extrabold w-full": "w-full"}>Feed</p>
               <p onClick={() => {history.push('/editor'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/editor" ? "font-extrabold w-full": "w-full"}>Editor</p>
               <p onClick={() => {history.push('/discover'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/discover" ? "font-extrabold w-full": "w-full"}>Discover</p>

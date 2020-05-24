@@ -57,7 +57,7 @@ function Film(props) {
     return (
         //mobile
         <div class="flex flex-col w-screen items-center p-3">
-            <i onClick={() => history.push({pathname: '/editor', movieId: props.movieId})} class="fa fa-plus-circle fa-lg float-right"></i>
+            <i onClick={() => history.push({pathname: '/editor', movieId: props.movieId, title:details.title})} class="fa fa-plus-circle fa-lg float-right"></i>
             <p class="font-montserrat text-center text-2xl font-semibold">{details.title}</p>
             <p class="w-3/4 font-montserrat text-center text-xs my-1">{details.release_date}</p>
             <img class="w-3/4" src={'https://image.tmdb.org/t/p/w500' + details.poster_path} alt="poster" />
