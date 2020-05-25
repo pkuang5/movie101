@@ -42,9 +42,9 @@ function WatchList(props){
         trashMovies.map( movie => {
             firebase.database().ref(`users/${props.id}/watchlist/${movie.id}`).remove()
         })
+        if (trashMovies.length && trashMovies) showNotification()
         setTrashMovies([])
         setMovies([])
-        showNotification()
     }
 
     function showNotification(){
@@ -62,18 +62,22 @@ function WatchList(props){
             <div class="lg:w-2/3 md:w-4/5 w-full items-center">
                 <div class="flex justify-between w-full items-center">
                     <p class="font-montserrat text-2xl">Watchlist</p>
-                    <div class="w-auto">
+                    <div>
                         <i class={!editMode ? "fa fa-edit fa-lg hover:text-gray-600 cursor-pointer": 'hidden'} onClick={() => setEditMode(true)}/>
                         <i class={editMode ? "fa fa-times fa-lg hover:text-gray-600 cursor-pointer mr-3": 'hidden'} onClick={() => {setEditMode(false); setMovies([])}}/>
                         <i class={editMode ? "fa fa-trash fa-lg hover:text-gray-600 cursor-pointer": 'hidden'} onClick={() => {setEditMode(false); deleteMovies()}}/>
                     </div>
                 </div>
-                <p class="font-montserrat text-md">Keep track of the movies you want to watch in the future!</p>
+                {editMode ?
+                <p class="font-montserrat text-sm sm:text-md">Select movies to delete</p>
+                :
+                <p class="font-montserrat text-sm sm:text-md">Keep track of the movies you want to watch in the future!</p>
+                }
                 <div class="grid grid-cols-3 sm:grid-cols-5 gap-4">
                     {movies.map( movie =>
-                        <img onClick={() => editMode ? !trashMovies.includes(movie) ? setTrashMovies([...trashMovies,movie]): null : history.push(`/films/${movie.id}`)} class={trashMovies.includes(movie) ? "transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110 cursor-pointer border-yellow-400 border-solid border-4" : "transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110 cursor-pointer"} src={movie.image} alt={movie.title} />
+                        <img onClick={() => editMode ? !trashMovies.includes(movie) ? setTrashMovies([...trashMovies,movie]): setTrashMovies(trashMovies.filter(element => element !== movie)) : history.push(`/films/${movie.id}`)} class={trashMovies.includes(movie) ? "transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110 cursor-pointer border-yellow-400 border-solid border-4" : "transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110 cursor-pointer"} src={movie.image} alt={movie.title} />
                     )}
-                    {editMode ? null : <div onClick={() => history.push('/search')} class="flex flex-col w-full h-full bg-gray-200 items-center justify-center transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110 cursor-pointer">
+                    {editMode ? null : <div onClick={() => history.push('/search')} class={movies && movies.length ? "flex flex-col w-full h-full bg-gray-200 items-center justify-center transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110 cursor-pointer": 'flex flex-col w-full h-40 sm:h-56 bg-gray-200 items-center justify-center transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110 cursor-pointer'}>
                         <i class="fa fa-plus-circle fa-2x"></i>
                         <p class="font-montserrat text-sm mt-1">Add movie</p>
                     </div>}

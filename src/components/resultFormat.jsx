@@ -20,8 +20,8 @@ function ResultFormat(props) {
                         <div class="font-montserrat text-md font-semibold">{props.result.title}</div>
                         <div class="text-xs mt-1">({props.result.release_date})</div>
                     </div>
-                    <div class={hover ? null:'sm:hidden'}>
-                        <div>
+                    <div class={hover ? null : 'sm:hidden'}>
+                        <div class="sm:flex hidden">
                             <i class="fa fa-lg fa-info-circle mr-2 transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110" onMouseOver={() => setInfo(true)} onMouseLeave={() => setInfo(false)} onClick={() => history.push('/films/' + props.result.id)}/>
                             <i class="fa fa-lg fa-eye mr-2 transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110" onMouseOver={() => setWatchlist(true)} onMouseLeave={() => setWatchlist(false)}  onClick={() => history.push({pathname:'/watchlist', movieId: props.result.id, image: 'https://image.tmdb.org/t/p/w500'+props.result.poster_path, title: props.result.title})}/>
                             <i class="fa fa-lg fa-plus-circle mr-2 transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110" onMouseOver={() => setJournals(true)} onMouseLeave={() => setJournals(false)} onClick={() => history.push({pathname: '/editor', movieId: props.result.id, title:props.result.title})}/>
