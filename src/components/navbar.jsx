@@ -27,9 +27,7 @@ function Navbar(props) {
   }, []) 
   
   function handleClick (e) {
-    console.log(node3)
-    console.log(node4)
-    console.log(e.target)
+  
     if (node.current === e.target || node2.current === e.target || node3.current === e.target || node4.current === e.target
       || node5.current === e.target || node6.current === e.target || node7.current === e.target || node8.current === e.target
       || node9.current === e.target || nodeX.current === e.target) {
