@@ -19,6 +19,7 @@ function Navbar(props) {
   let node8 = useRef()
   let node9 = useRef()
   let nodeX = useRef()
+  let nodeXI = useRef()
   let navLinkStyle = { color: "black", textDecoration: "none", paddingRight: "0.3rem", paddingLeft: "0.3rem", paddingBottom: "0.1rem" };
   let activeStyle = { fontWeight: 'bolder' };
   
@@ -30,7 +31,7 @@ function Navbar(props) {
   
     if (node.current === e.target || node2.current === e.target || node3.current === e.target || node4.current === e.target
       || node5.current === e.target || node6.current === e.target || node7.current === e.target || node8.current === e.target
-      || node9.current === e.target || nodeX.current === e.target) {
+      || node9.current === e.target || nodeX.current === e.target || nodeXI.current === e.target) {
         return;
     }
     handleClickOutside(e)
@@ -81,9 +82,9 @@ function Navbar(props) {
             <i class="fa fa-search text-white fa-lg" />
           </div>
           {displayMenu ?
-            <i class="fa fa-times text-white fa-lg" onClick={() => setDisplayMenu(!displayMenu)} />
+            <i ref = {nodeXI}class="fa fa-times text-white fa-lg " onClick={() => setDisplayMenu(!displayMenu)} />
             :
-            <i class="fa fa-bars text-white fa-lg" onClick={() => setDisplayMenu(!displayMenu)} />
+            <i class="fa fa-bars text-white fa-lg " onClick={() => setDisplayMenu(!displayMenu)} />
           }
         </div>
       </div>
