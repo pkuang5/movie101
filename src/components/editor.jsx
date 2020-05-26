@@ -26,7 +26,7 @@ function Editor (props) {
    const [previewRating, setPreviewRating] = useState(5)
    const [presentDay, setPresentDay] = useState('')
    const [searched, setSearched] = useState(false)
-   const [show, setShow] = useState(true) 
+   const [show, setShow] = useState(false) 
    
    let location = useLocation()
    let history = useHistory()
