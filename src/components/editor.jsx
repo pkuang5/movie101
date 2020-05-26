@@ -171,53 +171,55 @@ function Editor (props) {
     }
     return (
         <div class="flex flex-col font-montserrat w-screen items-center mt-3">
-            <div class = "flex w-2/3  items-center mr-8 sm:mr-0">
+            <div class = "flex lg:w-2/3 lg:ml-20 md:w-2/3 sm:w-11/12 w-2/3 items-center mr-4 sm:mr-0 ">
                 <div class = {show?"w-64 border-b border-b-2 border-teal-300 hidden":"justify-center sm:ml-48 ml-10  sm:w-7/12 w-10/12 border-b border-b-2 border-gray-400 pt-24"}>
                         <p class = "pb-4 text-2xl">Editor</p>
-                            <div class = "flex flex row">
-                                <div class = "flex w-3/4 sm:w-10/12 ml-2 pl-2">
-                                <DropSearch getMovieInfo = {(name,id)=>getMovieInfo(name,id)} onChange = {(e) => {
-                                    setMovieName(e.target.value)
-                                    setChange(true)
-                                }}  
-                                onChange2 = {(e, date) => {
-                                    setMovieName(e)
-                                    setChange(true)
-                                    setMovieYear(date)
-                                }}
-                                name = {movieName} show = {show}>
-                                </DropSearch>
+                            <div class = "flex w-full">
+                                <div class = "flex w-full sm:w-10/12">
+                                    <DropSearch getMovieInfo = {(name,id)=>getMovieInfo(name,id)} onChange = {(e) => {
+                                        setMovieName(e.target.value)
+                                        setChange(true)
+                                    }}  
+                                    onChange2 = {(e, date) => {
+                                        setMovieName(e)
+                                        setChange(true)
+                                        setMovieYear(date)
+                                    }}
+                                    name = {movieName} show = {show}>
+                                    </DropSearch>
                                 </div>
-                                <svg onClick = {() => change?getMovieInfo(movieName):null}  class = " cursor-pointer" width="30" height="30" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" fill="white" />
-                                    <circle cx="20.5" cy="17.5" r="10.5" stroke="black" stroke-width="2" />
-                                    <line x1="28.1584" y1="25.244" x2="37.256" y2="34.3417" stroke="black" stroke-width="2" stroke-linecap="round" />
-                                    </svg>
+                               
+                                    <svg onClick = {() => change?getMovieInfo(movieName):null}  class = " sm:ml-16 cursor-pointer" width="30" height="30" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" fill="white" />
+                                        <circle cx="20.5" cy="17.5" r="10.5" stroke="black" stroke-width="2" />
+                                        <line x1="28.1584" y1="25.244" x2="37.256" y2="34.3417" stroke="black" stroke-width="2" stroke-linecap="round" />
+                                        </svg>
+                                
                                 </div>
                         </div>
-                <div class = {show?"grid grid-row-2":"grid grid-row-2 hidden"}>
+                <div class = {show?"grid grid-row-2 ":"grid grid-row-2 hidden"}>
                     <div class = "grid grid-cols-2 h-64 mb-12">
                         <div class = "w-full h-full ">
                             <p class="font-serif text-3xl font-bold pb-4 ">Editor</p>
                             <div class = "grid grid-cols-2 gap-2 ">  
-                            <div class = "sm:w-64 w-24 border-b border-b-2 border-gray-400">
-                                <p>Film Title</p>
-                                <DropSearch getMovieInfo = {(name,id)=>getMovieInfo(name,id)} onChange = {(e) => {
-                                    setMovieName(e.target.value)
-                                    setChange(true)
-                                }}  
-                                onChange2 = {(e, date) => {
-                                    setMovieName(e)
-                                    setChange(true)
-                                    setMovieYear(date)
-                                }}
-                                name = {movieName} show = {show}>
-                                </DropSearch> 
-                            </div>
-                                <div class = {"w-8 h-4 pt-12 pl-4 ml-2 sm:ml-0"}>
-                                    <svg onClick = {() => change?getMovieInfo(movieName):null}  class = "cursor-pointer" width="30" height="30" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" fill="white" />
-                                    <circle cx="20.5" cy="17.5" r="10.5" stroke="black" stroke-width="2" />
-                                    <line x1="28.1584" y1="25.244" x2="37.256" y2="34.3417" stroke="black" stroke-width="2" stroke-linecap="round" />
-                                    </svg>
+                                <div class = "sm:w-64 w-24 border-b border-b-2 border-gray-400">
+                                    <p>Film Title</p>
+                                    <div class = "flex flex-row">
+                                        <DropSearch getMovieInfo = {(name,id)=>getMovieInfo(name,id)} onChange = {(e) => {
+                                            setMovieName(e.target.value)
+                                            setChange(true)
+                                        }}  
+                                        onChange2 = {(e, date) => {
+                                            setMovieName(e)
+                                            setChange(true)
+                                            setMovieYear(date)
+                                        }}
+                                        name = {movieName} show = {show}>
+                                        </DropSearch> 
+                                        <svg onClick = {() => change?getMovieInfo(movieName):null}  class = "cursor-pointer" width="30" height="30" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" fill="white" />
+                                            <circle cx="20.5" cy="17.5" r="10.5" stroke="black" stroke-width="2" />
+                                            <line x1="28.1584" y1="25.244" x2="37.256" y2="34.3417" stroke="black" stroke-width="2" stroke-linecap="round" />
+                                        </svg>
+                                    </div>
                                 </div>
                             </div>
                             <div class = {show?"pt-12 mt-8 sm:w-full w-screen h-full items-center":"pt-8 mt-8 w-full h-full items-center hidden "}>
@@ -229,15 +231,17 @@ function Editor (props) {
                                     }} 
                                     class="outline-none resize-none whitespace-normal flex-no-wrap text-sm border-2 border-gray-400 px-2 w-4/5 sm:w-full h-64" placeholder="Description"/>
                                 <div class = " pt-4 ml-16 sm:ml-0">{fiveStar()}</div>
+                    
                             </div>
                             </div>
-                            <div class = {show?"h-64 sm:h-full w-full pt-12 ":"h-full w-full pt-12 hidden"}>
-                                <div class = "ml-10 sm:ml-24 sm:h-full h-48 w-32 sm:w-4/5 border-4 border-gray-400 border-2 bg-cover" style={{backgroundImage: "url('" + movieImage + "')"}}/>
+                            <div class = {show?"sm:flex sm:justify-end h-64 sm:h-full w-full pt-12 ":"h-full w-full pt-12 hidden"}>
+                                <div class = "ml-10  sm:h-full h-48 w-32 sm:w-4/5 border-4 border-gray-400 border-2 bg-cover bg-center flex" style={{backgroundImage: "url('" + movieImage + "')"}}/>
                             </div>
                         </div>
                         <div class = {show?"pl-10 sm:pl-0 sm:w-full h-0  mt-64": "w-full h-0 mt-64 bg-green-200 sm:ml-0 hidden"}>    
-                            <div class =  {searched === false ? "flex text-sm border-solid border-2 border-gray-400  p-2 bg-gray-200 mt-16 h-auto w-full " : "flex text-sm border-solid border-2 border-gray-400 p-2 sm:p-8 bg-gray-200 mt-16 h-auto w-full"}>
-                                <div class="h-32  sm:h-auto overflow-auto justify-between grid grid-cols-3 gap-2 sm:gap-8 cursor-pointer ">
+                                <label class = "mt-20 ml-10 sm:ml-0">Image Selection</label>
+                            <div class =  {searched === false ? "flex text-sm border-solid border-2 border-gray-400  p-2 bg-gray-200 mt-2 h-auto w-full " : "flex text-sm border-solid border-2 border-gray-400 p-2 sm:p-8 bg-gray-200 mt-2 h-auto w-full"}>
+                                <div class="h-32  sm:h-auto overflow-auto justify-between grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-8 cursor-pointer ">
                                     {specificImages.map(movieImageEntry =>    
                                         <img src={movieImageEntry.image} class={imagesToStore.includes(movieImageEntry.image) ? "border-blue-400 border-solid border-4" : "hover:opacity-75 transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-105" } onClick = {() => handleSpecificImgClick(movieImageEntry.image)}></img>
                                     )}

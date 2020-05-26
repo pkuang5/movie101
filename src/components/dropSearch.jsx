@@ -59,13 +59,13 @@ class DropSearch extends Component {
             return null;
         }
             return (
-                <ul  class = {this.props.show?"absolute overflow-y-scroll h-64  border-4 border-grey-800 bg-gray-100 w-64 ":"absolute overflow-scroll h-64  border-4 border-grey-800 bg-gray-100 w-7/12 sm:w-2/5"}> 
+                <ul  class = {this.props.show?"absolute overflow-y-scroll h-64  border-4 border-grey-800 bg-gray-100 w-1/2 sm:w-1/5 ":"absolute overflow-scroll h-64  border-4 border-grey-800 bg-gray-100 w-3/5 sm:w-2/5"}> 
                     {this.state.items.map((item) => <li class = "hover:opacity-100 focus:shadow-outline  cursor-pointer" onClick = {()=>this.suggestionSelected(item.title, item.release_date, item.id)}>
                         <div  class={item.release_date ? "hover:opacity-100 focus:shadow-outline" : item.release_date = '-' }>
                             <div class=" self-center  h-24 w-64 flex bg-cover "> 
                                 <img class = "h-24 w-16" src = {item.poster_path!==null ?'https://image.tmdb.org/t/p/w500'+ item.poster_path : "http://pngimg.com/uploads/mario/mario_PNG53.png"}/>
                                 <div class="flex flex-col pl-4 ">
-                                    <p class="sm:text-md text-xs font-semibold text-black">{item.title}</p>
+                                    <p class="sm:text-base text-xs font-semibold text-black">{item.title}</p>
                                     <p class="text-xs text-black">{(item.release_date.split('-')[0])}</p>
                                 </div> 
                             </div>    
@@ -78,7 +78,7 @@ class DropSearch extends Component {
     render () {
         return (
             <div ref = {node => this.node = node} class= "h-10 object-bottom w-full">
-                <input autocomplete = "off" id = "searchBar" class = "outline-none h-full rounded sm:text-md text-xs cursor-pointer w-full " value = {this.state.text} onChange = {this.onTextChanged} 
+                <input autocomplete = "off" id = "searchBar" class = "outline-none h-full rounded sm:text-base text-xs cursor-pointer w-full " value = {this.state.text} onChange = {this.onTextChanged} 
                 onKeyPress={event => {
                     if (event.key === 'Enter') {
                       console.log(this.state.text)
