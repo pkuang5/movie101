@@ -77,7 +77,7 @@ class DropSearch extends Component {
     }
     render () {
         return (
-            <div ref = {node => this.node = node} class= "h-10 object-bottom ">
+            <div ref = {node => this.node = node} class= "h-10 object-bottom w-full">
                 <input autocomplete = "off" id = "searchBar" class = "outline-none h-full rounded sm:text-md text-xs cursor-pointer w-full " value = {this.state.text} onChange = {this.onTextChanged} 
                 onKeyPress={event => {
                     if (event.key === 'Enter') {

@@ -171,11 +171,11 @@ function Editor (props) {
     }
     return (
         <div class="flex flex-col font-montserrat w-screen items-center mt-3">
-            <div class = "w-2/3  items-center mr-8 sm:mr-0">
-                <div class = {show?"w-64 border-b border-b-2 border-teal-300 hidden":"sm:ml-48 ml-10 sm:w-7/12 w-10/12 border-b border-b-2 border-gray-400 pt-24"}>
+            <div class = "flex w-2/3  items-center mr-8 sm:mr-0">
+                <div class = {show?"w-64 border-b border-b-2 border-teal-300 hidden":"justify-center sm:ml-48 ml-10  sm:w-7/12 w-10/12 border-b border-b-2 border-gray-400 pt-24"}>
                         <p class = "pb-4 text-2xl">Editor</p>
-                            <div class = "flex row">
-                                <div class = "w-3/4 sm:w-11/12 ml-2 ">
+                            <div class = "flex flex row">
+                                <div class = "flex w-3/4 sm:w-10/12 ml-2 pl-2">
                                 <DropSearch getMovieInfo = {(name,id)=>getMovieInfo(name,id)} onChange = {(e) => {
                                     setMovieName(e.target.value)
                                     setChange(true)
@@ -188,7 +188,7 @@ function Editor (props) {
                                 name = {movieName} show = {show}>
                                 </DropSearch>
                                 </div>
-                                <svg onClick = {() => change?getMovieInfo(movieName):null}  class = "cursor-pointer" width="30" height="30" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" fill="white" />
+                                <svg onClick = {() => change?getMovieInfo(movieName):null}  class = " cursor-pointer" width="30" height="30" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" fill="white" />
                                     <circle cx="20.5" cy="17.5" r="10.5" stroke="black" stroke-width="2" />
                                     <line x1="28.1584" y1="25.244" x2="37.256" y2="34.3417" stroke="black" stroke-width="2" stroke-linecap="round" />
                                     </svg>
