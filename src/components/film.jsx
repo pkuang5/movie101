@@ -19,7 +19,6 @@ function Film(props) {
 
     function callApi(movieId, parameter, callback) {
         let url = ''.concat('https://api.themoviedb.org/3/movie/', movieId , parameter ,'?api_key=',process.env.REACT_APP_MOVIEDB_API_KEY)
-        console.log(url)
         fetch(url).then(result=>result.json()).then((data)=>{
             if (parameter === '/images') {
                 let imageList = [];
