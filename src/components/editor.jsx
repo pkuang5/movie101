@@ -26,7 +26,7 @@ function Editor(props) {
     const [previewRating, setPreviewRating] = useState(5)
     const [presentDay, setPresentDay] = useState('')
     const [searched, setSearched] = useState(false)
-    const [show, setShow] = useState(true)
+    const [show, setShow] = useState(false)
 
     let location = useLocation()
     let history = useHistory()
@@ -217,14 +217,14 @@ function Editor(props) {
                                         <line x1="28.1584" y1="25.244" x2="37.256" y2="34.3417" stroke="black" stroke-width="2" stroke-linecap="round" />
                                     </svg>
                                 </div>
-                                <div class={show ? "mt-8 sm:w-full w-screen h-full items-center" : "hidden"}>
+                                <div class={show ? "mt-8 w-full items-center" : "hidden"}>
                                     <p>Review</p>
                                     <textarea type="textarea"
                                         onChange={(e) => {
                                             setMovieReview(e.target.value)
                                             setChange(true)
                                         }}
-                                        class="outline-none resize-none whitespace-normal flex-no-wrap text-sm border-2 border-gray-400 px-2 w-4/5 sm:w-full h-64" placeholder="Description" />
+                                        class="outline-none resize-none whitespace-normal text-sm border-2 border-gray-400 px-2 w-full h-64" placeholder="Description" />
                                     <div class="">{fiveStar()}</div>
                                 </div>
                             </div>
