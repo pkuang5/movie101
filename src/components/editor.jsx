@@ -194,7 +194,7 @@ function Editor(props) {
                         </svg>
                     </div>
                 </div>
-                <div class={show ? null : "hidden"}>
+                <div class={show ? 'w-full' : "hidden"}>
                     <div class="flex w-full mb-12">
                         <div class="w-1/2 h-auto">
                             <div class="w-full h-full">
@@ -225,7 +225,7 @@ function Editor(props) {
                                             setChange(true)
                                         }}
                                         class="outline-none resize-none whitespace-normal flex-no-wrap text-sm border-2 border-gray-400 px-2 w-4/5 sm:w-full h-64" placeholder="Description" />
-                                    <div class=" pt-4 ml-16 sm:ml-0">{fiveStar()}</div>
+                                    <div class="">{fiveStar()}</div>
                                 </div>
                             </div>
                         </div>
