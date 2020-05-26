@@ -26,7 +26,7 @@ function Editor (props) {
    const [previewRating, setPreviewRating] = useState(5)
    const [presentDay, setPresentDay] = useState('')
    const [searched, setSearched] = useState(false)
-   const [show, setShow] = useState(false) 
+   const [show, setShow] = useState(true) 
    
    let location = useLocation()
    let history = useHistory()
@@ -259,7 +259,7 @@ function Editor (props) {
                                     </div>
                                 </label>
                             </div>
-                            <button onClick ={change? ()=>handleSubmit() :null} class= "rounded-full hover:opacity-75 text-sm  border-2 border-gray-400 bg-gray-200 sm:py-2 sm:px-4 w-full sm:w-11/12 sm:ml-12 sm:ml-0 mb-4 h-12" type="button">
+                            <button onClick ={change? ()=>handleSubmit() :null} class= "rounded-full hover:opacity-75 text-sm  border-2 border-gray-400 bg-gray-200 sm:py-2 sm:px-4 w-full sm:w-11/12 sm:ml-4  mb-4 h-12" type="button">
                                 Submit
                             </button>
                         </div>
