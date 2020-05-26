@@ -55,6 +55,7 @@ function Navbar(props) {
           <div class="flex font-montserrat">
               <div class="mr-3"><NavLink exact to="/" style={navLinkStyle} activeStyle={activeStyle}>Feed</NavLink></div>
               <div class="mr-3"><NavLink exact to="/editor" style={navLinkStyle} activeStyle={activeStyle}>Editor</NavLink></div>
+              <div class="mr-3"><NavLink exact to="/watchlist" style={navLinkStyle} activeStyle={activeStyle}>Watchlist</NavLink></div>
               <div class="mr-3"><NavLink exact to="/discover" style={navLinkStyle} activeStyle={activeStyle}>Discover</NavLink></div>
               <div class="mr-3">
                 <NavLink exact to={"/" + props.username} >
@@ -94,6 +95,7 @@ function Navbar(props) {
           <div ref = {node4} class="grid grid-cols-1 gap-2 text-white">
               <p ref = {node5} onClick={() => {history.push('/'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/" ? "font-extrabold w-full": "w-full"}>Feed</p>
               <p ref = {node6}onClick={() => {history.push('/editor'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/editor" ? "font-extrabold w-full": "w-full"}>Editor</p>
+              <p ref = {node6}onClick={() => {history.push('/watchlist'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/watchlist" ? "font-extrabold w-full": "w-full"}>Watchlist</p>
               <p ref = {node7}onClick={() => {history.push('/discover'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/discover" ? "font-extrabold w-full": "w-full"}>Discover</p>
               <p ref = {node8}onClick={() => {history.push('/' + props.username); setDisplayMenu(!displayMenu)}} class={location.pathname === "/" + props.username ? "font-extrabold w-full": "w-full"}>Profile</p>
               <p ref = {node9}onClick={() => {history.push('/settings'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/settings" ? "font-extrabold w-full": "w-full"}>Settings</p>
