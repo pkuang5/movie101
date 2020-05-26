@@ -20,6 +20,7 @@ function Navbar(props) {
   let node9 = useRef()
   let nodeX = useRef()
   let nodeXI = useRef()
+  let nodeXII = useRef()
   let navLinkStyle = { color: "black", textDecoration: "none", paddingRight: "0.3rem", paddingLeft: "0.3rem", paddingBottom: "0.1rem" };
   let activeStyle = { fontWeight: 'bolder' };
   
@@ -31,7 +32,7 @@ function Navbar(props) {
   
     if (node.current === e.target || node2.current === e.target || node3.current === e.target || node4.current === e.target
       || node5.current === e.target || node6.current === e.target || node7.current === e.target || node8.current === e.target
-      || node9.current === e.target || nodeX.current === e.target || nodeXI.current === e.target) {
+      || node9.current === e.target || nodeX.current === e.target || nodeXI.current === e.target || nodeXII.current === e.target) {
         return;
     }
     handleClickOutside(e)
@@ -63,7 +64,7 @@ function Navbar(props) {
                   <i class="fa fa-user-o text-black" />}
                 </NavLink>
               </div>
-              <div  onClick={() => setDisplayMenu(!displayMenu)}> <i class="fa fa-lg fa-angle-down" /> </div>
+              <div onClick={() => setDisplayMenu(!displayMenu)}> <i ref = {nodeXII} class="fa fa-lg fa-angle-down" /> </div>
           </div>
         </div>
         <div class="flex w-screen justify-end">
