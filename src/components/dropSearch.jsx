@@ -59,7 +59,7 @@ class DropSearch extends Component {
             return null;
         }
             return (
-                <ul  class = {this.props.show?"absolute overflow-y-scroll h-64  border-4 border-grey-800 bg-gray-100 w-1/2 sm:w-1/5 ":"absolute overflow-scroll h-64  border-4 border-grey-800 bg-gray-100 w-3/5 sm:w-2/5"}> 
+                <ul  class = {this.props.show?"absolute overflow-y-scroll h-64  border-4 border-grey-800 bg-gray-100 w-1/2 sm:w-1/5 ":"absolute overflow-scroll h-64  border-4 border-grey-800 bg-gray-100 w-3/4 sm:w-2/5"}> 
                     {this.state.items.map((item) => <li class = "hover:opacity-100 focus:shadow-outline  cursor-pointer" onClick = {()=>this.suggestionSelected(item.title, item.release_date, item.id)}>
                         <div  class={item.release_date ? "hover:opacity-100 focus:shadow-outline" : item.release_date = '-' }>
                             <div class=" self-center  h-24 w-64 flex bg-cover "> 
