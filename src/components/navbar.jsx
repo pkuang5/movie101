@@ -21,6 +21,7 @@ function Navbar(props) {
   let nodeX = useRef()
   let nodeXI = useRef()
   let nodeXII = useRef()
+  let nodeXIII = useRef()
   let navLinkStyle = { color: "black", textDecoration: "none", paddingRight: "0.3rem", paddingLeft: "0.3rem", paddingBottom: "0.1rem" };
   let activeStyle = { fontWeight: 'bolder' };
   
@@ -32,7 +33,8 @@ function Navbar(props) {
   
     if (node.current === e.target || node2.current === e.target || node3.current === e.target || node4.current === e.target
       || node5.current === e.target || node6.current === e.target || node7.current === e.target || node8.current === e.target
-      || node9.current === e.target || nodeX.current === e.target || nodeXI.current === e.target || nodeXII.current === e.target) {
+      || node9.current === e.target || nodeX.current === e.target || nodeXI.current === e.target || nodeXII.current === e.target
+      || nodeXIII.current === e.target) {
         return;
     }
     handleClickOutside(e)
@@ -95,7 +97,7 @@ function Navbar(props) {
           <div ref = {node4} class="grid grid-cols-1 gap-2 text-white">
               <p ref = {node5} onClick={() => {history.push('/'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/" ? "font-extrabold w-full": "w-full"}>Feed</p>
               <p ref = {node6}onClick={() => {history.push('/editor'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/editor" ? "font-extrabold w-full": "w-full"}>Editor</p>
-              <p ref = {node6}onClick={() => {history.push('/watchlist'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/watchlist" ? "font-extrabold w-full": "w-full"}>Watchlist</p>
+              <p ref = {nodeXIII}onClick={() => {history.push('/watchlist'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/watchlist" ? "font-extrabold w-full": "w-full"}>Watchlist</p>
               <p ref = {node7}onClick={() => {history.push('/discover'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/discover" ? "font-extrabold w-full": "w-full"}>Discover</p>
               <p ref = {node8}onClick={() => {history.push('/' + props.username); setDisplayMenu(!displayMenu)}} class={location.pathname === "/" + props.username ? "font-extrabold w-full": "w-full"}>Profile</p>
               <p ref = {node9}onClick={() => {history.push('/settings'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/settings" ? "font-extrabold w-full": "w-full"}>Settings</p>
