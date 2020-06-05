@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom'
 function Gallery(props) {
 
     const [movies, setMovies] = useState([])
+    const [featuredMovies, setFeaturedMovies] = useState([])
     const [displayedMovies, setDisplayedMovies] = useState([])
     const [moviesLoaded, setMoviesLoaded] = useState(true)
     const [searchQuery, setSearchQuery] = useState('')
@@ -16,9 +17,10 @@ function Gallery(props) {
         if (props.googleId) {
             setMovies(movies.length = 0)
             var userInfo = firebase.database().ref('users/' + props.googleId + '/journals')
-            if (props.featured) userInfo = userInfo.orderByChild('featured').equalTo(true)
+            userInfo = userInfo.orderByChild('timestamp').startAt(0)
             userInfo.once('value', (snapshot) => {
                 let temp = [];
+                let temp2 = [];
                 snapshot.forEach((data) => {
                     let movie = {
                         id: data.key,
@@ -26,8 +28,11 @@ function Gallery(props) {
                         coverImageURL: data.val().coverImage
                     }
                     temp.push(movie);
+                    if (data.val().featured === true) temp2.push(movie)
+                    console.log(data.val().name + " : " + data.val().timestamp)
                 })
                 setMovies(movies.concat(temp))
+                setFeaturedMovies(movies.concat(temp2))
                 setDisplayedMovies(movies.concat(temp))
                 if (!temp || !temp.length) setMoviesLoaded(false)
                 setImagesLoaded(true)
@@ -56,12 +61,20 @@ function Gallery(props) {
             </div>
             {moviesLoaded ?
                 displayedMovies && displayedMovies.length ? 
-                    <div class="grid grid-cols-3 md:grid-cols-4 lg:col-gap-12 md:col-gap-6 col-gap-2 lg:row-gap-10 md:row-gap-5 row-gap-2 grid-rows-2 mb-5">
-                    {displayedMovies.map(movieEntry =>
-                        <div class="transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110 flex flex-col cursor-pointer justify-center" onClick={() => handleMovieClick(movieEntry.id)}>
-                            <img class="w-full" src={movieEntry.coverImageURL} alt={movieEntry.name} />
-                        </div>)}
-                    </div>
+                    props.featured ?
+                        <div class="grid grid-cols-3 md:grid-cols-4 lg:col-gap-12 md:col-gap-6 col-gap-2 lg:row-gap-10 md:row-gap-5 row-gap-2 grid-rows-2 mb-5">
+                        {featuredMovies.slice().reverse().map(movieEntry =>
+                            <div class="transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110 flex flex-col cursor-pointer justify-center" onClick={() => handleMovieClick(movieEntry.id)}>
+                                <img class="w-full" src={movieEntry.coverImageURL} alt={movieEntry.name} />
+                            </div>)}
+                        </div>
+                        :  
+                        <div class="grid grid-cols-3 md:grid-cols-4 lg:col-gap-12 md:col-gap-6 col-gap-2 lg:row-gap-10 md:row-gap-5 row-gap-2 grid-rows-2 mb-5">
+                        {displayedMovies.slice().reverse().map(movieEntry =>
+                            <div class="transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110 flex flex-col cursor-pointer justify-center" onClick={() => handleMovieClick(movieEntry.id)}>
+                                <img class="w-full" src={movieEntry.coverImageURL} alt={movieEntry.name} />
+                            </div>)}
+                        </div>
                     :
                     imagesLoaded ? <p> No search results for {searchQuery}</p> : null
                 : 
