@@ -6,8 +6,11 @@ import { useHistory } from 'react-router-dom'
 function Gallery(props) {
 
     const [movies, setMovies] = useState([])
+    const [featuredMoviesTemp, setFeaturedMoviesTemp] = useState([])
     const [featuredMovies, setFeaturedMovies] = useState([])
+    const [featuredHolder, setFeaturedHolder] = useState([])
     const [displayedMovies, setDisplayedMovies] = useState([])
+    const [displayedHolder, setDisplayedHolder] = useState([])
     const [moviesLoaded, setMoviesLoaded] = useState(true)
     const [searchQuery, setSearchQuery] = useState('')
     const [imagesLoaded, setImagesLoaded] = useState(false)
@@ -29,11 +32,13 @@ function Gallery(props) {
                     }
                     temp.push(movie);
                     if (data.val().featured === true) temp2.push(movie)
-                    console.log(data.val().name + " : " + data.val().timestamp)
                 })
                 setMovies(movies.concat(temp))
+                setFeaturedMoviesTemp(movies.concat(temp))
                 setFeaturedMovies(movies.concat(temp2))
+                setFeaturedHolder(movies.concat(temp2))
                 setDisplayedMovies(movies.concat(temp))
+                setDisplayedHolder(movies.concat(temp))
                 if (!temp || !temp.length) setMoviesLoaded(false)
                 setImagesLoaded(true)
             })
@@ -45,12 +50,35 @@ function Gallery(props) {
     }
 
     const handleSearch = (e) => {
+    
         setSearchQuery(e.target.value)
-        let tempArr = movies;
-        let tempArr2 = movies;
-        setDisplayedMovies(tempArr.filter(function(value){ return value.name.toLowerCase().includes(e.target.value.toLowerCase());}))
-        setFeaturedMovies(tempArr2.filter(function(value){ return value.name.toLowerCase().includes(e.target.value.toLowerCase());}))
 
+        movies.sort(function(a,b) {
+            if (a.name.toLowerCase() < b.name.toLowerCase()) return -1
+            if (a.name.toLowerCase() > b.name.toLowerCase()) return 1
+            return 0
+        })
+        featuredMoviesTemp.sort (function(a,b) {
+            if (a.name.toLowerCase() < b.name.toLowerCase()) return -1
+            if (a.name.toLowerCase() > b.name.toLowerCase()) return 1
+            return 0
+        })
+
+        let tempArr = movies;
+        let tempArr2 = featuredMoviesTemp;
+    
+        if (e.target.value.length === 1) {
+            setDisplayedMovies(tempArr.slice().reverse().filter(function(value){ return value.name.toLowerCase().charAt(0).includes(e.target.value.toLowerCase().charAt(0));}))
+            setFeaturedMovies(tempArr2.slice().reverse().filter(function(value){ return value.name.toLowerCase().charAt(0).includes(e.target.value.toLowerCase().charAt(0));}))
+        }
+        else if (e.target.value.length > 1){
+            setDisplayedMovies(tempArr.slice().reverse().filter(function(value){ return value.name.toLowerCase().includes(e.target.value.toLowerCase()) && value.name.toLowerCase().charAt(0).includes(e.target.value.toLowerCase().charAt(0))}))
+            setFeaturedMovies(tempArr2.slice().reverse().filter(function(value){ return value.name.toLowerCase().includes(e.target.value.toLowerCase()) && value.name.toLowerCase().charAt(0).includes(e.target.value.toLowerCase().charAt(0))}))
+        }
+        else {
+            setDisplayedMovies(displayedHolder)
+            setFeaturedMovies(featuredHolder)
+        }
     }
 
     return (

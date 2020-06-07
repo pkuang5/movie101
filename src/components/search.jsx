@@ -76,7 +76,7 @@ function Search(props) {
                     searchResult = users.filter((user) => { return user.username.toLowerCase().charAt(0).includes(e.target.value.toLowerCase().charAt(0));})
                 }
                 else {
-                    searchResult = users.filter((user) => { return user.username.toLowerCase().includes(e.target.value.toLowerCase());})
+                    searchResult = users.filter((user) => { return user.username.toLowerCase().includes(e.target.value.toLowerCase()) && user.username.toLowerCase().charAt(0).includes(e.target.value.toLowerCase().charAt(0))})
                 }
                 
                 if (searchResult.length === 0) setResults(false)
@@ -95,7 +95,7 @@ function Search(props) {
                     searchResult = journals.filter((journal) => { return journal.name.toLowerCase().charAt(0).includes(e.target.value.toLowerCase().charAt(0));})
                 }
                 else {
-                    searchResult = journals.filter((journal) => { return journal.name.toLowerCase().includes(e.target.value.toLowerCase());})
+                    searchResult = journals.filter((journal) => { return journal.name.toLowerCase().includes(e.target.value.toLowerCase()) && journal.name.toLowerCase().charAt(0).includes(e.target.value.toLowerCase().charAt(0))})
                 }
                 if (searchResult.length === 0) setResults(false)
                 else setResults(searchResult)
