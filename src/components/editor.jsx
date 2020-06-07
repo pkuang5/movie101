@@ -27,6 +27,7 @@ function Editor (props) {
    const [presentDay, setPresentDay] = useState('')
    const [searched, setSearched] = useState(false)
    const [show, setShow] = useState(false) 
+   const [exactDate, setExactDate] = useState('')
    
    let location = useLocation()
    let history = useHistory()
@@ -34,6 +35,7 @@ function Editor (props) {
   
    useEffect(() => {
         setPresentDay(getCurrentDate('/'))
+        setExactDate(getExactDate('/'))
         if (location.movieId) {
             setMovieId(location.movieId)
             setMovieName(location.title)
@@ -78,6 +80,22 @@ function Editor (props) {
       return `${month<10?`0${month}`:`${month}`}${separator}${date}${separator}${year}`
 
     }
+    function getExactDate (separator='') {
+
+        let newDate = new Date()
+        let date = newDate.getDate();
+        let month = newDate.getMonth() + 1;
+        let year = newDate.getFullYear();
+        var hours = new Date().getHours(); //To get the Current Hours
+        var min = new Date().getMinutes(); //To get the Current Minutes
+        var sec = new Date().getSeconds(); //To get the Current Seconds
+        if (month < 10) month = '0' + month
+        if(hours<10) hours = '0' + hours
+        if(min<10) min= '0' + min
+        if(sec<10) sec='0' + sec
+        return year + month + date + hours + min + sec
+  
+      }
     function getMovieInfo (title, id) {
         setShow(true)
         let flag = false
@@ -146,7 +164,8 @@ function Editor (props) {
                 description: movieReview,
                 featured: featured,
                 images: imagesToStore,
-                movieYear: movieYear
+                movieYear: movieYear,
+                timestamp: exactDate
             })  
         }
         setMovieRating('5')
