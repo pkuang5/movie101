@@ -47,7 +47,10 @@ function Gallery(props) {
     const handleSearch = (e) => {
         setSearchQuery(e.target.value)
         let tempArr = movies;
+        let tempArr2 = movies;
         setDisplayedMovies(tempArr.filter(function(value){ return value.name.toLowerCase().includes(e.target.value.toLowerCase());}))
+        setFeaturedMovies(tempArr2.filter(function(value){ return value.name.toLowerCase().includes(e.target.value.toLowerCase());}))
+
     }
 
     return (
