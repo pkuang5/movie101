@@ -7,7 +7,10 @@ function Film(props) {
     const [videoIds, setVideoIds] = useState([])
     const [details, setDetails] = useState([])
     const [images, setImages] = useState([])
+    const [credits, setCredits] = useState([])
+    const [imageDisplay, setImageDisplay] = useState(true)
     const [videoDisplay, setVideoDisplay] = useState(false)
+    const [castDisplay, setCastDisplay] = useState(false)
     let history = useHistory();
 
 
@@ -15,6 +18,7 @@ function Film(props) {
         callApi(props.movieId, '/videos', setVideoIds)
         callApi(props.movieId, '', setDetails)
         callApi(props.movieId, '/images', setImages)
+        callApi(props.movieId, '/credits', setCredits)
     }, [props.movieId])
 
     function callApi(movieId, parameter, callback) {
@@ -40,10 +44,6 @@ function Film(props) {
         event.target.pauseVideo();
     }
 
-    function handleVideoDisplay(bool) {
-        setVideoDisplay(bool)
-    }
-
     const opts = {
         height: '150',
         width: '300',
@@ -61,29 +61,30 @@ function Film(props) {
                 <p class="font-montserrat text-center text-2xl sm:text-5xl font-semibold">{details.title}</p>
                 <div class="flex flex-col sm:flex-row">
                     <div class="flex flex-col items-center">
-                        {/* <i onClick={() => history.push({pathname: '/editor', movieId: props.movieId})} class="fa fa-plus-circle fa-lg"></i> */}
                         <img class="w-3/4 sm:w-full" src={'https://image.tmdb.org/t/p/w500' + details.poster_path} alt="poster" />
                     </div>
                     <div class="flex flex-col items-center justify-between">
-                        {/* <p class="w-3/4 font-montserrat text-xs sm:text-lg mt-3">Description:</p> */}
                         <p class="w-3/4 font-montserrat text-xs sm:text-lg">{details.overview}</p>
                         <p class="w-3/4 font-montserrat text-sm sm:text-lg my-1">{'Release Date: ' + details.release_date}</p>
                         <button onClick={() => history.push({pathname: '/editor', movieId: props.movieId, title: details.title})} class="h-10 w-32 transition duration-500 ease-in-out button-color-beige rounded transform hover:-translate-y-1 hover:scale-110 font-montserrat font-bold text-white">Add entry</button>
                     </div>
-
-
                 </div>
             
-                <div class="flex w-full text-lg font-montserrat justify-around select-none mb-3 mt-5">
-                    <div class={videoDisplay ? 'cursor-pointer' : 'font-bold cursor-pointer'} onClick={() => handleVideoDisplay(false)}>Images</div>
-                    <div class={!videoDisplay ? 'cursor-pointer' : 'font-bold cursor-pointer'} onClick={() => handleVideoDisplay(true)}>Videos</div>
+                <div class="flex w-full text-lg font-montserrat justify-around select-none mb-3 mt-5"> 
+                    <div class={imageDisplay ? 'font-bold cursor-pointer':'cursor-pointer'} onClick={() => {setVideoDisplay(false); setCastDisplay(false); setImageDisplay(true)}}>Images</div>
+                    <div class={videoDisplay ? 'font-bold cursor-pointer':'cursor-pointer'} onClick={() => {setVideoDisplay(true); setCastDisplay(false); setImageDisplay(false)}}>Videos</div>
+                    <div class={castDisplay ? 'font-bold cursor-pointer':'cursor-pointer'} onClick={() => {setVideoDisplay(false); setCastDisplay(true); setImageDisplay(false)}}>Cast</div>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    {videoDisplay ?
-                        videoIds.map(video => video.site === "YouTube" ? <div class='flex justify-center'><YouTube videoId={video.key} id={video.id} opts={opts} onReady={_onReady} /></div> : null)
-                    :
-                        images.map(image => <img src={image} alt="movie still" />)
-                    }
+                <div class={castDisplay ? "grid grid-cols-1 sm:grid-cols-5 gap-6":"grid grid-cols-1 sm:grid-cols-3 gap-6"}>
+                    {videoDisplay ? videoIds.map(video => video.site === "YouTube" ? <div class='flex justify-center'><YouTube videoId={video.key} id={video.id} opts={opts} onReady={_onReady} /></div> : null) : null}
+                    {imageDisplay ? images.map(image => <img src={image} alt="movie still" />):null}
+                    {castDisplay ? credits.cast.map(member => 
+                    <div class="text-center text-xs font-montserrat">
+                        <img src={'https://image.tmdb.org/t/p/w500' + member.profile_path} alt="actor image" />  
+                        <p>{member.name}</p>
+                        <p class="text-gray-600">{'"' + member.character + '"'}</p>
+                    </div>
+                    ):null}
                 </div>
 
 
