@@ -48,7 +48,9 @@ function Search(props) {
                     });
                 })
             }
+            
         } 
+
     }, [search])
 
     const handleSearch = (e) => {
@@ -64,14 +66,37 @@ function Search(props) {
         }
         if (search === 'Users') {
             if (e.target.value !== '') {
-                let searchResult = users.filter((user) => { return user.username.toLowerCase().includes(e.target.value.toLowerCase());})
+                users.sort(function(a,b) {
+                    if (a.username.toLowerCase() < b.username.toLowerCase()) return -1
+                    if (a.username.toLowerCase() > b.username.toLowerCase()) return 1
+                    return 0
+                })
+                let searchResult
+                if (e.target.value.length === 1) {
+                    searchResult = users.filter((user) => { return user.username.toLowerCase().charAt(0).includes(e.target.value.toLowerCase().charAt(0));})
+                }
+                else {
+                    searchResult = users.filter((user) => { return user.username.toLowerCase().includes(e.target.value.toLowerCase()) && user.username.toLowerCase().charAt(0).includes(e.target.value.toLowerCase().charAt(0))})
+                }
+                
                 if (searchResult.length === 0) setResults(false)
                 else setResults(searchResult)
             } else setResults([])
         }
         if (search === 'Journals') {
             if (e.target.value !== '') {
-                let searchResult = journals.filter((journal) => { return journal.name.toLowerCase().includes(e.target.value.toLowerCase());})
+                journals.sort(function(a,b) {
+                    if (a.name.toLowerCase() < b.name.toLowerCase()) return -1
+                    if (a.name.toLowerCase() > b.name.toLowerCase()) return 1
+                    return 0
+                })
+                let searchResult
+                if (e.target.value.length === 1) {
+                    searchResult = journals.filter((journal) => { return journal.name.toLowerCase().charAt(0).includes(e.target.value.toLowerCase().charAt(0));})
+                }
+                else {
+                    searchResult = journals.filter((journal) => { return journal.name.toLowerCase().includes(e.target.value.toLowerCase()) && journal.name.toLowerCase().charAt(0).includes(e.target.value.toLowerCase().charAt(0))})
+                }
                 if (searchResult.length === 0) setResults(false)
                 else setResults(searchResult)
             } else setResults([])

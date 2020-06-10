@@ -6,7 +6,11 @@ import { useHistory } from 'react-router-dom'
 function Gallery(props) {
 
     const [movies, setMovies] = useState([])
+    const [featuredMoviesTemp, setFeaturedMoviesTemp] = useState([])
+    const [featuredMovies, setFeaturedMovies] = useState([])
+    const [featuredHolder, setFeaturedHolder] = useState([])
     const [displayedMovies, setDisplayedMovies] = useState([])
+    const [displayedHolder, setDisplayedHolder] = useState([])
     const [moviesLoaded, setMoviesLoaded] = useState(true)
     const [searchQuery, setSearchQuery] = useState('')
     const [imagesLoaded, setImagesLoaded] = useState(false)
@@ -16,9 +20,10 @@ function Gallery(props) {
         if (props.googleId) {
             setMovies(movies.length = 0)
             var userInfo = firebase.database().ref('users/' + props.googleId + '/journals')
-            if (props.featured) userInfo = userInfo.orderByChild('featured').equalTo(true)
+            userInfo = userInfo.orderByChild('timestamp').startAt(0)
             userInfo.once('value', (snapshot) => {
                 let temp = [];
+                let temp2 = [];
                 snapshot.forEach((data) => {
                     let movie = {
                         id: data.key,
@@ -26,9 +31,14 @@ function Gallery(props) {
                         coverImageURL: data.val().coverImage
                     }
                     temp.push(movie);
+                    if (data.val().featured === true) temp2.push(movie)
                 })
                 setMovies(movies.concat(temp))
+                setFeaturedMoviesTemp(movies.concat(temp))
+                setFeaturedMovies(movies.concat(temp2))
+                setFeaturedHolder(movies.concat(temp2))
                 setDisplayedMovies(movies.concat(temp))
+                setDisplayedHolder(movies.concat(temp))
                 if (!temp || !temp.length) setMoviesLoaded(false)
                 setImagesLoaded(true)
             })
@@ -40,9 +50,35 @@ function Gallery(props) {
     }
 
     const handleSearch = (e) => {
+    
         setSearchQuery(e.target.value)
+
+        movies.sort(function(a,b) {
+            if (a.name.toLowerCase() < b.name.toLowerCase()) return -1
+            if (a.name.toLowerCase() > b.name.toLowerCase()) return 1
+            return 0
+        })
+        featuredMoviesTemp.sort (function(a,b) {
+            if (a.name.toLowerCase() < b.name.toLowerCase()) return -1
+            if (a.name.toLowerCase() > b.name.toLowerCase()) return 1
+            return 0
+        })
+
         let tempArr = movies;
-        setDisplayedMovies(tempArr.filter(function(value){ return value.name.toLowerCase().includes(e.target.value.toLowerCase());}))
+        let tempArr2 = featuredMoviesTemp;
+    
+        if (e.target.value.length === 1) {
+            setDisplayedMovies(tempArr.slice().reverse().filter(function(value){ return value.name.toLowerCase().charAt(0).includes(e.target.value.toLowerCase().charAt(0));}))
+            setFeaturedMovies(tempArr2.slice().reverse().filter(function(value){ return value.name.toLowerCase().charAt(0).includes(e.target.value.toLowerCase().charAt(0));}))
+        }
+        else if (e.target.value.length > 1){
+            setDisplayedMovies(tempArr.slice().reverse().filter(function(value){ return value.name.toLowerCase().includes(e.target.value.toLowerCase()) && value.name.toLowerCase().charAt(0).includes(e.target.value.toLowerCase().charAt(0))}))
+            setFeaturedMovies(tempArr2.slice().reverse().filter(function(value){ return value.name.toLowerCase().includes(e.target.value.toLowerCase()) && value.name.toLowerCase().charAt(0).includes(e.target.value.toLowerCase().charAt(0))}))
+        }
+        else {
+            setDisplayedMovies(displayedHolder)
+            setFeaturedMovies(featuredHolder)
+        }
     }
 
     return (
@@ -56,12 +92,20 @@ function Gallery(props) {
             </div>
             {moviesLoaded ?
                 displayedMovies && displayedMovies.length ? 
-                    <div class="grid grid-cols-3 md:grid-cols-4 lg:col-gap-12 md:col-gap-6 col-gap-2 lg:row-gap-10 md:row-gap-5 row-gap-2 grid-rows-2 mb-5">
-                    {displayedMovies.map(movieEntry =>
-                        <div class="transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110 flex flex-col cursor-pointer justify-center" onClick={() => handleMovieClick(movieEntry.id)}>
-                            <img class="w-full" src={movieEntry.coverImageURL} alt={movieEntry.name} />
-                        </div>)}
-                    </div>
+                    props.featured ?
+                        <div class="grid grid-cols-3 md:grid-cols-4 lg:col-gap-12 md:col-gap-6 col-gap-2 lg:row-gap-10 md:row-gap-5 row-gap-2 grid-rows-2 mb-5">
+                        {featuredMovies.slice().reverse().map(movieEntry =>
+                            <div class="transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110 flex flex-col cursor-pointer justify-center" onClick={() => handleMovieClick(movieEntry.id)}>
+                                <img class="w-full" src={movieEntry.coverImageURL} alt={movieEntry.name} />
+                            </div>)}
+                        </div>
+                        :  
+                        <div class="grid grid-cols-3 md:grid-cols-4 lg:col-gap-12 md:col-gap-6 col-gap-2 lg:row-gap-10 md:row-gap-5 row-gap-2 grid-rows-2 mb-5">
+                        {displayedMovies.slice().reverse().map(movieEntry =>
+                            <div class="transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110 flex flex-col cursor-pointer justify-center" onClick={() => handleMovieClick(movieEntry.id)}>
+                                <img class="w-full" src={movieEntry.coverImageURL} alt={movieEntry.name} />
+                            </div>)}
+                        </div>
                     :
                     imagesLoaded ? <p> No search results for {searchQuery}</p> : null
                 : 
