@@ -49,7 +49,7 @@ function Navbar(props) {
       <div class="sm:flex sm:flex-col hidden">
         <div  class="flex items-center justify-between pt-4 px-6 w-screen">
           <div class="cursor-pointer" onClick={() => history.push("/search")}>
-            <svg width="30" height="30" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" fill="white" />
+            <svg width="30" height="30" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" fill="" />
               <circle cx="20.5" cy="17.5" r="10.5" stroke="black" strokeWidth={location.pathname === "/search" ? "4" : "2"}/>
               <line x1="28.1584" y1="25.244" x2="37.256" y2="34.3417" stroke="black" strokeWidth={location.pathname === "/search" ? "4" : "2"} strokeLinecap="round" />
             </svg>

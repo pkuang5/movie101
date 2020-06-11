@@ -48,7 +48,7 @@ function Editor (props) {
    function fiveStar () {
         const stars = []
         for (let i = 0; i < previewRating; i++) {
-            stars.push(<i class="fa fa-star fa-2x text-blue-300 pr-1 cursor-pointer" onMouseOver={() => setPreviewRating((i+1))} onMouseLeave={() => setPreviewRating((movieRating))} onClick={()=> {
+            stars.push(<i class="fa fa-star fa-2x text-yellow-300 pr-1 cursor-pointer" onMouseOver={() => setPreviewRating((i+1))} onMouseLeave={() => setPreviewRating((movieRating))} onClick={()=> {
                 setMovieRating(i+1) 
                 setPreviewRating(i+1) 
                 setChange(true)}}></i>)
@@ -207,7 +207,7 @@ function Editor (props) {
                 <div class = {show?"w-full grid grid-row-2 row-gap-24 sm:gap-12":"hidden"}>
                     <div class = "sm:grid sm:grid-cols-2 h-64 mb-12">
                         <div class = "w-full h-full">
-                            <p class="font-serif text-3xl font-bold pb-4 ">Editor</p>
+                            <p class="font-serif text-3xl font-bold pb-4 font-montserrat">Editor</p>
                             <div class = "grid grid-cols-2 gap-2 ">  
                                 <div class = "sm:w-64 h-20 w-32 ">
                                     <p>Film Title</p>
@@ -230,19 +230,19 @@ function Editor (props) {
                                     </div>
                                 </div>
                                 <div class = {show?"sm:hidden w-full  ":"hidden"}>
-                                    <div class = "flex sm:h-full h-56 w-full sm:w-4/5 border-4 border-gray-400 border-2 bg-cover bg-center flex" >
+                                    <div class = "flex sm:h-full h-56 w-full sm:w-4/5 bg-cover bg-center flex" >
                                         <img src = {movieImage} alt = "movieImage"></img>
                                     </div>
                                  </div>
                             </div>
                             <div class = {show?"sm:pt-12 h-64 sm:mt-8 sm:w-full items-center":"hidden "}>
-                                <p >Review</p>
+                                <p>Review</p>
                                 <textarea type = "textarea" 
                                     onChange = {(e) => {
                                         setMovieReview(e.target.value) 
                                         setChange(true)
                                         }} 
-                                        class="outline-none resize-none whitespace-normal flex-no-wrap text-sm border-2 border-gray-400 px-2 w-full sm:w-full h-64" placeholder="Description"/>  
+                                        class="outline-none resize-none whitespace-normal flex-no-wrap text-sm border px-2 w-full sm:w-full h-64 rounded-sm" placeholder="Description"/>  
                             </div>
                             <div class = "pt-4 sm:mt-20 mt-8 sm:ml-0 ml-16 ">{fiveStar()}</div>        
                         </div>
@@ -254,7 +254,7 @@ function Editor (props) {
                         </div>
                         <div class = {show?" sm:w-full h-1/2 w-full mt-64": " hidden"}>    
                                 <label class = "sm:mt-20 mt-2 sm:ml-0">Image Selection</label>
-                            <div class =  {searched === false ? "flex text-sm border-solid border-2 border-gray-400  p-2 bg-gray-200 mt-2 h-auto w-full " : "flex text-sm border-solid border-2 border-gray-400 p-2 bg-gray-200 mt-2 h-auto w-full"}>
+                            <div class =  {searched === false ? "flex text-sm p-2 bg-gray-200 mt-2 h-auto w-full " : "flex text-sm p-2 bg-gray-200 mt-2 h-auto w-full"}>
                                 <div class="h-auto justify-between grid sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-8 sm:p-8 cursor-pointer ">
                                     {specificImages.map(movieImageEntry =>    
                                         <img src={movieImageEntry.image} class={imagesToStore.includes(movieImageEntry.image) ? "border-blue-400 border-solid border-4" : "hover:opacity-75 transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-105" } onClick = {() => handleSpecificImgClick(movieImageEntry.image)}></img>
@@ -273,7 +273,7 @@ function Editor (props) {
                                     </div>
                                 </label>
                             </div>
-                            <button onClick ={change? ()=>handleSubmit() :null} class= "rounded-full hover:opacity-75 text-sm  border-2 border-gray-400 bg-gray-200 sm:py-2 sm:px-4 w-full sm:w-11/12 sm:ml-4  mb-4 h-12" type="button">
+                            <button onClick ={change? ()=>handleSubmit() :null} class= "rounded-full hover:opacity-75 text-sm border-2 border-gray-400 bg-gray-200 sm:py-2 sm:px-4 w-full sm:w-11/12 sm:ml-4  mb-4 h-12" type="button">
                                 Submit
                             </button>
                         </div>

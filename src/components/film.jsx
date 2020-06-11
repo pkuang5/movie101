@@ -8,9 +8,12 @@ function Film(props) {
     const [details, setDetails] = useState([])
     const [images, setImages] = useState([])
     const [credits, setCredits] = useState([])
-    const [imageDisplay, setImageDisplay] = useState(true)
+    const [infoDisplay, setInfoDisplay] = useState(true)
+    const [imageDisplay, setImageDisplay] = useState(false)
     const [videoDisplay, setVideoDisplay] = useState(false)
     const [castDisplay, setCastDisplay] = useState(false)
+    const [watchlist, setWatchlist] = useState(false)
+    const [journal, setJournals] = useState(false)
     let history = useHistory();
 
 
@@ -44,47 +47,65 @@ function Film(props) {
         event.target.pauseVideo();
     }
 
-    const opts = {
-        height: '150',
-        width: '300',
-        playerVars: {
-          // https://developers.google.com/youtube/player_parameters
-          autoplay: 0,
-        },
-    };
+    // const opts = {
+    //     height: '150',
+    //     width: '300',
+    //     playerVars: {
+    //       // https://developers.google.com/youtube/player_parameters
+    //       autoplay: 0,
+    //     },
+    // };
+
+    function getCrewInfo(parameter) {
+        for (var i in credits.crew) {
+            if (credits.crew[i].job === parameter) return credits.crew[i].name;
+        }
+    }
 
     return (
         //mobile
         <div class='flex w-screen justify-center'>
             <div class="flex flex-col w-full sm:w-2/3 items-center p-3">
-
                 <p class="font-montserrat text-center text-2xl sm:text-5xl font-semibold">{details.title}</p>
-                <div class="flex flex-col sm:flex-row">
-                    <div class="flex flex-col items-center">
-                        <img class="w-3/4 sm:w-full" src={'https://image.tmdb.org/t/p/w500' + details.poster_path} alt="poster" />
-                    </div>
-                    <div class="flex flex-col items-center justify-between">
-                        <p class="w-3/4 font-montserrat text-xs sm:text-lg">{details.overview}</p>
-                        <p class="w-3/4 font-montserrat text-sm sm:text-lg my-1">{'Release Date: ' + details.release_date}</p>
-                        <button onClick={() => history.push({pathname: '/editor', movieId: props.movieId, title: details.title})} class="h-10 w-32 transition duration-500 ease-in-out button-color-beige rounded transform hover:-translate-y-1 hover:scale-110 font-montserrat font-bold text-white">Add entry</button>
-                    </div>
-                </div>
             
-                <div class="flex w-full text-lg font-montserrat justify-around select-none mb-3 mt-5"> 
-                    <div class={imageDisplay ? 'font-bold cursor-pointer':'cursor-pointer'} onClick={() => {setVideoDisplay(false); setCastDisplay(false); setImageDisplay(true)}}>Images</div>
-                    <div class={videoDisplay ? 'font-bold cursor-pointer':'cursor-pointer'} onClick={() => {setVideoDisplay(true); setCastDisplay(false); setImageDisplay(false)}}>Videos</div>
-                    <div class={castDisplay ? 'font-bold cursor-pointer':'cursor-pointer'} onClick={() => {setVideoDisplay(false); setCastDisplay(true); setImageDisplay(false)}}>Cast</div>
+                <div class="flex w-full text-lg font-bold  font-montserrat justify-around select-none py-2 bg-green1 rounded-sm "> 
+                    <div class={infoDisplay ? 'border-b-2 border-gray-500 cursor-pointer':'cursor-pointer'} onClick={() => {setInfoDisplay(true); setVideoDisplay(false); setCastDisplay(false); setImageDisplay(false)}}>Info</div>
+                    <div class={imageDisplay ? 'border-b-2 border-gray-500 cursor-pointer':'cursor-pointer'} onClick={() => {setInfoDisplay(false); setVideoDisplay(false); setCastDisplay(false); setImageDisplay(true)}}>Images</div>
+                    <div class={videoDisplay ? 'border-b-2 border-gray-500 cursor-pointer':'cursor-pointer'} onClick={() => {setInfoDisplay(false); setVideoDisplay(true); setCastDisplay(false); setImageDisplay(false)}}>Videos</div>
+                    <div class={castDisplay ? ' border-b-2 border-gray-500 cursor-pointer':'cursor-pointer'} onClick={() => {setInfoDisplay(false); setVideoDisplay(false); setCastDisplay(true); setImageDisplay(false)}}>Cast</div>
                 </div>
-                <div class={castDisplay ? "grid grid-cols-1 sm:grid-cols-5 gap-6":"grid grid-cols-1 sm:grid-cols-3 gap-6"}>
-                    {videoDisplay ? videoIds.map(video => video.site === "YouTube" ? <div class='flex justify-center'><YouTube videoId={video.key} id={video.id} opts={opts} onReady={_onReady} /></div> : null) : null}
-                    {imageDisplay ? images.map(image => <img src={image} alt="movie still" />):null}
-                    {castDisplay ? credits.cast.map(member => 
-                    <div class="text-center text-xs font-montserrat">
-                        <img src={'https://image.tmdb.org/t/p/w500' + member.profile_path} alt="actor image" />  
-                        <p>{member.name}</p>
-                        <p class="text-gray-600">{'"' + member.character + '"'}</p>
+                <div class="bg-gray-200 rounded-sm">
+                    <div class={infoDisplay ? "flex flex-col sm:flex-row p-2":"hidden"}>
+                        <div class="flex w-1/4 flex-col items-center">
+                            <img class="w-3/4 sm:w-full" src={'https://image.tmdb.org/t/p/w500' + details.poster_path} alt="poster" />
+                        </div>
+                        <div class="flex w-3/4 flex-col font-montserrat text-sm sm:text-lg px-5 justify-between">
+                            <p>{'Description: ' + details.overview}</p>
+                            <p>{'Director: ' + getCrewInfo('Director')}</p>
+                            <p>{'Release Date: ' + details.release_date}</p>
+                        </div>
                     </div>
-                    ):null}
+                    {infoDisplay ? 
+                    <div class="flex flex-col p-2">
+
+                        <button onClick={() => history.push({pathname:'/watchlist', movieId: props.movieId, image: 'https://image.tmdb.org/t/p/w500'+details.poster_path, title: details.title})} class="transition duration-500 ease-in-out rounded transform hover:-translate-y-1 hover:scale-110 button-color-beige font-montserrat font-semibold text-white py-2 px-4 rounded w-1/4 mb-2">Add to watchlist</button>
+                        <button onClick={() => history.push({pathname: '/editor', movieId: props.movieId, title:details.title})} class="transition duration-500 ease-in-out rounded transform hover:-translate-y-1 hover:scale-110 button-color-beige font-montserrat font-semibold text-white py-2 px-4 rounded w-1/4">Add to journal</button>
+
+                    </div>: null
+                    }
+                    <div class={castDisplay ? "grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 gap-6 p-3":"grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-3"}>
+                        {videoDisplay ? videoIds.map(video => video.site === "YouTube" ? <div class='flex justify-center'><YouTube className="w-full h-full" videoId={video.key} id={video.id} onReady={_onReady} /></div> : null) : null}
+                        {imageDisplay ? images.map(image => <img src={image} alt="movie still" />):null}
+                        {castDisplay ? credits.cast.map(member => 
+                            member.profile_path ? 
+                            <div class="text-center font-montserrat bg-white border rounded-sm">
+                                <img src={'https://image.tmdb.org/t/p/w500' + member.profile_path} alt="actor image" />
+                                <p class="font-semibold">{member.name}</p>
+                                <p class="text-gray-600">{'"' + member.character + '"'}</p>
+                            </div>
+                            :null  
+                        ):null}
+                    </div>
                 </div>
 
 

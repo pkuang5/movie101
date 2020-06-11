@@ -104,22 +104,26 @@ function Search(props) {
     }
 
     return (
-        <div class="flex w-screen justify-center font-montserrat mt-32 px-6">
-            <div class="flex flex-col lg:w-1/2 md:w-4/5 w-full ">
-                <p class="text-2xl font-semibold mb-3">Search</p>
-                <input autoComplete="off" id="searchBar" onChange={handleSearch} class="w-full text-md text-gray-700 border-b focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder={placeholder}/>
-                <div class="flex text-sm mt-3 text-gray-500">
-                    <p onClick={() => {setSearch('Films'); document.getElementById('searchBar').value = ''}} class={search === 'Films' ? "text-black font-semibold cursor-pointer mr-5" : "cursor-pointer mr-5"}>Films</p>
-                    <p onClick={() => {setSearch('Users'); document.getElementById('searchBar').value = ''}} class={search === 'Users' ? "text-black font-semibold cursor-pointer mr-5" : "cursor-pointer mr-5"}>Users</p>
-                    <p onClick={() => {setSearch('Journals'); document.getElementById('searchBar').value = ''}} class={search === 'Journals' ? "text-black font-semibold cursor-pointer mr-5" : "cursor-pointer mr-5"}>Journals</p>
+        <React.Fragment>
+            <div class="flex w-screen justify-center font-montserrat bg-brown1 sm:-my-20 pt-40 px-6">
+                <div class="flex flex-col lg:w-1/2 md:w-4/5 w-full pb-20">
+                    <div class="flex text-sm mt-3 text-black items-center">
+                        <p class="text-2xl font-yeseva mr-4">Search</p>
+                        <p onClick={() => {setSearch('Films'); document.getElementById('searchBar').value = ''}} class={search === 'Films' ? "border-b-2 border-black font-semibold cursor-pointer mr-4" : "cursor-pointer mr-4"}>FILMS</p>
+                        <p onClick={() => {setSearch('Users'); document.getElementById('searchBar').value = ''}} class={search === 'Users' ? "border-b-2 border-black  font-semibold cursor-pointer mr-4" : "cursor-pointer mr-4"}>USERS</p>
+                        <p onClick={() => {setSearch('Journals'); document.getElementById('searchBar').value = ''}} class={search === 'Journals' ? "border-b-2 border-black font-semibold cursor-pointer mr-4" : "cursor-pointer mr-4"}>JOURNALS</p>
+                    </div>
+                    <input autoComplete="off" id="searchBar" onChange={handleSearch} class="w-full text-md placeholder-black border-2 rounded-sm border-black p-2 focus:outline-none bg-brown1" type="text" placeholder={placeholder}/>
                 </div>
-                <div class="h-full my-2">
+            </div>
+            <div class="h-full w-screen justify-center flex mt-20">
+                <div class="w-1/2 mt-10">
                     {(results) ? results.map(result => 
                         <ResultFormat result={result} searchType = {search} username={props.username} />
                     ): <div class="font-montserrat">No search results for {query}</div>}
                 </div>
             </div>
-        </div>
+        </React.Fragment>
     );
 }
 
