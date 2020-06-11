@@ -20,7 +20,9 @@ class Settings extends Component {
             url: '',
             image: '', 
             change: false,
-            isHovering: false
+            usernameExists: false,
+            usernameTitle: 'UserName',
+            usernameOG: ''
         };
     }
     showNotification = () => {
@@ -50,26 +52,39 @@ class Settings extends Component {
                 
                 });    
             }
-            else {
-                console.log('ERROR')
-            }
             this.setState({change: true})
            
     }
-    handleMouseHover = () => {
-        this.setState(this.toggleHoverState);
-        console.log(this.state.isHovering)
-    }
-    toggleHoverState = (state) => {
-        return {
-          isHovering: !state.isHovering,
-        };
-      }
     handleChangeUserName = (e) => {
-        this.setState({ 
-            username: e.target.value,
-            change: true
-        })
+        let exist = false
+        if (e.target.value.length != 0) {
+            var temp = e.target.value
+            firebase.database().ref('users').orderByChild('userName').once("value", snapshot => {
+                snapshot.forEach((data) => {
+                    let userObject = {
+                        username: data.val().userName,
+                    }
+                    if (userObject.username === temp){
+                        exist = true
+                    }
+                });
+                if (exist === true) {
+                    this.setState({
+                        usernameTitle: 'UserName already Exists!',
+                        usernameExists:true,
+                        change: false
+                    })
+                }
+                else {
+                    this.setState({
+                        usernameTitle: 'UserName',
+                        usernameExists:false,
+                        username: temp,
+                        change:true
+                    })
+                }
+            })
+        }
     }
     handleFirstName = (e) => {
         this.setState({ 
@@ -96,7 +111,7 @@ class Settings extends Component {
         })
     }
     handleSubmit = (e) => {
-        if (this.state.change) {
+        if (this.state.change && this.state.usernameExists === false) {
             this.showNotification()
             firebase
             .database()
@@ -119,7 +134,8 @@ class Settings extends Component {
                 username: snapshot.val().userName,
                 email: snapshot.val().email,
                 bio: snapshot.val().bio,
-                url: snapshot.val().profileURL
+                url: snapshot.val().profileURL,
+                usernameOG: snapshot.val().userName
             });  
           })
     }
@@ -129,14 +145,14 @@ class Settings extends Component {
 
                   <div class="w-11/12 mt-16 sm:mt-2 flex flex-wrap -mx-3  flex justify-center sm:w-1/3 font-montserrat font-semibold " >
                     <div class = "flex w-full h-24" >
-                        <div onMouseEnter={this.handleMouseHover} onMouseLeave={this.handleMouseHover} class= "flex-grow-0 flex-shrink-0 rounded-full w-24 flex bg-cover justify-center mr-8 pt-8 cursor-pointer bg-white" style={{backgroundImage: "url('" + this.state.url + "')"}}> 
+                        <div class= "flex-grow-0 flex-shrink-0 rounded-full w-24 flex bg-cover justify-center mr-8 pt-8 cursor-pointer bg-white" style={{backgroundImage: "url('" + this.state.url + "')"}}> 
                             <label for="imageUpload" class="fa fa-pencil fa-sm rounded-full px-2 pt-2 pb-6 items-center justify-center bg-blue-400 h-2 w-screen ml-20 mt-12 text-lg text-white cursor-pointer"/>
                             <input type = "file" onChange = {this.handleChange} name="file" id="imageUpload"  class = "w-0 h-0 opacity-0" />
                         </div>
                         <div class = "w-4/5 flex ">
                             <div class = " h-18 w-full h-full ">
-                                <label class=" tracking-wide text-gray-700 text-sm font-bold mb-3 " for="grid-username"> User Name </label>
-                                <input onChange={this.handleChangeUserName} class="self-end appearance-none block w-full text-gray-700  border-solid border-2 border-gray-300 rounded  py-3 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder={this.state.username}/>
+                                <label class=" tracking-wide text-gray-700 text-sm font-bold mb-3 "> {this.state.usernameTitle} </label>
+                                <input onChange={this.handleChangeUserName} class="self-end appearance-none block w-full text-gray-700  border-solid border-2 border-gray-300 rounded  py-3 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder={this.state.usernameOG}/>
                             </div>
                         </div>
                     </div>
