@@ -63,7 +63,7 @@ class DropSearch extends Component {
                     {this.state.items.map((item) => <li class = "hover:opacity-100 focus:shadow-outline  cursor-pointer" onClick = {()=>this.suggestionSelected(item.title, item.release_date, item.id)}>
                         <div  class={item.release_date ? "hover:opacity-100 focus:shadow-outline" : item.release_date = '-' }>
                             <div class=" self-center  h-24 w-64 flex bg-cover "> 
-                                <img class = "h-24 w-16" src = {item.poster_path!==null ?'https://image.tmdb.org/t/p/w500'+ item.poster_path : "http://pngimg.com/uploads/mario/mario_PNG53.png"}/>
+                                <img class = "h-24 w-16" src = {item.poster_path!==null ?'https://image.tmdb.org/t/p/w500'+ item.poster_path : "https://upload.wikimedia.org/wikipedia/commons/1/16/No_image_available_450_x_600.svg"}/>
                                 <div class="flex flex-col pl-4 ">
                                     <p class="sm:text-base text-xs font-semibold text-black">{item.title}</p>
                                     <p class="text-xs text-black">{(item.release_date.split('-')[0])}</p>

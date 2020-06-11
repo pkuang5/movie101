@@ -29,7 +29,7 @@ class Settings extends Component {
     }
     showNotification = () => {
         new Noty({
-            type: 'success',
+            type: 'info',
             theme: 'bootstrap-v4',
             layout: 'bottomRight',
             text: 'You Changes Have Been Saved!',
