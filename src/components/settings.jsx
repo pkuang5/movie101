@@ -22,7 +22,9 @@ class Settings extends Component {
             change: false,
             usernameExists: false,
             usernameTitle: 'UserName',
-            usernameOG: ''
+            usernameOG: '',
+            spaceExists: false
+            
         };
     }
     showNotification = () => {
@@ -55,9 +57,22 @@ class Settings extends Component {
             this.setState({change: true})
            
     }
+     
     handleChangeUserName = (e) => {
+        let spaces = false
+        if (e.target.value.indexOf(' ') !== -1) {
+            this.setState({
+                usernameTitle:'Spaces are restricted',
+                spaceExists: true
+            })
+            spaces = true
+        }
+        else {
+            this.setState({spaceExists:false})
+            spaces = false
+        }
         let exist = false
-        if (e.target.value.length != 0) {
+        if (e.target.value.length != 0 && e.target.value.length < 15 ) {
             var temp = e.target.value
             firebase.database().ref('users').orderByChild('userName').once("value", snapshot => {
                 snapshot.forEach((data) => {
@@ -68,14 +83,14 @@ class Settings extends Component {
                         exist = true
                     }
                 });
-                if (exist === true) {
+                if (exist === true && spaces === false) {
                     this.setState({
                         usernameTitle: 'UserName already Exists!',
                         usernameExists:true,
                         change: false
                     })
                 }
-                else {
+                else if (exist === false && spaces === false){
                     this.setState({
                         usernameTitle: 'UserName',
                         usernameExists:false,
@@ -84,6 +99,7 @@ class Settings extends Component {
                     })
                 }
             })
+            
         }
     }
     handleFirstName = (e) => {
@@ -111,7 +127,7 @@ class Settings extends Component {
         })
     }
     handleSubmit = (e) => {
-        if (this.state.change && this.state.usernameExists === false) {
+        if (this.state.change && this.state.usernameExists === false && this.state.spaceExists === false) {
             this.showNotification()
             firebase
             .database()
@@ -151,8 +167,8 @@ class Settings extends Component {
                         </div>
                         <div class = "w-4/5 flex ">
                             <div class = " h-18 w-full h-full ">
-                                <label class=" tracking-wide text-gray-700 text-sm font-bold mb-3 "> {this.state.usernameTitle} </label>
-                                <input onChange={this.handleChangeUserName} class="self-end appearance-none block w-full text-gray-700  border-solid border-2 border-gray-300 rounded  py-3 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder={this.state.usernameOG}/>
+                                <label class={this.state.usernameExists||this.state.spaceExists?"text-red-600 tracking-wide text-gray-700 text-sm font-bold mb-3 ": "tracking-wide text-gray-700 text-sm font-bold mb-3"}> {this.state.usernameTitle} </label>
+                                <input type="text" pattern="[A-Za-z]{3}" maxLength = "15"  onChange={this.handleChangeUserName} class="self-end appearance-none block w-full text-gray-700  border-solid border-2 border-gray-300 rounded  py-3 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder={this.state.usernameOG}/>
                             </div>
                         </div>
                     </div>
