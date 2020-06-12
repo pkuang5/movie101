@@ -30,6 +30,14 @@ function Search(props) {
                         }
                         setUsers(results => [...results,userObject])
                     });
+                    // snapshot.forEach((data) => {
+                    //     let userObject = {
+                    //         username: data.val().userName,
+                    //         bio: data.val().bio,
+                    //         profilePicURL: data.val().profileURL
+                    //     }
+                    //     setUsers(results => [...results,userObject])
+                    // });
                 });
             }
         } 
@@ -117,9 +125,9 @@ function Search(props) {
                 </div>
             </div>
             <div class="h-full w-screen justify-center flex mt-20">
-                <div class="w-1/2 mt-10">
+                <div class="lg:w-1/2 md:w-4/5 w-full mt-10 px-6">
                     {(results) ? results.map(result => 
-                        <ResultFormat result={result} searchType = {search} username={props.username} />
+                        <ResultFormat id={props.googleId} result={result} searchType = {search} username={props.username} />
                     ): <div class="font-montserrat">No search results for {query}</div>}
                 </div>
             </div>

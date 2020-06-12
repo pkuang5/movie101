@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import YouTube from 'react-youtube';
+import firebase from '../firebaseConfig'
+import Noty from 'noty'
 
 function Film(props) {
 
@@ -62,19 +64,37 @@ function Film(props) {
         }
     }
 
+    function addToWatchlist(movieId, posterImage, movieTitle) {
+        firebase.database().ref(`users/${props.id}/watchlist/${movieId}`).set({
+            image: posterImage,
+            title: movieTitle
+        })
+        showNotification()
+    }
+
+    function showNotification(){
+        new Noty({
+            type: 'success',
+            theme: 'bootstrap-v4',
+            layout: 'bottomRight',
+            text: 'Movie has been added to watchlist!',
+            timeout: 1000
+        }).show()
+    }
+
     return (
         //mobile
         <div class='flex w-screen justify-center'>
             <div class="flex flex-col w-full sm:w-2/3 items-center p-3">
                 <p class="font-montserrat text-center text-2xl sm:text-5xl font-semibold">{details.title}</p>
             
-                <div class="flex w-full text-lg font-bold  font-montserrat justify-around select-none py-2 bg-green1 rounded-sm "> 
-                    <div class={infoDisplay ? 'border-b-2 border-gray-500 cursor-pointer':'cursor-pointer'} onClick={() => {setInfoDisplay(true); setVideoDisplay(false); setCastDisplay(false); setImageDisplay(false)}}>Info</div>
-                    <div class={imageDisplay ? 'border-b-2 border-gray-500 cursor-pointer':'cursor-pointer'} onClick={() => {setInfoDisplay(false); setVideoDisplay(false); setCastDisplay(false); setImageDisplay(true)}}>Images</div>
-                    <div class={videoDisplay ? 'border-b-2 border-gray-500 cursor-pointer':'cursor-pointer'} onClick={() => {setInfoDisplay(false); setVideoDisplay(true); setCastDisplay(false); setImageDisplay(false)}}>Videos</div>
-                    <div class={castDisplay ? ' border-b-2 border-gray-500 cursor-pointer':'cursor-pointer'} onClick={() => {setInfoDisplay(false); setVideoDisplay(false); setCastDisplay(true); setImageDisplay(false)}}>Cast</div>
+                <div class="flex w-full text-lg font-bold  font-montserrat justify-around select-none py-2 bg-brown2 rounded-sm "> 
+                    <div class={infoDisplay ? 'border-b-2 border-white cursor-pointer':'cursor-pointer'} onClick={() => {setInfoDisplay(true); setVideoDisplay(false); setCastDisplay(false); setImageDisplay(false)}}>Info</div>
+                    <div class={imageDisplay ? 'border-b-2 border-white cursor-pointer':'cursor-pointer'} onClick={() => {setInfoDisplay(false); setVideoDisplay(false); setCastDisplay(false); setImageDisplay(true)}}>Images</div>
+                    <div class={videoDisplay ? 'border-b-2 bborder-white cursor-pointer':'cursor-pointer'} onClick={() => {setInfoDisplay(false); setVideoDisplay(true); setCastDisplay(false); setImageDisplay(false)}}>Videos</div>
+                    <div class={castDisplay ? ' border-b-2 border-white cursor-pointer':'cursor-pointer'} onClick={() => {setInfoDisplay(false); setVideoDisplay(false); setCastDisplay(true); setImageDisplay(false)}}>Cast</div>
                 </div>
-                <div class="bg-gray-200 rounded-sm">
+                <div class="bg-brown1 rounded-sm">
                     <div class={infoDisplay ? "flex flex-col sm:flex-row p-2":"hidden"}>
                         <div class="flex w-1/4 flex-col items-center">
                             <img class="w-3/4 sm:w-full" src={'https://image.tmdb.org/t/p/w500' + details.poster_path} alt="poster" />
@@ -88,8 +108,8 @@ function Film(props) {
                     {infoDisplay ? 
                     <div class="flex flex-col p-2">
 
-                        <button onClick={() => history.push({pathname:'/watchlist', movieId: props.movieId, image: 'https://image.tmdb.org/t/p/w500'+details.poster_path, title: details.title})} class="transition duration-500 ease-in-out rounded transform hover:-translate-y-1 hover:scale-110 button-color-beige font-montserrat font-semibold text-white py-2 px-4 rounded w-1/4 mb-2">Add to watchlist</button>
-                        <button onClick={() => history.push({pathname: '/editor', movieId: props.movieId, title:details.title})} class="transition duration-500 ease-in-out rounded transform hover:-translate-y-1 hover:scale-110 button-color-beige font-montserrat font-semibold text-white py-2 px-4 rounded w-1/4">Add to journal</button>
+                        <button onClick={() => addToWatchlist(props.movieId, 'https://image.tmdb.org/t/p/w500'+details.poster_path, details.title)} class="transition duration-500 ease-in-out rounded transform hover:-translate-y-1 hover:scale-110 button-color-beige font-montserrat font-semibold text-white py-2 px-4 rounded w-1/4 mb-2">Add to watchlist</button>
+                        <button onClick={() => history.push({pathname: '/editor', movieId: props.movieId, title:details.title})} class="transition duration-500 ease-in-out rounded transform hover:-translate-y-1 hover:scale-110 button-color-beige font-montserrat font-semibold text-white py-2 px-4 rounded w-1/4">Add to journals</button>
 
                     </div>: null
                     }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom'
 import firebase from '../firebaseConfig'
+import Noty from 'noty'
 
 function ResultFormat(props) {
 
@@ -10,6 +11,24 @@ function ResultFormat(props) {
     const [info, setInfo] = useState(false)
     const [watchlist, setWatchlist] = useState(false)
     const [journal, setJournals] = useState(false)
+
+    function addToWatchlist(movieId, posterImage, movieTitle) {
+        firebase.database().ref(`users/${props.id}/watchlist/${movieId}`).set({
+            image: posterImage,
+            title: movieTitle
+        })
+        // showNotification()
+    }
+
+    function showNotification(){
+        new Noty({
+            type: 'success',
+            theme: 'bootstrap-v4',
+            layout: 'bottomRight',
+            text: 'Movie has been added to watchlist!',
+            timeout: 1000
+        }).show()
+    }
 
     if (props.searchType === 'Films') {
         return (
@@ -23,9 +42,9 @@ function ResultFormat(props) {
                         </div>
                         <div class={hover ? null : 'sm:hidden'}>
                             <div class="sm:flex hidden pr-3">
-                                <i class="fa fa-lg fa-info-circle mr-2 transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110" onMouseOver={() => setInfo(true)} onMouseLeave={() => setInfo(false)} onClick={() => history.push('/films/' + props.result.id)}/>
-                                <i class="fa fa-lg fa-eye mr-2 transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110" onMouseOver={() => setWatchlist(true)} onMouseLeave={() => setWatchlist(false)}  onClick={() => history.push({pathname:'/watchlist', movieId: props.result.id, image: 'https://image.tmdb.org/t/p/w500'+props.result.poster_path, title: props.result.title})}/>
-                                <i class="fa fa-lg fa-plus-circle mr-2 transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110" onMouseOver={() => setJournals(true)} onMouseLeave={() => setJournals(false)} onClick={() => history.push({pathname: '/editor', movieId: props.result.id, title:props.result.title})}/>
+                                <i class="fa fa-lg fa-info-circle mr-2 transition ease-in-out duration-200 transform hover:scale-110" onMouseOver={() => setInfo(true)} onMouseLeave={() => setInfo(false)} onClick={() => history.push('/films/' + props.result.id)}/>
+                                <i class="fa fa-lg fa-eye mr-2 transition ease-in-out duration-200 transform hover:scale-110" onMouseOver={() => setWatchlist(true)} onMouseLeave={() => setWatchlist(false)}  onClick={() => addToWatchlist(props.result.id, 'https://image.tmdb.org/t/p/w500'+props.result.poster_path, props.result.title)}/>
+                                <i class="fa fa-lg fa-plus-circle mr-2 transition ease-in-out duration-200 transform hover:scale-110" onMouseOver={() => setJournals(true)} onMouseLeave={() => setJournals(false)} onClick={() => history.push({pathname: '/editor', movieId: props.result.id, title:props.result.title})}/>
                             </div>
                             <div class='absolute font-montserrat text-xs'>
                                 <p class={info ? '': 'hidden'}>Movie Info</p>

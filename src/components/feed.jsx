@@ -19,9 +19,7 @@ function Feed (props) {
             if (snapshot.val()) setName(snapshot.val().firstName)
         })
         callApi('trending/movie/week', setTrendingMovies)
-        callApi('movie/popular', setPopularMovies)
         callApi('movie/now_playing', setNowPlayingMovies)
-        callApi('movie/top_rated', setTopRatedMovies)
         callApi('movie/upcoming', setUpcomingMovies)
         
     }, [props.googleId])
@@ -37,11 +35,11 @@ function Feed (props) {
     function movieRow(list, listName){
         return(
             <div class="w-full my-3">
-                <p class="font-montserrat text-xl font-semibold">{listName}</p>
-                <div class="overflow-x-scroll overflow-y-hidden flex flex-no-wrap bg-gray-200 h-auto">
+                <p class="font-montserrat text-xl border-b border-black pb-1">{listName}</p>
+                <div class="overflow-x-scroll overflow-y-hidden flex flex-no-wrap bg-brown1 h-auto">
                 {list.map(movie =>  movie.poster_path ?  
                     <img onClick = {() => history.push('/films/' + movie.id)}
-                    class ="w-24 sm:w-32 h-full m-2 sm:m-4 cursor-pointer transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-105 " src={'https://image.tmdb.org/t/p/w500' + movie.poster_path} alt= {movie.title} />
+                    class ="w-24 sm:w-32 h-full m-3 sm:m-4 cursor-pointer transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-105 " src={'https://image.tmdb.org/t/p/w500' + movie.poster_path} alt= {movie.title} />
                     : null
                 )}
                 </div>
@@ -54,11 +52,9 @@ function Feed (props) {
             <div class="flex flex-col lg:w-2/3 md:w-4/5 w-full items-center">
                 <p class="font-yeseva text-3xl">Screenbook</p>
                 <p class="font-montserrat text-xs sm:text-sm text-center w-3/5 mt-3"> Welcome, {firstName}! This is your feed. See what movies are popular in the Screenbook community and follow other members to see their journals. Or, get started on your own journal. </p>
-                <button onClick = {() => history.push('/editor')} class="transition duration-500 ease-in-out rounded transform hover:-translate-y-1 hover:scale-110 button-color-beige font-montserrat font-semibold text-white py-2 px-4 rounded w-40 my-3">+ add entry</button>
+                <button onClick = {() => history.push('/editor')} class="transition duration-500 ease-in-out rounded transform hover:-translate-y-1 hover:scale-110 button-color-beige font-montserrat font-semibold text-white py-2 px-4 rounded w-1/3 my-3">+ add entry</button>
                 {movieRow(trendingMovies, 'Trending Films')}
-                {movieRow(popularMovies, 'Popular Films')}
                 {movieRow(nowPlayingMovies, 'Now Playing')}
-                {movieRow(topRatedMovies, 'Top Rated Films')}
                 {movieRow(upcomingMovies, 'Upcoming Films')}
             </div>
         </div>

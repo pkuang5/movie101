@@ -22,8 +22,8 @@ function Navbar(props) {
   let nodeXI = useRef()
   let nodeXII = useRef()
   let nodeXIII = useRef()
-  let navLinkStyle = { color: "black", textDecoration: "none", paddingRight: "0.3rem", paddingLeft: "0.3rem", paddingBottom: "0.1rem" };
-  let activeStyle = { fontWeight: 'bolder' };
+  let navLinkStyle = { color: "black", textDecoration: "none", paddingBottom: "0.1rem" };
+  let activeStyle = { fontWeight: 'bolder', borderBottom: "1px solid black" };
   
   useEffect (() => {
     document.addEventListener('mousedown', handleClick, false);

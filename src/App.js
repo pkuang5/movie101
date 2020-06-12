@@ -66,7 +66,7 @@ class App extends Component {
             <Route path="/watchlist" exact strict component={() => <WatchList id={this.state.googleId}/>}></Route>
             <Route path="/:username" exact strict render={({match})=><Profile username={match.params.username} appId={this.state.googleId}/>}/>
             <Route path="/:username/movies/:id" exact strict render={({match})=><Movie movieId={match.params.id} username={match.params.username} localUser={match.params.username===this.state.username ? true : false}/>}/>
-            <Route path="/films/:id" exact strict render={({match}) => <Film movieId={match.params.id} />} />
+            <Route path="/films/:id" exact strict render={({match}) => <Film movieId={match.params.id} id={this.state.googleId}/>} />
           </Switch>
         </Router>
       );
