@@ -25,8 +25,10 @@ class GoogleLogInBtn extends Component {
           profileURL: googleUser.profileObj.imageUrl,
           id: googleUser.getId(),
           userName: username,
-          bio: ''
-
+          bio: '',
+          followerCount: 0,
+          followingCount: 0,
+          public: true
         });
       }
       else {

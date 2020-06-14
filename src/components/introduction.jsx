@@ -35,7 +35,7 @@ function Introduction(props) {
                     <img class="w-4/5 float-right" src= "https://external.xx.fbcdn.net/safe_image.php?d=AQDkz4X-kZ0eawup&w=960&h=519&url=https%3A%2F%2Ffilm-grab.com%2Fwp-content%2Fuploads%2Fphoto-gallery%2FCastle_in_the_Sky_041.jpg%3Fbwg%3D1569400977&_nc_hash=AQAPuD1lKkqdNGLJ" alt="castle in the sky 2"/>
                 </div>
                 <div class="flex w-1/2 justify-start" data-aos="fade-down">
-                    <p class="w-5/6 lg:text-xl md:text-lg text-xs font-montserrat pl-4">Screenbook allows you to quiuckly add anything you've watched and create lists to organize films however you please.</p>
+                    <p class="w-5/6 lg:text-xl md:text-lg text-xs font-montserrat pl-4">Screenbook allows you to quickly add anything you've watched and create lists to organize films however you please.</p>
                 </div>
             </div>
 

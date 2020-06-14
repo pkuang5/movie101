@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import YouTube from 'react-youtube';
+import firebase from '../firebaseConfig'
+import Noty from 'noty'
 
 function Film(props) {
 
     const [videoIds, setVideoIds] = useState([])
     const [details, setDetails] = useState([])
     const [images, setImages] = useState([])
+    const [credits, setCredits] = useState([])
+    const [infoDisplay, setInfoDisplay] = useState(true)
+    const [imageDisplay, setImageDisplay] = useState(false)
     const [videoDisplay, setVideoDisplay] = useState(false)
+    const [castDisplay, setCastDisplay] = useState(false)
+    const [watchlist, setWatchlist] = useState(false)
+    const [journal, setJournals] = useState(false)
     let history = useHistory();
 
 
@@ -15,6 +23,7 @@ function Film(props) {
         callApi(props.movieId, '/videos', setVideoIds)
         callApi(props.movieId, '', setDetails)
         callApi(props.movieId, '/images', setImages)
+        callApi(props.movieId, '/credits', setCredits)
     }, [props.movieId])
 
     function callApi(movieId, parameter, callback) {
@@ -40,37 +49,87 @@ function Film(props) {
         event.target.pauseVideo();
     }
 
-    function handleVideoDisplay(bool) {
-        setVideoDisplay(bool)
+    // const opts = {
+    //     height: '150',
+    //     width: '300',
+    //     playerVars: {
+    //       // https://developers.google.com/youtube/player_parameters
+    //       autoplay: 0,
+    //     },
+    // };
+
+    function getCrewInfo(parameter) {
+        for (var i in credits.crew) {
+            if (credits.crew[i].job === parameter) return credits.crew[i].name;
+        }
     }
 
-    const opts = {
-        height: '150',
-        width: '300',
-        playerVars: {
-          // https://developers.google.com/youtube/player_parameters
-          autoplay: 0,
-        },
-    };
+    function addToWatchlist(movieId, posterImage, movieTitle) {
+        firebase.database().ref(`users/${props.id}/watchlist/${movieId}`).set({
+            image: posterImage,
+            title: movieTitle
+        })
+        showNotification()
+    }
+
+    function showNotification(){
+        new Noty({
+            type: 'success',
+            theme: 'bootstrap-v4',
+            layout: 'bottomRight',
+            text: 'Movie has been added to watchlist!',
+            timeout: 1000
+        }).show()
+    }
 
     return (
         //mobile
-        <div class="flex flex-col w-screen items-center p-3">
-            <i onClick={() => history.push({pathname: '/editor', movieId: props.movieId, title:details.title})} class="fa fa-plus-circle fa-lg float-right"></i>
-            <p class="font-montserrat text-center text-2xl font-semibold">{details.title}</p>
-            <p class="w-3/4 font-montserrat text-center text-xs my-1">{details.release_date}</p>
-            <img class="w-3/4" src={'https://image.tmdb.org/t/p/w500' + details.poster_path} alt="poster" />
-            <p class="w-3/4 font-montserrat text-xs my-3">{details.overview}</p>
-            <div class="flex w-full text-lg font-montserrat justify-around select-none my-3">
-                <div class={videoDisplay ? 'cursor-pointer' : 'font-bold cursor-pointer'} onClick={() => handleVideoDisplay(false)}>Images</div>
-                <div class={!videoDisplay ? 'cursor-pointer' : 'font-bold cursor-pointer'} onClick={() => handleVideoDisplay(true)}>Videos</div>
-            </div>
-            {videoDisplay ?
-                videoIds.map(video => video.site === "YouTube" ? <div class='flex justify-center my-2'><YouTube videoId={video.key} id={video.id} opts={opts} onReady={_onReady} /></div> : null)
-            :
-                images.map(image => <img class='my-2' src={image} alt="movie still" />)
-            }
+        <div class='flex w-screen justify-center'>
+            <div class="flex flex-col w-full sm:w-2/3 items-center p-3">
+                <p class="font-montserrat text-center text-2xl sm:text-5xl font-semibold">{details.title}</p>
+            
+                <div class="flex w-full text-lg font-bold  font-montserrat justify-around select-none py-2 bg-brown2 rounded-sm "> 
+                    <div class={infoDisplay ? 'border-b-2 border-white cursor-pointer':'cursor-pointer'} onClick={() => {setInfoDisplay(true); setVideoDisplay(false); setCastDisplay(false); setImageDisplay(false)}}>Info</div>
+                    <div class={imageDisplay ? 'border-b-2 border-white cursor-pointer':'cursor-pointer'} onClick={() => {setInfoDisplay(false); setVideoDisplay(false); setCastDisplay(false); setImageDisplay(true)}}>Images</div>
+                    <div class={videoDisplay ? 'border-b-2 bborder-white cursor-pointer':'cursor-pointer'} onClick={() => {setInfoDisplay(false); setVideoDisplay(true); setCastDisplay(false); setImageDisplay(false)}}>Videos</div>
+                    <div class={castDisplay ? ' border-b-2 border-white cursor-pointer':'cursor-pointer'} onClick={() => {setInfoDisplay(false); setVideoDisplay(false); setCastDisplay(true); setImageDisplay(false)}}>Cast</div>
+                </div>
+                <div class="bg-brown1 rounded-sm">
+                    <div class={infoDisplay ? "flex flex-col sm:flex-row p-2":"hidden"}>
+                        <div class="flex w-1/4 flex-col items-center">
+                            <img class="w-3/4 sm:w-full" src={'https://image.tmdb.org/t/p/w500' + details.poster_path} alt="poster" />
+                        </div>
+                        <div class="flex w-3/4 flex-col font-montserrat text-sm sm:text-lg px-5 justify-between">
+                            <p>{'Description: ' + details.overview}</p>
+                            <p>{'Director: ' + getCrewInfo('Director')}</p>
+                            <p>{'Release Date: ' + details.release_date}</p>
+                        </div>
+                    </div>
+                    {infoDisplay ? 
+                    <div class="flex flex-col p-2">
 
+                        <button onClick={() => addToWatchlist(props.movieId, 'https://image.tmdb.org/t/p/w500'+details.poster_path, details.title)} class="transition duration-500 ease-in-out rounded transform hover:-translate-y-1 hover:scale-110 button-color-beige font-montserrat font-semibold text-white py-2 px-4 rounded w-1/4 mb-2">Add to watchlist</button>
+                        <button onClick={() => history.push({pathname: '/editor', movieId: props.movieId, title:details.title})} class="transition duration-500 ease-in-out rounded transform hover:-translate-y-1 hover:scale-110 button-color-beige font-montserrat font-semibold text-white py-2 px-4 rounded w-1/4">Add to journals</button>
+
+                    </div>: null
+                    }
+                    <div class={castDisplay ? "grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 gap-6 p-3":"grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-3"}>
+                        {videoDisplay ? videoIds.map(video => video.site === "YouTube" ? <div class='flex justify-center'><YouTube className="w-full h-full" videoId={video.key} id={video.id} onReady={_onReady} /></div> : null) : null}
+                        {imageDisplay ? images.map(image => <img src={image} alt="movie still" />):null}
+                        {castDisplay ? credits.cast.map(member => 
+                            member.profile_path ? 
+                            <div class="text-center font-montserrat bg-white border rounded-sm">
+                                <img src={'https://image.tmdb.org/t/p/w500' + member.profile_path} alt="actor image" />
+                                <p class="font-semibold">{member.name}</p>
+                                <p class="text-gray-600">{'"' + member.character + '"'}</p>
+                            </div>
+                            :null  
+                        ):null}
+                    </div>
+                </div>
+
+
+            </div>
         </div>
 
     )
