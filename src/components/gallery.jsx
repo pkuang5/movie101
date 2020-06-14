@@ -46,7 +46,8 @@ function Gallery(props) {
     }, [props.googleId, props.featured]);
 
     function handleMovieClick(id) {
-        history.push("/" + props.username + "/movies/" + id);
+        history.push({pathname:("/" + props.username + "/movies/" + id), appId: props.appId});
+        //history.push({pathname: '/editor', movieId: props.movieId, title:details.title})}
     }
 
     const handleSearch = (e) => {

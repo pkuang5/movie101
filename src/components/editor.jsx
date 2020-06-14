@@ -40,6 +40,8 @@ function Editor (props) {
             setMovieId(location.movieId)
             setMovieName(location.title)
             getMovieInfo(location.title,location.movieId)
+            
+            console.log(location.movieId)
             getMovieImage(location.movieId)
             setChange(true)
         }
@@ -86,9 +88,9 @@ function Editor (props) {
         let date = newDate.getDate();
         let month = newDate.getMonth() + 1;
         let year = newDate.getFullYear();
-        var hours = new Date().getHours(); //To get the Current Hours
-        var min = new Date().getMinutes(); //To get the Current Minutes
-        var sec = new Date().getSeconds(); //To get the Current Seconds
+        var hours = newDate.getHours(); //To get the Current Hours
+        var min = newDate.getMinutes(); //To get the Current Minutes
+        var sec = newDate.getSeconds(); //To get the Current Seconds
         if (month < 10) month = '0' + month
         if(hours<10) hours = '0' + hours
         if(min<10) min= '0' + min
@@ -115,8 +117,8 @@ function Editor (props) {
                     title: data.results[i].title,
                     id: data.results[i].id
                   }
+                  movieEntry.id = ''.concat(movieEntry.id)
                   if (movieEntry.id === id && movieEntry.image === 'https://image.tmdb.org/t/p/w500null'){
-    
                     setMovieImage("http://pngimg.com/uploads/mario/mario_PNG53.png")
                     setMovieId(movieEntry.id)
                   }
@@ -136,6 +138,7 @@ function Editor (props) {
                 }
         })
     }
+    
     function getMovieImage (i, n) {
       setSpecificImages([])
       let url = ''.concat('https://api.themoviedb.org/3/', 'movie/' ,i , '/images', '?api_key=', process.env.REACT_APP_MOVIEDB_API_KEY, '&query=', movieName);

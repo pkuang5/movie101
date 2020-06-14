@@ -41,7 +41,7 @@ function Profile(props) {
                     <div class={!featured ? 'border-b border-black cursor-pointer' : 'cursor-pointer'} onClick={() => handleFeatured(false)}>Journals</div>
                 </div>
                 <div class="my-3">
-                    <Gallery googleId={id} username={username} featured={featured} localUser={localUser}/>
+                    <Gallery googleId={id} username={username} appId = {props.appId} featured={featured} localUser={localUser}/>
                 </div>
             </div>
         </div>

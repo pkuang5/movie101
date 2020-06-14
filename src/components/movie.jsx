@@ -19,9 +19,28 @@ function Movie(props){
     const [edited, setEdited] = useState(false)
     const [editImage, setEditImage] = useState(false)
     const [editedImages, setEditedImages] = useState(false)
+    let   [likeStatus, setLikeStatus] = useState(false)
     let history = useHistory();
+    let location = useLocation()
+    const [googleId, setGoogleId] = useState('')
+    let [likeAmount, setLikeAmount] = useState([])
+    const [peopleWhoLike, setPeople] = useState([])
+    const [checked, setChecked] = useState(false)
+    const [presentUsername, setUsername] = useState('')
+    const [comments, setComments] = useState ([])
+    const [singleComment, setSingleComment] = useState('')
 
     useEffect(() => {
+        let i = 0
+        let count = 0
+        let person
+        let arr = []
+        let localStorageObject = JSON.parse(localStorage.getItem('user'));
+        setGoogleId(localStorageObject.googleId)
+        var myInfo =  firebase.database().ref('users/' + localStorageObject.googleId)
+        myInfo.once('value', snapshot => {
+            setUsername(snapshot.val().userName)
+        } )
         var userInfo = firebase.database().ref('users').orderByChild('userName').equalTo(props.username);
         userInfo.once("value", (snapshot) => {
             snapshot.forEach((data) => {
@@ -36,10 +55,27 @@ function Movie(props){
                     setDescription(snapshot.val().description)
                     setImages(snapshot.val().images)
                     setDisplayedImages(snapshot.val().images)
+                    
+                    if (snapshot.val().likes!==undefined) {
+                        for(i in snapshot.val().likes) {
+                            var personCheck = firebase.database().ref('users/' + i)
+                            personCheck.once('value', (snapshot) => {
+                                    person = (snapshot.val().userName)
+                                    if (i === localStorageObject.googleId) { 
+                                        setLikeStatus(true) 
+                                    }
+                                    arr.push(person)
+                              })
+                              count++
+                        }
+                        setPeople(arr)
+                        setLikeAmount(count)
+                    }
+                   
                 })
             });
         });
-    }, [props.movieId, props.username]);
+    }, [props.movieId, props.username],[location.appId]);
 
     function getMovieImages() {
         let url = ''.concat('https://api.themoviedb.org/3/', 'movie/' ,props.movieId , '/images', '?api_key=', process.env.REACT_APP_MOVIEDB_API_KEY);
@@ -86,6 +122,32 @@ function Movie(props){
             stars.push(<i class="fa fa-star fa-2x text-gray-300 pr-1 cursor-pointer" onMouseOver={() => props.localUser ? setPreviewRating(i+1): null} onMouseLeave={() => props.localUser ? setPreviewRating(rating): null} onClick={() => props.localUser? updateRating(i+1):null}></i>)
         }
         return stars
+    }
+    function like() {
+        if (likeStatus === false) {
+            firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId + '/likes/' + googleId).set({
+                liked: true
+             })
+             setLikeStatus(true)
+             setLikeAmount(++likeAmount)
+             setPeople([...peopleWhoLike,presentUsername])
+        }
+        else {
+            firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId + '/likes/' + googleId).remove()
+            setLikeStatus(false)
+            setLikeAmount(--likeAmount)
+            setPeople(peopleWhoLike.filter(url=>url!==presentUsername))
+        }       
+    }
+    function handleComment (e) {
+        let comment = e.target.value
+        setSingleComment(comment)
+    }
+    function submitComment () {
+        setComments([...comments, singleComment])
+        firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId + '/comments/' + googleId).set({
+            comments: comments
+         })
     }
 
     return (
@@ -168,6 +230,23 @@ function Movie(props){
                         ): null}
                     </div>
                 </div>
+                <div>
+                    <p onClick = {()=>{setChecked(!checked)}}>check</p>
+                        <div class = {checked?"flex flex-col bg-red-300 h-64": "hidden"}>{peopleWhoLike.map(item=>
+                            <li>{item}</li>
+                            )}</div>
+                    <i class={likeStatus === false?"fa fa-heart-o":"fa fa-heart"} onClick = {()=> {
+                    like() 
+                    }} aria-hidden="true"></i>
+                    Likes: {likeAmount}
+                </div>
+                <div class = "bg-blue-200 h-64">
+                    <h6>Comment</h6>
+                    <textarea class = "mt-8"></textarea>
+                    <button>Submit</button>
+                    <div class = "bg-yellow-400 h-16"></div>
+                </div>
+                
             </div>
         </div>
 
