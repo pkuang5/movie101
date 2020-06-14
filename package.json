@@ -3,24 +3,24 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@firebase/storage": "^0.3.32",
+    "@firebase/storage": "^0.3.35",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "aos": "^2.3.4",
-    "bootstrap": "^4.1.1",
+    "bootstrap": "^4.5.0",
     "dotenv": "^8.2.0",
-    "firebase": "^7.14.2",
+    "firebase": "^7.15.0",
     "font-awesome": "^4.7.0",
     "noty": "^3.2.0-beta",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-google-login": "^5.1.2",
-    "react-router-dom": "^5.1.2",
+    "react-google-login": "^5.1.20",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-switch": "^5.0.1",
     "react-youtube": "^7.11.2",
-    "tailwindcss": "^1.2.0"
+    "tailwindcss": "^1.4.6"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -45,7 +45,7 @@
     ]
   },
   "devDependencies": {
-    "autoprefixer": "^9.7.5",
-    "postcss-cli": "^7.1.0"
+    "autoprefixer": "^9.8.0",
+    "postcss-cli": "^7.1.1"
   }
 }
