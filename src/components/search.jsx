@@ -30,14 +30,6 @@ function Search(props) {
                         }
                         setUsers(results => [...results,userObject])
                     });
-                    // snapshot.forEach((data) => {
-                    //     let userObject = {
-                    //         username: data.val().userName,
-                    //         bio: data.val().bio,
-                    //         profilePicURL: data.val().profileURL
-                    //     }
-                    //     setUsers(results => [...results,userObject])
-                    // });
                 });
             }
         } 

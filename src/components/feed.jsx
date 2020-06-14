@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import firebase from "../firebaseConfig";
 import { useHistory } from 'react-router-dom'
+import Content from './content'
 
 function Feed (props) {
     
     const [firstName, setName] = useState()
     const [trendingMovies, setTrendingMovies] = useState([])
-    const [popularMovies, setPopularMovies] = useState([])
     const [nowPlayingMovies, setNowPlayingMovies] = useState([])
-    const [topRatedMovies, setTopRatedMovies] = useState([])
     const [upcomingMovies, setUpcomingMovies] = useState([])
 
     let history = useHistory();
@@ -57,6 +56,8 @@ function Feed (props) {
                 {movieRow(nowPlayingMovies, 'Now Playing')}
                 {movieRow(upcomingMovies, 'Upcoming Films')}
             </div>
+            {/* <Content /> */}
+
         </div>
     );
  }

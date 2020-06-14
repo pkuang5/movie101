@@ -93,7 +93,7 @@ function Navbar(props) {
         </div>
       </div>
       {displayMenu ?
-        <div ref = {node3} class="flex w-screen bg-black absolute p-3 sm:hidden">
+        <div ref = {node3} class="flex w-screen bg-black absolute z-20 p-3 sm:hidden">
           <div ref = {node4} class="grid grid-cols-1 gap-2 text-white">
               <p ref = {node5} onClick={() => {history.push('/'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/" ? "font-extrabold w-full": "w-full"}>Feed</p>
               <p ref = {node6}onClick={() => {history.push('/editor'); setDisplayMenu(!displayMenu)}} class={location.pathname === "/editor" ? "font-extrabold w-full": "w-full"}>Editor</p>
