@@ -71,7 +71,16 @@ function Movie(props){
                         setPeople(arr)
                         setLikeAmount(count)
                     }
-                   
+                    let y = 0
+                    if (snapshot.val().comments) {
+                        for (y in snapshot.val().comments) {
+                            var commentCheck = firebase.database().ref('users/' + data.key + '/journals/' + props.movieId + '/comments/' + y)
+                            commentCheck.once('value', snapshot => {
+                                setComments(snapshot.val().commentArray)
+                            })
+                        }
+                    }
+                    
                 })
             });
         });
@@ -139,15 +148,18 @@ function Movie(props){
             setPeople(peopleWhoLike.filter(url=>url!==presentUsername))
         }       
     }
-    function handleComment (e) {
-        let comment = e.target.value
-        setSingleComment(comment)
+    function handleComment(e) {
+        let temp = e.target.value
+        setSingleComment(temp)
     }
     function submitComment () {
-        setComments([...comments, singleComment])
+        let temp = comments
+        temp.push(singleComment)
+        setComments(temp)
         firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId + '/comments/' + googleId).set({
-            comments: comments
+            commentArray: comments
          })
+       
     }
 
     return (
@@ -242,9 +254,16 @@ function Movie(props){
                 </div>
                 <div class = "bg-blue-200 h-64">
                     <h6>Comment</h6>
-                    <textarea class = "mt-8"></textarea>
-                    <button>Submit</button>
-                    <div class = "bg-yellow-400 h-16"></div>
+                    <textarea class = "mt-8" onChange = {(e)=> handleComment(e)}></textarea>
+                    <button onClick = {
+                        ()=>{
+                        submitComment()
+                        }}>Submit</button>
+                    <div class = "bg-yellow-400 h-16">
+                        {comments.map(item=>
+                         <div class = "bg-red-200 p-2">{item}</div>
+                        )}
+                    </div>
                 </div>
                 
             </div>
