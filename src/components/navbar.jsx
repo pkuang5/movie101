@@ -47,7 +47,7 @@ function Navbar(props) {
   return (
     <React.Fragment>
       <div class="sm:flex sm:flex-col hidden">
-        <div  class="flex items-center justify-between pt-4 px-6 w-screen">
+        <div  class="flex items-center justify-between pt-4 px-6 w-full">
           <div class="cursor-pointer" onClick={() => history.push("/search")}>
             <svg width="30" height="30" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" fill="" />
               <circle cx="20.5" cy="17.5" r="10.5" stroke="black" strokeWidth={location.pathname === "/search" ? "4" : "2"}/>

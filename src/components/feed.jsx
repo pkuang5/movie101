@@ -47,18 +47,20 @@ function Feed (props) {
     }
 
     return (
-        <div class="flex w-screen justify-center mt-3 px-6">
-            <div class="flex flex-col lg:w-2/3 md:w-4/5 w-full items-center">
-                <p class="font-yeseva text-3xl">Screenbook</p>
-                <p class="font-montserrat text-xs sm:text-sm text-center w-3/5 mt-3"> Welcome, {firstName}! This is your feed. See what movies are popular in the Screenbook community and follow other members to see their journals. Or, get started on your own journal. </p>
-                <button onClick = {() => history.push('/editor')} class="transition duration-500 ease-in-out rounded transform hover:-translate-y-1 hover:scale-110 button-color-beige font-montserrat font-semibold text-white py-2 px-4 rounded w-1/3 my-3">+ add entry</button>
-                {movieRow(trendingMovies, 'Trending Films')}
-                {movieRow(nowPlayingMovies, 'Now Playing')}
-                {movieRow(upcomingMovies, 'Upcoming Films')}
-            </div>
-            {/* <Content /> */}
+        <React.Fragment>
 
-        </div>
+            <div class="flex w-full justify-center mt-3 px-6">
+                <div class="flex flex-col lg:w-2/3 md:w-4/5 w-full items-center">
+                    <p class="font-yeseva text-3xl">Screenbook</p>
+                    <p class="font-montserrat text-xs sm:text-sm text-center w-3/5 mt-3"> Welcome, {firstName}! This is your feed. See what movies are popular in the Screenbook community and follow other members to see their journals. Or, get started on your own journal. </p>
+                    <button onClick = {() => history.push('/editor')} class="transition duration-500 ease-in-out rounded transform hover:-translate-y-1 hover:scale-110 button-color-beige font-montserrat font-semibold text-white py-2 px-4 rounded w-1/3 my-3">+ add entry</button>
+                    {movieRow(trendingMovies, 'Trending Films')}
+                    {movieRow(nowPlayingMovies, 'Now Playing')}
+                    {movieRow(upcomingMovies, 'Upcoming Films')}
+                </div>
+            </div>
+            <Content id={props.googleId} />
+        </React.Fragment>
     );
  }
 
