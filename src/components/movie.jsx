@@ -31,6 +31,7 @@ function Movie(props){
     const [singleComment, setSingleComment] = useState('')
     const [commentsToDisplay, setCommentsToDisplay] = useState([])
     const [showComments, setShowComments] = useState(false)
+    const [userProfilePic, setUserProfilePic] = useState('')
 
     useEffect(() => {
        
@@ -44,6 +45,7 @@ function Movie(props){
         var myInfo =  firebase.database().ref('users/' + localStorageObject.googleId)
         myInfo.once('value', snapshot => {
             setUsername(snapshot.val().userName)
+            setUserProfilePic(snapshot.val().profileURL)
         } )
         var userInfo = firebase.database().ref('users').orderByChild('userName').equalTo(props.username);
         userInfo.once("value", (snapshot) => {
@@ -82,13 +84,13 @@ function Movie(props){
                             commentCheck.once('value', snapshot => {
                                 let tempObj = {
                                     username: snapshot.val().username,
-                                    comments: snapshot.val().commentArray
+                                    comments: snapshot.val().commentArray,
+                                    profilePic: snapshot.val().profileURL
                                 }
                                 if (y === localStorageObject.googleId) {
                                     setMyComments(snapshot.val().commentArray)
                                 }
                                 test.push(tempObj)
-                                console.log(tempObj)
                             })
                         }
                        setCommentsToDisplay(test)
@@ -188,7 +190,9 @@ function Movie(props){
         }
         firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId + '/comments/' + googleId).set({
             username: presentUsername,
-            commentArray: newComments
+            commentArray: newComments,
+            profileURL: userProfilePic
+           
          })
     }
 
@@ -282,18 +286,27 @@ function Movie(props){
                     }} aria-hidden="true"></i>
                     Likes: {likeAmount}
                 </div>
-                <div class = "bg-blue-200 h-64">
+                <div class = "bg-gray-200 h-auto p-4 ">
                     <h6 onClick = {() =>setShowComments(true)}>Click to Show Comments</h6>
-                    <textarea class = "mt-8" onChange = {(e)=> handleComment(e)}></textarea>
-                    <button onClick = {
-                        ()=>{
-                        submitComment()
-                        }}>Submit</button>
-                    <div class = "bg-yellow-400 h-auto "  >
+                    <div class = "mt-8 flex-row bg-red-800 flex items-center ">
+                        <textarea class =  "w-1/2 h-24 rounded" onChange = {(e)=> handleComment(e)}></textarea>
+                        <button class = "bg-blue-600 rounded text-white h-12 w-32 ml-4"onClick = {
+                            ()=>{
+                            submitComment()
+                            }}>Submit</button>
+                    </div>
+                    
+                    <div class = "h-auto mt-4"  >
                         {showComments?commentsToDisplay.map(firstItem => 
                             
                             firstItem.comments.map(item => 
-                            <div>{firstItem.username} {item}</div>
+                            <div class = "mt-4 p-2 border-2 border-gray-400 h-auto flex flex-col ">
+                                <div class= "flex-grow-0 flex-shrink-0 flex-row rounded-full h-16 w-16 flex bg-cover justify-center mr-8 pt-8 cursor-pointer bg-white" style={{backgroundImage: "url('" + firstItem.profilePic + "')"}}/>
+                                {firstItem.username} 
+                                    <div class = "mt-2">
+                                        {item}
+                                    </div>
+                            </div>
                             )
                         ):null}
                     </div>
