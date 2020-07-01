@@ -27,15 +27,15 @@ function Movie(props){
     const [peopleWhoLike, setPeople] = useState([])
     const [checked, setChecked] = useState(false)
     const [presentUsername, setUsername] = useState('')
-    const [comments, setComments] = useState ([])
+    const [myComments, setMyComments] = useState ([])
     const [singleComment, setSingleComment] = useState('')
     const [commentsToDisplay, setCommentsToDisplay] = useState([])
-    const [commentsPerUser, setCommentsPerUser] = useState([])
+    const [showComments, setShowComments] = useState(false)
 
     useEffect(() => {
        
         let i = 0
-        let y =0
+        let y = 0
         let count = 0
         let person
         let arr = []
@@ -76,39 +76,23 @@ function Movie(props){
                     }
                    
                     if (snapshot.val().comments!==undefined) {
-                        let testObj = {
-                            username: 'nate',
-                            comments: ['wtf','wth']
-                        }
                         let test = []
-                        //test.push(testObj)
-                        
                         for (y in snapshot.val().comments) {
-                           
                             var commentCheck = firebase.database().ref('users/' + data.key + '/journals/' + props.movieId + '/comments/' + y)
                             commentCheck.once('value', snapshot => {
-                                setComments(snapshot.val().commentArray)
-                               
                                 let tempObj = {
                                     username: snapshot.val().username,
                                     comments: snapshot.val().commentArray
                                 }
-                                console.log(tempObj)
+                                if (y === localStorageObject.googleId) {
+                                    setMyComments(snapshot.val().commentArray)
+                                }
                                 test.push(tempObj)
-                                
-                                //setCommentsToDisplay([...commentsToDisplay, tempObj])
-                               
-                                
+                                console.log(tempObj)
                             })
                         }
-                       // console.log(arrTemp)
-                        console.log(commentsToDisplay)
-                       
-                        setCommentsToDisplay(test)
-                        
-                        
+                       setCommentsToDisplay(test)
                     }
-                    
                 })
             });
         });
@@ -181,32 +165,20 @@ function Movie(props){
         setSingleComment(temp)
     }
     function submitComment () {
-        
-        let newComments = comments
-        
+        let newComments = myComments
         newComments.push(singleComment)
-        setComments(newComments)
         let temp = []
         let flag = false
-        //let newArr = commentsToDisplay
-        //temp.push(singleComment)
-    
         let temp2 = commentsToDisplay
-        
         for (var i = 0; i < temp2.length; i++) {
-            // console.log(temp2[i].username)
-            // console.log(presentUsername)
             if (temp2[i].username === presentUsername) {
                 temp2[i].comments.push(singleComment)
-                console.log(temp2[i].comments)
-                console.log('pushed once')
                 flag = true
                 setCommentsToDisplay(temp2)
-                //console.log(temp2)
+                newComments = temp2[i].comments
             }
         }
-        if (flag === false) {
-            console.log('not exist yet')
+        if (flag === false) { 
             temp.push(singleComment)
             let newObj = {
                 username: presentUsername,
@@ -214,13 +186,10 @@ function Movie(props){
             }
             setCommentsToDisplay([...commentsToDisplay, newObj])
         }
-       
-        console.log(commentsToDisplay)
         firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId + '/comments/' + googleId).set({
             username: presentUsername,
-            commentArray: comments
+            commentArray: newComments
          })
-       
     }
 
     return (
@@ -314,19 +283,19 @@ function Movie(props){
                     Likes: {likeAmount}
                 </div>
                 <div class = "bg-blue-200 h-64">
-                    <h6>Comment</h6>
+                    <h6 onClick = {() =>setShowComments(true)}>Click to Show Comments</h6>
                     <textarea class = "mt-8" onChange = {(e)=> handleComment(e)}></textarea>
                     <button onClick = {
                         ()=>{
                         submitComment()
                         }}>Submit</button>
-                    <div class = "bg-yellow-400 h-16">
-                        {commentsToDisplay.map(firstItem => 
+                    <div class = "bg-yellow-400 h-auto "  >
+                        {showComments?commentsToDisplay.map(firstItem => 
                             
                             firstItem.comments.map(item => 
                             <div>{firstItem.username} {item}</div>
                             )
-                        )}
+                        ):null}
                     </div>
                 </div>
                 
