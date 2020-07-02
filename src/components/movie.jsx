@@ -300,12 +300,15 @@ function Movie(props){
                         {showComments?commentsToDisplay.map(firstItem => 
                             
                             firstItem.comments.map(item => 
-                            <div class = "mt-4 p-2 border-2 border-gray-400 h-auto flex flex-col ">
+                            <div class = "mt-4 p-2 border-2 border-gray-400 h-auto flex flex-row ">
                                 <div class= "flex-grow-0 flex-shrink-0 flex-row rounded-full h-16 w-16 flex bg-cover justify-center mr-8 pt-8 cursor-pointer bg-white" style={{backgroundImage: "url('" + firstItem.profilePic + "')"}}/>
-                                {firstItem.username} 
-                                    <div class = "mt-2">
-                                        {item}
-                                    </div>
+                                <div class = "flex flex-col">
+                                    {firstItem.username} 
+                                        <div class = "mt-2">
+                                            {item}
+                                        </div>
+                                </div>
+                                
                             </div>
                             )
                         ):null}
@@ -392,3 +395,4 @@ function Movie(props){
 }
 
 export default Movie;
+

@@ -92,12 +92,13 @@ function Editor (props) {
         var min = newDate.getMinutes(); //To get the Current Minutes
         var sec = newDate.getSeconds(); //To get the Current Seconds
         if (month < 10) month = '0' + month
+        if (date < 10) date = '0' + date
         if(hours<10) hours = '0' + hours
         if(min<10) min= '0' + min
         if(sec<10) sec='0' + sec
         return year + month + date + hours + min + sec
   
-      }
+    }
     function getMovieInfo (title, id) {
         setShow(true)
         let flag = false
