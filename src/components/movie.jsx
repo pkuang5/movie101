@@ -176,8 +176,6 @@ function Movie(props){
         setSingleComment(temp)
     }
     function submitComment () {
-       
-
         let commentObjArr = []
         commentObjArr = commentsToDisplay
         let thisDate = getExactDate('/')
@@ -187,19 +185,11 @@ function Movie(props){
             profilePic: userProfilePic
         }
         commentObjArr.push(commentObj)
-        
-       
-       
         firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId).update({
            comments: commentObjArr
            
          })
          setCommentsToDisplay(commentObjArr)
-        
-        
-
-
-        
     }
 
     return (
@@ -302,7 +292,6 @@ function Movie(props){
                             submitComment()
                             }}>Submit</button>
                     </div>
-                    
                     <div class = "h-auto mt-4"  >
                         {showComments?commentsToDisplay.map(firstItem => 
                             <div class = "mt-4 p-2 border-2 border-gray-400 h-auto flex flex-row ">
@@ -321,7 +310,6 @@ function Movie(props){
                 </div>
             </div>
         </div>
-
         {/* mobile UI */}
         <div class="flex flex-col items-center w-screen p-6 font-montserrat md:hidden">
             <div class="flex w-full justify-between">
@@ -422,9 +410,7 @@ function Movie(props){
                                             {firstItem.comment}
                                         </div>
                                 </div>
-                                
                             </div>
-                            
                         ):null}
                     </div>
                 </div>
