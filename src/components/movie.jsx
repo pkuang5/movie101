@@ -27,7 +27,6 @@ function Movie(props){
     const [peopleWhoLike, setPeople] = useState([])
     const [checked, setChecked] = useState(false)
     const [presentUsername, setUsername] = useState('')
-    const [myComments, setMyComments] = useState ([])
     const [singleComment, setSingleComment] = useState('')
     const [commentsToDisplay, setCommentsToDisplay] = useState([])
     const [showComments, setShowComments] = useState(false)
@@ -76,30 +75,40 @@ function Movie(props){
                         setPeople(arr)
                         setLikeAmount(count)
                     }
-                   
                     if (snapshot.val().comments!==undefined) {
                         let test = []
                         for (y in snapshot.val().comments) {
-                            var commentCheck = firebase.database().ref('users/' + data.key + '/journals/' + props.movieId + '/comments/' + y)
-                            commentCheck.once('value', snapshot => {
-                                let tempObj = {
-                                    username: snapshot.val().username,
-                                    comments: snapshot.val().commentArray,
-                                    profilePic: snapshot.val().profileURL
-                                }
-                                if (y === localStorageObject.googleId) {
-                                    setMyComments(snapshot.val().commentArray)
-                                }
-                                test.push(tempObj)
-                            })
+                            let tempObj = {
+                                username: snapshot.val().comments[y].username,
+                                comment: snapshot.val().comments[y].comment,
+                                profilePic: snapshot.val().comments[y].profilePic,
+                            }
+                            test.push(tempObj)
                         }
-                       setCommentsToDisplay(test)
+                        setShowComments(true)
+                        setCommentsToDisplay(test)
                     }
                 })
             });
         });
     }, [props.movieId, props.username],[location.appId]);
-    
+    function getExactDate (separator='') {
+
+        let newDate = new Date()
+        let date = newDate.getDate();
+        let month = newDate.getMonth() + 1;
+        let year = newDate.getFullYear();
+        var hours = newDate.getHours(); //To get the Current Hours
+        var min = newDate.getMinutes(); //To get the Current Minutes
+        var sec = newDate.getSeconds(); //To get the Current Seconds
+        if (month < 10) month = '0' + month
+        if (date < 10) date = '0' + date
+        if(hours<10) hours = '0' + hours
+        if(min<10) min= '0' + min
+        if(sec<10) sec='0' + sec
+        return year + month + date + hours + min + sec
+  
+    }
     function getMovieImages() {
         let url = ''.concat('https://api.themoviedb.org/3/', 'movie/' ,props.movieId , '/images', '?api_key=', process.env.REACT_APP_MOVIEDB_API_KEY);
         fetch(url).then(result=>result.json()).then((data)=>{
@@ -167,33 +176,30 @@ function Movie(props){
         setSingleComment(temp)
     }
     function submitComment () {
-        let newComments = myComments
-        newComments.push(singleComment)
-        let temp = []
-        let flag = false
-        let temp2 = commentsToDisplay
-        for (var i = 0; i < temp2.length; i++) {
-            if (temp2[i].username === presentUsername) {
-                temp2[i].comments.push(singleComment)
-                flag = true
-                setCommentsToDisplay(temp2)
-                newComments = temp2[i].comments
-            }
-        }
-        if (flag === false) { 
-            temp.push(singleComment)
-            let newObj = {
-                username: presentUsername,
-                comments: temp
-            }
-            setCommentsToDisplay([...commentsToDisplay, newObj])
-        }
-        firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId + '/comments/' + googleId).set({
+       
+
+        let commentObjArr = []
+        commentObjArr = commentsToDisplay
+        let thisDate = getExactDate('/')
+        let commentObj = {
+            comment: singleComment,
             username: presentUsername,
-            commentArray: newComments,
-            profileURL: userProfilePic
+            profilePic: userProfilePic
+        }
+        commentObjArr.push(commentObj)
+        
+       
+       
+        firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId).update({
+           comments: commentObjArr
            
          })
+         setCommentsToDisplay(commentObjArr)
+        
+        
+
+
+        
     }
 
     return (
@@ -276,20 +282,21 @@ function Movie(props){
                         ): null}
                     </div>
                 </div>
-                <div>
-                    <p onClick = {()=>{setChecked(!checked)}}>check</p>
-                        <div class = {checked?"flex flex-col bg-red-300 h-64": "hidden"}>{peopleWhoLike.map(item=>
-                            <li>{item}</li>
-                            )}</div>
-                    <i class={likeStatus === false?"fa fa-heart-o":"fa fa-heart"} onClick = {()=> {
+                <div class = "flex flex-row pb-2">
+                    <i class={likeStatus === false?"fa fa-heart-o fa-2x ":"fa fa-heart fa-2x "} onClick = {()=> {
                     like() 
                     }} aria-hidden="true"></i>
-                    Likes: {likeAmount}
+                    
+                    <div class = "pl-2 cursor-pointer text-lg" onClick = {()=>{setChecked(!checked)}}>Likes: {likeAmount}</div>
                 </div>
+                <div class = {checked?"flex flex-col border-2 border-gray-400 bg-gray-200 h-auto": "hidden"}> People Who Like This:
+                            {peopleWhoLike.map(item=>
+                            <li class = "cursor-pointer" onClick = {()=>history.push('/' + item)}>{item}</li>
+                    )}</div>
                 <div class = "bg-gray-200 h-auto p-4 ">
-                    <h6 onClick = {() =>setShowComments(true)}>Click to Show Comments</h6>
-                    <div class = "mt-8 flex-row bg-red-800 flex items-center ">
-                        <textarea class =  "w-1/2 h-24 rounded" onChange = {(e)=> handleComment(e)}></textarea>
+                    <h6 class = "text-xl font-semibold">Comments</h6>
+                    <div class = "mt-8 flex-row flex items-center ">
+                        <textarea class =  "w-5/6 resize-none h-24 outline-none rounded" onChange = {(e)=> handleComment(e)}></textarea>
                         <button class = "bg-blue-600 rounded text-white h-12 w-32 ml-4"onClick = {
                             ()=>{
                             submitComment()
@@ -298,23 +305,20 @@ function Movie(props){
                     
                     <div class = "h-auto mt-4"  >
                         {showComments?commentsToDisplay.map(firstItem => 
-                            
-                            firstItem.comments.map(item => 
                             <div class = "mt-4 p-2 border-2 border-gray-400 h-auto flex flex-row ">
                                 <div class= "flex-grow-0 flex-shrink-0 flex-row rounded-full h-16 w-16 flex bg-cover justify-center mr-8 pt-8 cursor-pointer bg-white" style={{backgroundImage: "url('" + firstItem.profilePic + "')"}}/>
                                 <div class = "flex flex-col">
                                     {firstItem.username} 
                                         <div class = "mt-2">
-                                            {item}
+                                            {firstItem.comment}
                                         </div>
                                 </div>
                                 
                             </div>
-                            )
+                            
                         ):null}
                     </div>
                 </div>
-                
             </div>
         </div>
 
@@ -354,6 +358,16 @@ function Movie(props){
                 class={readOnly ? "p-2 text-sm w-full h-full outline-none resize-none": "p-2 text-sm w-full h-full bg-gray-100 resize-none"} 
                 defaultValue={description} readOnly={readOnly}/>
             </div>
+            <div class = "flex flex-row pb-2">
+                <i class={likeStatus === false?"fa fa-heart-o fa-2x ":"fa fa-heart fa-2x "} onClick = {()=> {
+                like() 
+                }} aria-hidden="true"></i>
+                <div class = "pl-2 cursor-pointer text-lg font-bold" onClick = {()=>{setChecked(!checked)}}>Likes: {likeAmount}</div>
+            </div>
+            <div class = {checked?"flex flex-col border-2 border-gray-400 bg-gray-200 h-auto w-full": "hidden"}> People Who Like This:
+                        {peopleWhoLike.map(item=>
+                        <li class = "cursor-pointer" onClick = {()=>history.push('/' + item)}>{item}</li>
+            )}</div>
             <div class = "flex flex-col w-full my-3">
                     <div class="flex justify-between">
                         <p class = "text-xl font-semibold mb-4">Images</p>
@@ -388,7 +402,33 @@ function Movie(props){
                             }}/>
                         ): null}
                     </div>
+                    <div class = "bg-gray-200 h-auto p-4 mt-6 ">
+                        <h6 class = "text-lg font-bold">Comments</h6>
+                        <div class = "mt-8 flex-col flex items-center ">
+                            <textarea class =  "w-full  h-24 rounded" onChange = {(e)=> handleComment(e)}></textarea>
+                            <button class = "bg-blue-600 rounded text-white h-12 w-32 mt-4"onClick = {
+                                ()=>{
+                                submitComment()
+                                }}>Submit
+                            </button>
+                    </div>
+                    <div class = "h-auto mt-4"  >
+                        {showComments?commentsToDisplay.map(firstItem => 
+                            <div class = "mt-4 p-2 border-2 border-gray-400 h-auto flex flex-row ">
+                                <div class= "flex-grow-0 flex-shrink-0 flex-row rounded-full h-16 w-16 flex bg-cover justify-center mr-8 pt-8 cursor-pointer bg-white" style={{backgroundImage: "url('" + firstItem.profilePic + "')"}}/>
+                                <div class = "flex flex-col">
+                                    {firstItem.username} 
+                                        <div class = "text-sm mt-2">
+                                            {firstItem.comment}
+                                        </div>
+                                </div>
+                                
+                            </div>
+                            
+                        ):null}
+                    </div>
                 </div>
+            </div>
         </div>
         </React.Fragment>
     );
