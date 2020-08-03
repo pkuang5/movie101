@@ -29,11 +29,13 @@ function Movie(props){
     const [presentUsername, setUsername] = useState('')
     const [singleComment, setSingleComment] = useState('')
     const [commentsToDisplay, setCommentsToDisplay] = useState([])
-    const [showComments, setShowComments] = useState(false)
+    const [commentsTemp, setCommentsTemp] = useState([])
+    const [showComments, setShowComments] = useState(true)
     const [userProfilePic, setUserProfilePic] = useState('')
+    const [commentCount, setCommentCount] = useState('')
 
     useEffect(() => {
-       
+      
         let i = 0
         let y = 0
         let count = 0
@@ -77,16 +79,20 @@ function Movie(props){
                     }
                     if (snapshot.val().comments!==undefined) {
                         let test = []
+                        let count = 0
                         for (y in snapshot.val().comments) {
                             let tempObj = {
                                 username: snapshot.val().comments[y].username,
                                 comment: snapshot.val().comments[y].comment,
                                 profilePic: snapshot.val().comments[y].profilePic,
                             }
+                            count++
+                            setCommentCount(count)
                             test.push(tempObj)
                         }
-                        setShowComments(true)
                         setCommentsToDisplay(test)
+                        setCommentsTemp(test)
+                        
                     }
                 })
             });
@@ -132,10 +138,10 @@ function Movie(props){
 
     function showNotification(){
         new Noty({
-            type: 'success',
+            type: 'info',
             theme: 'bootstrap-v4',
             layout: 'bottomRight',
-            text: 'Your Changes Have Been Saved!',
+            text: 'Comment Added!',
             timeout: 1000
         }).show()
     }
@@ -176,20 +182,41 @@ function Movie(props){
         setSingleComment(temp)
     }
     function submitComment () {
-        let commentObjArr = []
-        commentObjArr = commentsToDisplay
-        let thisDate = getExactDate('/')
-        let commentObj = {
-            comment: singleComment,
-            username: presentUsername,
-            profilePic: userProfilePic
+      let commentObjArr = []
+      if (commentCount > 0) {
+            
+            let thisDate = getExactDate('/')
+            let commentObj = {
+                username: presentUsername,
+                comment: singleComment,
+                profilePic: userProfilePic
+            }
+            setCommentsToDisplay([...commentsToDisplay, commentObj])
+            let newTemp = commentsToDisplay
+             newTemp.push(commentObj)
+            commentObjArr.push(commentObj)
+            firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId).update({
+               comments: newTemp
+               
+             })
         }
-        commentObjArr.push(commentObj)
-        firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId).update({
-           comments: commentObjArr
-           
-         })
-         setCommentsToDisplay(commentObjArr)
+        else {
+            
+            commentObjArr = commentsTemp
+            let thisDate = getExactDate('/')
+            let commentObj = {
+                username: presentUsername,
+                comment: singleComment,
+                profilePic: userProfilePic
+            }
+            commentObjArr.push(commentObj)
+            setCommentsToDisplay([...commentsToDisplay, commentObj])
+            firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId).update({
+               comments: commentObjArr
+               
+             })
+        }
+        showNotification()
     }
 
     return (
