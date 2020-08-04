@@ -12,6 +12,7 @@ function Profile(props) {
     const [localUser, setLocalUser] = useState(false)
 
     useEffect(() => {   
+         
         var userInfo = firebase.database().ref('users');
         userInfo.orderByChild('userName').equalTo(props.username).once("value", (snapshot) => {
             snapshot.forEach(data => {

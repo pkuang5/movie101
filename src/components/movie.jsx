@@ -214,9 +214,17 @@ function Movie(props){
             firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId).update({
                comments: commentObjArr
                
-             })
+            })
         }
         showNotification()
+    }
+    function deleteComment (firstItem) {
+        setCommentsToDisplay(commentsToDisplay.filter(url => url !== firstItem))
+        let commentTemp = commentsToDisplay
+        commentTemp = commentTemp.filter(url=>url!==firstItem)
+        firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId).update({
+            comments: commentTemp
+        })
     }
 
     return (
@@ -321,16 +329,20 @@ function Movie(props){
                     </div>
                     <div class = "h-auto mt-4"  >
                         {showComments?commentsToDisplay.map(firstItem => 
-                            <div class = "mt-4 p-2 border-2 border-gray-400 h-auto flex flex-row ">
-                                <div class= "flex-grow-0 flex-shrink-0 flex-row rounded-full h-16 w-16 flex bg-cover justify-center mr-8 pt-8 cursor-pointer bg-white" onClick = {()=>history.push('/' + firstItem.username)} style={{backgroundImage: "url('" + firstItem.profilePic + "')"}}/>
-                                <div class = "flex flex-col">
-                                    <div class = "cursor-pointer" onClick = {()=>history.push('/' + firstItem.username)}>
-                                        {firstItem.username} 
-                                    </div>
-                                    <div class = "mt-2">
-                                        {firstItem.comment}
+                            <div class = "mt-4 p-2 border-2 border-gray-400 h-auto flex flex-row justify-between ">
+                                <div class = "bg-yellow-200 flex flex-row">
+                                    <div class= "flex-grow-0 flex-shrink-0 flex-row rounded-full h-16 w-16 flex bg-cover justify-center mr-8 pt-8 cursor-pointer bg-white" onClick = {()=>history.push('/' + firstItem.username)} style={{backgroundImage: "url('" + firstItem.profilePic + "')"}}/>
+                                    <div class = "flex flex-col">
+                                        <div class = "cursor-pointer" onClick = {()=>history.push('/' + firstItem.username)}>
+                                            {firstItem.username} 
+                                        </div>
+                                        <div class = "mt-2">
+                                            {firstItem.comment}
+                                        </div>
+                                        
                                     </div>
                                 </div>
+                                    {props.username === presentUsername || presentUsername === firstItem.username ? <i class="fa fa-trash fa-lg hover:text-gray-600 cursor-pointer" onClick={()=>deleteComment(firstItem)}></i>:null}
                             </div>
                             
                         ):null}
