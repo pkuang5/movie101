@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import GoogleLogInBtn from './googleLogInBtn'
 import Images from '../assets/images';
 import Introduction from "./introduction"
+import Footer from "./footer"
 
 function Login(props) {
 
@@ -21,6 +22,7 @@ function Login(props) {
                 </div>
             </div>
             <Introduction />
+            <Footer/>
         </React.Fragment>
     );
 }

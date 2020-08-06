@@ -19,9 +19,35 @@ function Movie(props){
     const [edited, setEdited] = useState(false)
     const [editImage, setEditImage] = useState(false)
     const [editedImages, setEditedImages] = useState(false)
+    let   [likeStatus, setLikeStatus] = useState(false)
     let history = useHistory();
+    let location = useLocation()
+    const [googleId, setGoogleId] = useState('')
+    let [likeAmount, setLikeAmount] = useState([])
+    const [peopleWhoLike, setPeople] = useState([])
+    const [checked, setChecked] = useState(false)
+    const [presentUsername, setUsername] = useState('')
+    const [singleComment, setSingleComment] = useState('')
+    const [commentsToDisplay, setCommentsToDisplay] = useState([])
+    const [commentsTemp, setCommentsTemp] = useState([])
+    const [showComments, setShowComments] = useState(true)
+    const [userProfilePic, setUserProfilePic] = useState('')
+    const [commentCount, setCommentCount] = useState('')
 
     useEffect(() => {
+      
+        let i = 0
+        let y = 0
+        let count = 0
+        let person
+        let arr = []
+        let localStorageObject = JSON.parse(localStorage.getItem('user'));
+        setGoogleId(localStorageObject.googleId)
+        var myInfo =  firebase.database().ref('users/' + localStorageObject.googleId)
+        myInfo.once('value', snapshot => {
+            setUsername(snapshot.val().userName)
+            setUserProfilePic(snapshot.val().profileURL)
+        } )
         var userInfo = firebase.database().ref('users').orderByChild('userName').equalTo(props.username);
         userInfo.once("value", (snapshot) => {
             snapshot.forEach((data) => {
@@ -36,11 +62,59 @@ function Movie(props){
                     setDescription(snapshot.val().description)
                     setImages(snapshot.val().images)
                     setDisplayedImages(snapshot.val().images)
+                    if (snapshot.val().likes!==undefined) {
+                        for(i in snapshot.val().likes) {
+                            var personCheck = firebase.database().ref('users/' + i)
+                            personCheck.once('value', (snapshot) => {
+                                    person = (snapshot.val().userName)
+                                    if (i === localStorageObject.googleId) { 
+                                        setLikeStatus(true) 
+                                    }
+                                    arr.push(person)
+                              })
+                              count++
+                        }
+                        setPeople(arr)
+                        setLikeAmount(count)
+                    }
+                    if (snapshot.val().comments!==undefined) {
+                        let test = []
+                        let count = 0
+                        for (y in snapshot.val().comments) {
+                            let tempObj = {
+                                username: snapshot.val().comments[y].username,
+                                comment: snapshot.val().comments[y].comment,
+                                profilePic: snapshot.val().comments[y].profilePic,
+                            }
+                            count++
+                            setCommentCount(count)
+                            test.push(tempObj)
+                        }
+                        setCommentsToDisplay(test)
+                        setCommentsTemp(test)
+                        
+                    }
                 })
             });
         });
-    }, [props.movieId, props.username]);
+    }, [props.movieId, props.username],[location.appId]);
+    function getExactDate (separator='') {
 
+        let newDate = new Date()
+        let date = newDate.getDate();
+        let month = newDate.getMonth() + 1;
+        let year = newDate.getFullYear();
+        var hours = newDate.getHours(); //To get the Current Hours
+        var min = newDate.getMinutes(); //To get the Current Minutes
+        var sec = newDate.getSeconds(); //To get the Current Seconds
+        if (month < 10) month = '0' + month
+        if (date < 10) date = '0' + date
+        if(hours<10) hours = '0' + hours
+        if(min<10) min= '0' + min
+        if(sec<10) sec='0' + sec
+        return year + month + date + hours + min + sec
+  
+    }
     function getMovieImages() {
         let url = ''.concat('https://api.themoviedb.org/3/', 'movie/' ,props.movieId , '/images', '?api_key=', process.env.REACT_APP_MOVIEDB_API_KEY);
         fetch(url).then(result=>result.json()).then((data)=>{
@@ -64,10 +138,10 @@ function Movie(props){
 
     function showNotification(){
         new Noty({
-            type: 'success',
+            type: 'info',
             theme: 'bootstrap-v4',
             layout: 'bottomRight',
-            text: 'Your Changes Have Been Saved!',
+            text: 'Comment Added!',
             timeout: 1000
         }).show()
     }
@@ -86,6 +160,71 @@ function Movie(props){
             stars.push(<i class="fa fa-star fa-2x text-gray-300 pr-1 cursor-pointer" onMouseOver={() => props.localUser ? setPreviewRating(i+1): null} onMouseLeave={() => props.localUser ? setPreviewRating(rating): null} onClick={() => props.localUser? updateRating(i+1):null}></i>)
         }
         return stars
+    }
+    function like() {
+        if (likeStatus === false) {
+            firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId + '/likes/' + googleId).set({
+                liked: true
+             })
+             setLikeStatus(true)
+             setLikeAmount(++likeAmount)
+             setPeople([...peopleWhoLike,presentUsername])
+        }
+        else {
+            firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId + '/likes/' + googleId).remove()
+            setLikeStatus(false)
+            setLikeAmount(--likeAmount)
+            setPeople(peopleWhoLike.filter(url=>url!==presentUsername))
+        }       
+    }
+    function handleComment(e) {
+        let temp = e.target.value
+        setSingleComment(temp)
+    }
+    function submitComment () {
+      let commentObjArr = []
+      if (commentCount > 0) {
+            
+            let thisDate = getExactDate('/')
+            let commentObj = {
+                username: presentUsername,
+                comment: singleComment,
+                profilePic: userProfilePic
+            }
+            setCommentsToDisplay([...commentsToDisplay, commentObj])
+            let newTemp = commentsToDisplay
+             newTemp.push(commentObj)
+            commentObjArr.push(commentObj)
+            firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId).update({
+               comments: newTemp
+               
+             })
+        }
+        else {
+            
+            commentObjArr = commentsTemp
+            let thisDate = getExactDate('/')
+            let commentObj = {
+                username: presentUsername,
+                comment: singleComment,
+                profilePic: userProfilePic
+            }
+            commentObjArr.push(commentObj)
+            setCommentsToDisplay([...commentsToDisplay, commentObj])
+            firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId).update({
+               comments: commentObjArr
+               
+            })
+        }
+        showNotification()
+    }
+    function deleteComment (firstItem) {
+        setCommentsToDisplay(commentsToDisplay.filter(url => url !== firstItem))
+        let commentTemp = commentsToDisplay
+        commentTemp = commentTemp.filter(url=>url!==firstItem)
+        firebase.database().ref('users/' + firebaseId + '/journals/' + props.movieId).update({
+            comments: commentTemp
+        })
     }
 
     return (
@@ -168,9 +307,49 @@ function Movie(props){
                         ): null}
                     </div>
                 </div>
+                <div class = "flex flex-row pb-2">
+                    <i class={likeStatus === false?"fa fa-heart-o fa-2x ":"fa fa-heart fa-2x "} onClick = {()=> {
+                    like() 
+                    }} aria-hidden="true"></i>
+                    
+                    <div class = "pl-2 cursor-pointer text-lg" onClick = {()=>{setChecked(!checked)}}>Likes: {likeAmount}</div>
+                </div>
+                <div class = {checked?"flex flex-col border-2 border-gray-400 bg-gray-200 h-auto": "hidden"}> People Who Like This:
+                            {peopleWhoLike.map(item=>
+                            <li class = "cursor-pointer" onClick = {()=>history.push('/' + item)}>{item}</li>
+                    )}</div>
+                <div class = "bg-gray-200 h-auto p-4 ">
+                    <h6 class = "text-xl font-semibold">Comments</h6>
+                    <div class = "mt-8 flex-row flex items-center ">
+                        <textarea class =  "w-5/6 resize-none h-24 outline-none rounded" onChange = {(e)=> handleComment(e)}></textarea>
+                        <button class = "bg-blue-600 rounded text-white h-12 w-32 ml-4"onClick = {
+                            ()=>{
+                            submitComment()
+                            }}>Submit</button>
+                    </div>
+                    <div class = "h-auto mt-4"  >
+                        {showComments?commentsToDisplay.map(firstItem => 
+                            <div class = "mt-4 p-2 border-2 border-gray-400 h-auto flex flex-row justify-between ">
+                                <div class = "flex flex-row">
+                                    <div class= "flex-grow-0 flex-shrink-0 flex-row rounded-full h-16 w-16 flex bg-cover justify-center mr-8 pt-8 cursor-pointer bg-white" onClick = {()=>history.push('/' + firstItem.username)} style={{backgroundImage: "url('" + firstItem.profilePic + "')"}}/>
+                                    <div class = "flex flex-col">
+                                        <div class = "cursor-pointer" onClick = {()=>history.push('/' + firstItem.username)}>
+                                            {firstItem.username} 
+                                        </div>
+                                        <div class = "mt-2">
+                                            {firstItem.comment}
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                    {props.username === presentUsername || presentUsername === firstItem.username ? <i class="fa fa-trash fa-lg hover:text-gray-600 cursor-pointer" onClick={()=>deleteComment(firstItem)}></i>:null}
+                            </div>
+                            
+                        ):null}
+                    </div>
+                </div>
             </div>
         </div>
-
         {/* mobile UI */}
         <div class="flex flex-col items-center w-screen p-6 font-montserrat md:hidden">
             <div class="flex w-full justify-between">
@@ -207,6 +386,16 @@ function Movie(props){
                 class={readOnly ? "p-2 text-sm w-full h-full outline-none resize-none": "p-2 text-sm w-full h-full bg-gray-100 resize-none"} 
                 defaultValue={description} readOnly={readOnly}/>
             </div>
+            <div class = "flex flex-row pb-2">
+                <i class={likeStatus === false?"fa fa-heart-o fa-2x ":"fa fa-heart fa-2x "} onClick = {()=> {
+                like() 
+                }} aria-hidden="true"></i>
+                <div class = "pl-2 cursor-pointer text-lg font-bold" onClick = {()=>{setChecked(!checked)}}>Likes: {likeAmount}</div>
+            </div>
+            <div class = {checked?"flex flex-col border-2 border-gray-400 bg-gray-200 h-auto w-full": "hidden"}> People Who Like This:
+                        {peopleWhoLike.map(item=>
+                        <li class = "cursor-pointer" onClick = {()=>history.push('/' + item)}>{item}</li>
+            )}</div>
             <div class = "flex flex-col w-full my-3">
                     <div class="flex justify-between">
                         <p class = "text-xl font-semibold mb-4">Images</p>
@@ -241,10 +430,42 @@ function Movie(props){
                             }}/>
                         ): null}
                     </div>
+                    <div class = "bg-gray-200 h-auto p-4 mt-6 ">
+                        <h6 class = "text-lg font-bold">Comments</h6>
+                        <div class = "mt-8 flex-col flex items-center ">
+                            <textarea class =  "w-full  h-24 rounded" onChange = {(e)=> handleComment(e)}></textarea>
+                            <button class = "bg-blue-600 rounded text-white h-12 w-32 mt-4"onClick = {
+                                ()=>{
+                                submitComment()
+                                }}>Submit
+                            </button>
+                    </div>
+                    <div class = "h-auto mt-4"  >
+                        {showComments?commentsToDisplay.map(firstItem => 
+                            <div class = "mt-4 p-2 border-2 border-gray-400 h-auto flex flex-row justify-between ">
+                                <div class = "flex flex-row">
+                                    <div class= "flex-grow-0 flex-shrink-0 flex-row rounded-full h-16 w-16 flex bg-cover justify-center mr-8 pt-8 cursor-pointer bg-white" onClick = {()=>history.push('/' + firstItem.username)} style={{backgroundImage: "url('" + firstItem.profilePic + "')"}}/>
+                                    <div class = "flex flex-col text-sm">
+                                        <div class = "cursor-pointer" onClick = {()=>history.push('/' + firstItem.username)}>
+                                            {firstItem.username} 
+                                        </div>
+                                        <div class = "mt-2">
+                                            {firstItem.comment}
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                    {props.username === presentUsername || presentUsername === firstItem.username ? <i class="fa fa-trash fa-lg hover:text-gray-600 cursor-pointer" onClick={()=>deleteComment(firstItem)}></i>:null}
+                            </div>
+                            
+                        ):null}
+                    </div>
                 </div>
+            </div>
         </div>
         </React.Fragment>
     );
 }
 
 export default Movie;
+

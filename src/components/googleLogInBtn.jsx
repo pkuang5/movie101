@@ -7,34 +7,33 @@ require("dotenv").config();
 class GoogleLogInBtn extends Component {
 
   responseGoogle = (googleUser) => {
+  
+            var googleId = googleUser.getId();
    
-    var googleId = googleUser.getId();
-   
-    let profile = googleUser.getBasicProfile();
-    var username = profile.getEmail().split('@')[0];
-    firebase.database().ref(`users/${googleId}`).once("value", snapshot => {
-      if (!snapshot.exists()){
-        firebase
-        .database()
-        .ref("users/" + googleId)
-        .set({
-          fullName: profile.getName(),
-          firstName: profile.getGivenName(),
-          lastName: profile.getFamilyName(),
-          email: profile.getEmail(),     
-          profileURL: googleUser.profileObj.imageUrl,
-          id: googleUser.getId(),
-          userName: username,
-          bio: ''
-
-        });
-      }
-      else {
-        username = snapshot.val().userName
-      }
-      this.props.signInState(true, googleId, username);
-    });
-      
+            let profile = googleUser.getBasicProfile();
+            var username = profile.getEmail().split('@')[0];
+            firebase.database().ref(`users/${googleId}`).once("value", snapshot => {
+              if (!snapshot.exists()){
+                firebase
+                .database()
+                .ref("users/" + googleId)
+                .set({
+                  fullName: profile.getName(),
+                  firstName: profile.getGivenName(),
+                  lastName: profile.getFamilyName(),
+                  email: profile.getEmail(),     
+                  profileURL: googleUser.profileObj.imageUrl,
+                  id: googleUser.getId(),
+                  userName: username,
+                  bio: ''
+        
+                });
+              }
+              else {
+                username = snapshot.val().userName
+              }
+              this.props.signInState(true, googleId, username);
+            });
   }
   
   render() {

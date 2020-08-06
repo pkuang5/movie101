@@ -14,6 +14,7 @@ import Movie from "./components/movie"
 import Search from "./components/search"
 import Film from "./components/film"
 import WatchList from "./components/watchList"
+import About from './components/about'
 
 class App extends Component {
   state = {
@@ -50,7 +51,13 @@ class App extends Component {
   render() {
     if (this.state.signedIn === false) {
       return (
-        <Login signInState={this.signInState} />
+        <Router>
+          {/* <Login signInState={this.signInState} /> */}
+          <Switch>
+            <Route path="/" exact strict component = {() => <Login signInState={this.signInState}/>}></Route>
+            <Route path="/about" exact strict component = {() => <About/>}></Route>
+          </Switch>
+        </Router>
       );
     }
     else {
@@ -62,6 +69,7 @@ class App extends Component {
             <Route path="/editor" exact strict component={() => <Editor googleId={this.state.googleId} username = {this.state.username}/>}></Route>
             <Route path="/discover" exact strict component={() => <Discover/>}></Route>
             <Route path="/settings" exact strict component={() => <Settings googleId={this.state.googleId} />}></Route>
+            <Route path="/about" exact strict component = {() => <About googleId = {this.state.googleId} />}></Route> 
             <Route path="/search" exact strict component={() => <Search googleId={this.state.googleId} username={this.state.username} />}></Route>
             <Route path="/watchlist" exact strict component={() => <WatchList id={this.state.googleId}/>}></Route>
             <Route path="/:username" exact strict render={({match})=><Profile username={match.params.username} appId={this.state.googleId}/>}/>

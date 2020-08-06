@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import firebase from "../firebaseConfig";
 import { useHistory } from 'react-router-dom'
+import Footer from "./footer"
 
 function Feed (props) {
     
@@ -60,8 +61,11 @@ function Feed (props) {
                 {movieRow(nowPlayingMovies, 'Now Playing')}
                 {movieRow(topRatedMovies, 'Top Rated Films')}
                 {movieRow(upcomingMovies, 'Upcoming Films')}
+                <Footer/>
             </div>
         </div>
+
+        
     );
  }
 

@@ -28,6 +28,7 @@ function Search(props) {
                             bio: data.val().bio,
                             profilePicURL: data.val().profileURL
                         }
+                       
                         setUsers(results => [...results,userObject])
                     });
                 });
@@ -69,9 +70,10 @@ function Search(props) {
                 users.sort(function(a,b) {
                     if (a.username.toLowerCase() < b.username.toLowerCase()) return -1
                     if (a.username.toLowerCase() > b.username.toLowerCase()) return 1
+                   
                     return 0
                 })
-                let searchResult
+                let searchResult = []
                 if (e.target.value.length === 1) {
                     searchResult = users.filter((user) => { return user.username.toLowerCase().charAt(0).includes(e.target.value.toLowerCase().charAt(0));})
                 }
