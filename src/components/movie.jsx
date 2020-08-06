@@ -189,7 +189,8 @@ function Movie(props){
             let commentObj = {
                 username: presentUsername,
                 comment: singleComment,
-                profilePic: userProfilePic
+                profilePic: userProfilePic,
+                timestamp: thisDate
             }
             setCommentsToDisplay([...commentsToDisplay, commentObj])
             let newTemp = commentsToDisplay
