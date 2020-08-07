@@ -120,7 +120,7 @@ function Editor (props) {
                   movieEntry.id = ''.concat(movieEntry.id)
                   tempID = ''.concat(id)
                   if (movieEntry.id === tempID && movieEntry.image === 'https://image.tmdb.org/t/p/w500null'){
-                    setMovieImage("http://pngimg.com/uploads/mario/mario_PNG53.png")
+                    setMovieImage("https://upload.wikimedia.org/wikipedia/commons/1/16/No_image_available_450_x_600.svg")
                     setMovieId(movieEntry.id)
                   }
                   else if (movieEntry.id === tempID) {
