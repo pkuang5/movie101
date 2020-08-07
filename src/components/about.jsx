@@ -35,7 +35,7 @@ function About (props) {
                                 Who we are
                             </div>
                             <p class = "pt-2">
-                                We are two college studens from the bay area and are both studying computer science.
+                                We are two second-year college students from the bay area that are both studying computer science.
                                 Our interest and passion for software developement has led us to 
                                 exploring a wide range of computer science applications.
                             </p>

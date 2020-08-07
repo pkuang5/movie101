@@ -202,7 +202,7 @@ function Settings (props) {
                     </div>
                 </div>
                 <div class = "flex flex-col mt-6 w-full items-center">
-                    <button  onClick={(e) => handleSubmit(e)} class=" w-1/2 text-sm border-solid border-2 border-color-beige  py-2 px-4 rounded hover:opacity-75" type="button">
+                    <button  onClick={(e) => handleSubmit(e)} class="hover:bg-orange-200  w-1/2 text-sm border-solid border-2 border-color-beige  py-2 px-4 rounded " type="button">
                         Save Changes
                     </button>
                     <button class="w-full mt-48  hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border-2 border-red-500 hover:border-transparent rounded" onClick = {()=> {

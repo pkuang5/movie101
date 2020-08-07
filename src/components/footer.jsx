@@ -13,10 +13,10 @@ function Footer (props) {
     return(
        
         <div class = "flex flex-row justify-between px-4 py-8 bg-gray-200 border-2 h-24 w-screen">
-            <button class = "" onClick = {() => history.push('/about')}>
+            <h6 class = "cursor-pointer hover:text-blue-600 text-lg" onClick = {() => history.push('/about')}>
                 About
-            </button>
-            <h6 class = "">
+            </h6>
+            <h6 class = "cursor-pointer hover:text-blue-600 text-lg">
                 Contact Us: pn@gmail.com
             </h6>
         </div>
