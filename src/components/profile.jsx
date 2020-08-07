@@ -39,7 +39,7 @@ function Profile(props) {
                 <div class="flex flex-col items-center pt-6">
                     <div class="rounded-full h-32 w-32 flex bg-cover" style={{backgroundImage: "url('" + profilePicUrl + "')"}}> </div>
                     <p class="text-xl font-montserrat mt-2">{username}</p>
-    <p class="text-lg font-montserrat mt-2">{firstName} {lastName}</p>
+    <               p class="text-lg font-montserrat mt-2">{firstName} {lastName}</p>
                     <p class="text-xs font-montserrat mt-1">{bio}</p>
                 </div>
                 <div class="flex text-lg font-montserrat justify-around select-none mt-3">
