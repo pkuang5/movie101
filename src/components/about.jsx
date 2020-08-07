@@ -17,34 +17,34 @@ function About (props) {
             <i class="fa fa-arrow-circle-left fa-2x cursor-pointer" onClick = {() => history.push('/')} ></i>
             <div class = "flex lg:w-2/3 md:w-4/5 w-full items-center">
                 <div class = "flex flex-col  px-4 py-8 justify-between  h-24 w-screen ">
-                    <div class = "pl-5 flex bg-gray-200 text-5xl pb-4">
-                        About
-                    </div>
                     <div class = "flex flex-col ">
                         <div class = "bg-gray-200">
-                            <div class = "pl-5 text-4xl">
+                            <div class = "text-5xl pb-4">
+                                About
+                            </div>
+                            <div class = " text-4xl">
                                 Our Mission
                             </div>
-                            <p class = "pl-5 pt-2">
+                            <p class = " pt-2">
                                 Screenbook was developed with the intention of providing a new platform for people 
                                 to connect through similar interests, such as movies!
                             </p>
                         </div>
                         <div class = "bg-gray-200 ">
-                            <div class = "pl-5 text-4xl">
+                            <div class = " text-4xl">
                                 Who we are
                             </div>
-                            <p class = "pl-5 pt-2">
+                            <p class = " pt-2">
                                 We are two second-year college students from the bay area who are both studying computer science.
                                 Our interest and passion for software developement has led us to 
                                 exploring a wide range of computer science applications. 
                             </p>
                         </div>
                         <div class = "bg-gray-200 ">
-                            <div class = "pl-5 text-4xl">
+                            <div class = " text-4xl">
                                 Contact Us
                             </div>
-                            <div class = "pl-5 pt-2">
+                            <div class = " pt-2">
                                 <p class = "font-semibold">
                                     Feedback is appreciated! Reach us here:
                                 </p>
