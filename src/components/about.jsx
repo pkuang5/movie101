@@ -37,7 +37,7 @@ function About (props) {
                             <p class = "pt-2">
                                 We are two second-year college students from the bay area that are both studying computer science.
                                 Our interest and passion for software developement has led us to 
-                                exploring a wide range of computer science applications.
+                                exploring a wide range of computer science applications. 
                             </p>
                         </div>
                         <div class = "bg-gray-200 ">
@@ -46,35 +46,35 @@ function About (props) {
                             </div>
                             <div class = "pt-2">
                                 <p class = "font-semibold">
-                                    Our professional email:
+                                    Feedback is appreciated! Reach us here:
                                 </p>
                                 <a href = "mailto:screenbook.pn@gmail.com">
                                     screenbook.pn@gmail.com
                                 </a>
                                 <div class = "py-2"/>
                                 <p class = "font-semibold">
-                                    Our personal emails:
+                                    Screenbook Developers:
                                 </p>
+                                {/* <div class = "text-4xl">
+                                    Screenbook, a project developed by:
+                                </div> */}
                                 <div class = "flex flex-col "> 
+                                    <a href = "https://www.linkedin.com/in/nateelee/">
+                                        Nathaniel Lee
+                                    </a>
+                                    <div class = "py-2"/>
                                     <a href = "mailto:naelee@ucsc.edu">
                                         naelee@ucsc.edu
                                     </a>
                                     <div class = "py-2"/>
+                                </div>
+                                <div class = "flex flex-col "> 
+                                    <a href = "https://www.linkedin.com/in/patrick-kuang-70656417a/">
+                                        Patrick Kuang
+                                    </a>
+                                    <div class = "py-2"/>
                                     <a href = "mailto:pkuang@ucsb.edu">
                                         pkuang@ucsb.edu
-                                    </a>
-                                    <div class = "py-2"/>
-                                </div>
-                                <p class = "font-semibold">
-                                    Our LinkedIn Accounts:
-                                </p>
-                                <div class = "flex flex-col "> 
-                                    <a href = "https://www.linkedin.com/in/nateelee/">
-                                        https://www.linkedin.com/in/nateelee/
-                                    </a>
-                                    <div class = "py-2"/>
-                                    <a href = "https://www.linkedin.com/in/patrick-kuang-70656417a/">
-                                        https://www.linkedin.com/in/patrick-kuang-70656417a/
                                     </a>
                                     <div class = "py-2"/>
                                 </div>
