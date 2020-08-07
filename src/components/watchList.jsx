@@ -14,27 +14,46 @@ function WatchList(props){
 
     useEffect(() => {
         if (editMode === false) {
-            firebase.database().ref('users/' + props.id + '/watchlist').once('value', (snapshot) => {
-                let temp = []
+            firebase.database().ref('users/' + props.id + '/watchlist').orderByChild('timestamp').startAt(0).once('value',(snapshot) => {
+                let temp = [];
                 snapshot.forEach((data) => {
                     let movie = {
                         id: data.key,
                         image: data.val().image,
-                        title: data.val().title
+                        title: data.val().title,
+                        timestamp: data.val().timestamp
                     }
                     temp.push(movie)
                 })
                 setMovies(movies.concat(temp))
             })
         }
-        
         if (location.movieId) addMovie(location.movieId, location.image, location.title)
     }, [location, editMode])
 
+    function getExactDate (separator='') {
+
+        let newDate = new Date()
+        let date = newDate.getDate();
+        let month = newDate.getMonth() + 1;
+        let year = newDate.getFullYear();
+        var hours = newDate.getHours(); //To get the Current Hours
+        var min = newDate.getMinutes(); //To get the Current Minutes
+        var sec = newDate.getSeconds(); //To get the Current Seconds
+        if (month < 10) month = '0' + month
+        if (date < 10) date = '0' + date
+        if(hours<10) hours = '0' + hours
+        if(min<10) min= '0' + min
+        if(sec<10) sec='0' + sec
+        return year + month + date + hours + min + sec
+  
+    }
     function addMovie(movieId, posterImage, movieTitle) {
+        let date = getExactDate('/')
         firebase.database().ref(`users/${props.id}/watchlist/${movieId}`).set({
             image: posterImage,
-            title: movieTitle
+            title: movieTitle,
+            timestamp: date
         })
     }
 
@@ -74,13 +93,13 @@ function WatchList(props){
                 <p class="font-montserrat text-sm sm:text-md">Keep track of the movies you want to watch in the future!</p>
                 }
                 <div class="grid grid-cols-3 sm:grid-cols-5 gap-4">
-                    {movies.map( movie =>
+                    {editMode ? null : <div onClick={() => history.push('/search')} class={movies && movies.length ? "flex flex-col w-full h-full bg-gray-200 items-center justify-center transition ease-in-out duration-200 sm:transform hover:-translate-y-1 hover:scale-110 cursor-pointer": 'flex flex-col w-full h-40 sm:h-56 bg-gray-200 items-center justify-center transition ease-in-out duration-200 sm:transform hover:-translate-y-1 hover:scale-110 cursor-pointer'}>
+                            <i class="fa fa-plus-circle fa-2x"></i>
+                            <p class="font-montserrat text-sm mt-1">Add movie</p>
+                        </div>}
+                    {movies.slice().reverse().map( movie =>
                         <img onClick={() => editMode ? !trashMovies.includes(movie) ? setTrashMovies([...trashMovies,movie]): setTrashMovies(trashMovies.filter(element => element !== movie)) : history.push(`/films/${movie.id}`)} class={trashMovies.includes(movie) ? "transition ease-in-out duration-200 sm:transform hover:-translate-y-1 hover:scale-110 cursor-pointer border-yellow-400 border-solid border-4" : "transition ease-in-out duration-200 sm:transform hover:-translate-y-1 hover:scale-110 cursor-pointer"} src={movie.image} alt={movie.title} />
                     )}
-                    {editMode ? null : <div onClick={() => history.push('/search')} class={movies && movies.length ? "flex flex-col w-full h-full bg-gray-200 items-center justify-center transition ease-in-out duration-200 sm:transform hover:-translate-y-1 hover:scale-110 cursor-pointer": 'flex flex-col w-full h-40 sm:h-56 bg-gray-200 items-center justify-center transition ease-in-out duration-200 sm:transform hover:-translate-y-1 hover:scale-110 cursor-pointer'}>
-                        <i class="fa fa-plus-circle fa-2x"></i>
-                        <p class="font-montserrat text-sm mt-1">Add movie</p>
-                    </div>}
                 </div>
             </div>
         </div>

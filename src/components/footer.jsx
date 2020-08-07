@@ -12,13 +12,15 @@ function Footer (props) {
     let history = useHistory()
     return(
        
-        <div class = "flex flex-row justify-between px-4 py-8 bg-gray-200 border-2 h-24 w-screen">
-            <button class = "" onClick = {() => history.push('/about')}>
+        <div class = "flex sm:flex-row flex-col justify-between px-4 py-4 bg-gray-200 border-2 h-24 w-screen">
+           
+            <h6 class = "cursor-pointer hover:text-blue-600 text-lg" onClick = {() => history.push('/about')}>
                 About
-            </button>
-            <h6 class = "">
-                Contact Us: pn@gmail.com
             </h6>
+            <a href = "mailto:screenbook.pn@gmail.com"class = "cursor-pointer hover:text-blue-600 text-lg">
+                Contact Us: screenbook.pn@gmail.com
+            </a>
+            
         </div>
        
     )

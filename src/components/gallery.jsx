@@ -47,7 +47,6 @@ function Gallery(props) {
 
     function handleMovieClick(id) {
         history.push({pathname:("/" + props.username + "/movies/" + id), appId: props.appId});
-        //history.push({pathname: '/editor', movieId: props.movieId, title:details.title})}
     }
 
     const handleSearch = (e) => {

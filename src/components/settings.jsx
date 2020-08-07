@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import firebase from "firebase";
 import '../App.css'
@@ -7,27 +6,42 @@ import 'noty/lib/noty.css'
 import 'noty/lib/themes/bootstrap-v4.css'
 import 'font-awesome/css/font-awesome.min.css'
 import {storage} from "../firebaseConfig";
+import React, { useState, useEffect } from 'react'
+import { useLocation, useHistory } from 'react-router'
 
-class Settings extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            username: "",
-            fName: '',
-            lName: '',
-            email: '',
-            bio: '',
-            url: '',
-            image: '', 
-            change: false,
-            usernameExists: false,
-            usernameTitle: 'UserName',
-            usernameOG: '',
-            spaceExists: false
+function Settings (props) {
+   
+           
+    const [username, setUsername] = useState('')
+    const [fName, setF] = useState('')
+    const [lName, setL] = useState('')
+    const [email, setEmail] = useState('')
+    const [bio, setBio] = useState('')
+    const [url, setUrl] = useState('')
+    const [image, setImage] = useState('')
+    const [change, setChange] = useState(false)
+    const [usernameExists, setUsernameExists] = useState(false)
+    const [usernameTitle, setUsernameTitle] = useState('UserName')
+    const [usernameOG, setUsernameOG] = useState('')
+    const [spaceExists, setSpaceExists] = useState(false)
+    let history = useHistory()
+
+    useEffect(() => {
+        
+        var userInfo = firebase.database().ref('users/' + props.googleId);
+        userInfo.once('value', (snapshot) => {
             
-        };
-    }
-    showNotification = () => {
+            setF(snapshot.val().firstName)
+            setL(snapshot.val().lastName)
+            setUsername(snapshot.val().userName)
+            setEmail(snapshot.val().email)
+            setBio(snapshot.val().bio)
+            setUrl(snapshot.val().profileURL)
+            setUsernameOG(snapshot.val().userName)
+        })
+       
+    }, [props.googleId], [props.signInState])
+    function showNotification() {
         new Noty({
             type: 'info',
             theme: 'bootstrap-v4',
@@ -36,17 +50,26 @@ class Settings extends Component {
             timeout: 3000
         }).show()
     }
-    handleChange = e => {
+    function showNotificationForProfilePic() {
+        new Noty({
+            type: 'info',
+            theme: 'bootstrap-v4',
+            layout: 'bottomRight',
+            text: 'You Profile Picture Has Been Changed!',
+            timeout: 3000
+        }).show()
+    }
+    function handleChange(e) {
         if(e.target.files[0]) {
             let image = e.target.files[0];
-            const uploadTask = storage.ref(`images/${this.props.googleId}`).put(image);
+            const uploadTask = storage.ref(`images/${props.googleId}`).put(image);
             uploadTask.on('state_changed',
             () => {          
-                     storage.ref('images').child(this.props.googleId).getDownloadURL().then(url => {
-                        this.setState({url: url})
+                     storage.ref('images').child(props.googleId).getDownloadURL().then(url => {
+                        setUrl(url)
                         firebase
                         .database()
-                        .ref("users/" + this.props.googleId) 
+                        .ref("users/" + props.googleId) 
                         .update({  
                             profileURL: url,
                         }); 
@@ -54,21 +77,18 @@ class Settings extends Component {
                 
                 });    
             }
-            this.setState({change: true})
-           
+            setChange(true)
+            showNotificationForProfilePic()
     }
-     
-    handleChangeUserName = (e) => {
+    function handleChangeUserName(e) {
         let spaces = false
         if (e.target.value.indexOf(' ') !== -1) {
-            this.setState({
-                usernameTitle:'Spaces are restricted',
-                spaceExists: true
-            })
+            setUsernameTitle('Spaces are restricted')
+            setSpaceExists(true)
             spaces = true
         }
         else {
-            this.setState({spaceExists:false})
+            setSpaceExists(false)
             spaces = false
         }
         let exist = false
@@ -84,130 +104,118 @@ class Settings extends Component {
                     }
                 });
                 if (exist === true && spaces === false) {
-                    this.setState({
-                        usernameTitle: 'UserName already Exists!',
-                        usernameExists:true,
-                        change: false
-                    })
+                    setUsernameTitle('UserName already Exists!')
+                    setUsernameExists(true)
+                    setChange(false)
                 }
                 else if (exist === false && spaces === false){
-                    this.setState({
-                        usernameTitle: 'UserName',
-                        usernameExists:false,
-                        username: temp,
-                        change:true
-                    })
+                    setUsernameTitle('UserName')
+                    setUsernameExists(false)
+                    setUsername(temp)
+                    setChange(true)
                 }
             })
             
         }
     }
-    handleFirstName = (e) => {
-        this.setState({ 
-            fName: e.target.value,
-            change: true
-        })
+
+    function handleFirstName(e) {
+        setF(e.target.value)
+        setChange(true)
     }
-    handleLastName = (e) => {
-        this.setState({ 
-            lName: e.target.value,
-            change: true
-        })
+    function handleLastName (e){
+        setL(e.target.value)
+        setChange(true)
     }
-    handleEMAIL = (e) => {
-        this.setState({ 
-            email: e.target.value,
-            change: true
-        })
+    function handleEMAIL(e) {
+        setEmail(e.target.value)
+        setChange(true)
     }
-    handleBio = (e) => {
-        this.setState({ 
-            bio: e.target.value,
-            change: true 
-        })
+    function handleBio(e) {
+        setBio(e.target.value)
+        setChange(true)
     }
-    handleSubmit = (e) => {
-        if (this.state.change && this.state.usernameExists === false && this.state.spaceExists === false) {
-            this.showNotification()
+    function handleSubmit(e) {
+        if (change && usernameExists === false && spaceExists === false) {
+            showNotification()
             firebase
             .database()
-            .ref("users/" + this.props.googleId) 
+            .ref("users/" + props.googleId) 
             .update({  
-                userName: this.state.username,
-                firstName: this.state.fName,
-                lastName: this.state.lName,
-                email: this.state.email,
-                bio: this.state.bio,
+                userName: username,
+                firstName: fName,
+                lastName: lName,
+                email: email,
+                bio: bio,
             });
         }
     }
-    componentDidMount = () => {
-        var userInfo = firebase.database().ref('users/' + this.props.googleId);
-        userInfo.on('value', (snapshot) => {
-            this.setState({
-                fName: snapshot.val().firstName,
-                lName: snapshot.val().lastName,
-                username: snapshot.val().userName,
-                email: snapshot.val().email,
-                bio: snapshot.val().bio,
-                url: snapshot.val().profileURL,
-                usernameOG: snapshot.val().userName
-            });  
-          })
+    function handleDeleteAccount() {
+       
+        props.signInState(false, '')
+        
+        history.push("/")
+        
     }
-    render() {
-        return (
-            <form class="w-full flex justify-center">
+   
+    return (
+        <form class="w-full flex justify-center">
 
-                  <div class="w-11/12 mt-16 sm:mt-2 flex flex-wrap -mx-3  flex justify-center sm:w-1/3 font-montserrat font-semibold " >
-                    <div class = "flex w-full h-24" >
-                        <div class= "flex-grow-0 flex-shrink-0 rounded-full w-24 flex bg-cover justify-center mr-8 pt-8 cursor-pointer bg-white" style={{backgroundImage: "url('" + this.state.url + "')"}}> 
-                            <label for="imageUpload" class="fa fa-pencil fa-sm rounded-full px-2 pt-2 pb-6 items-center justify-center bg-blue-400 h-2 w-screen ml-20 mt-12 text-lg text-white cursor-pointer"/>
-                            <input type = "file" onChange = {this.handleChange} name="file" id="imageUpload"  class = "w-0 h-0 opacity-0" />
-                        </div>
-                        <div class = "w-4/5 flex ">
-                            <div class = " h-18 w-full h-full ">
-                                <label class={this.state.usernameExists||this.state.spaceExists?"text-red-600 tracking-wide text-gray-700 text-sm font-bold mb-3 ": "tracking-wide text-gray-700 text-sm font-bold mb-3"}> {this.state.usernameTitle} </label>
-                                <input type="text" pattern="[A-Za-z]{3}" maxLength = "15"  onChange={this.handleChangeUserName} class="self-end appearance-none block w-full text-gray-700  border-solid border-2 border-gray-300 rounded  py-3 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder={this.state.usernameOG}/>
-                            </div>
+                <div class="w-11/12 mt-16 sm:mt-2 flex flex-wrap -mx-3  flex justify-center sm:w-1/3 font-montserrat font-semibold " >
+                <div class = "flex w-full h-24" >
+                    <div class= "flex-grow-0 flex-shrink-0 rounded-full w-24 flex bg-cover justify-center mr-8 pt-8 cursor-pointer bg-white" style={{backgroundImage: "url('" + url + "')"}}> 
+                        <label for="imageUpload" class="fa fa-pencil fa-sm rounded-full px-2 pt-2 pb-6 items-center justify-center bg-blue-400 h-2 w-screen ml-20 mt-12 text-lg text-white cursor-pointer"/>
+                        <input type = "file" onChange = {(e)=>handleChange(e)} name="file" id="imageUpload"  class = "w-0 h-0 opacity-0" />
+                    </div>
+                    <div class = "w-4/5 flex ">
+                        <div class = " h-18 w-full h-full ">
+                            <label class={usernameExists||spaceExists?"text-red-600 tracking-wide text-gray-700 text-sm font-bold mb-3 ": "tracking-wide text-gray-700 text-sm font-bold mb-3"}> {usernameTitle} </label>
+                            <input type="text" pattern="[A-Za-z]{3}" maxLength = "15"  onChange={(e)=>handleChangeUserName(e)} class="self-end appearance-none block w-full text-gray-700  border-solid border-2 border-gray-300 rounded  py-3 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder={usernameOG}/>
                         </div>
                     </div>
-                    <div class = "w-full flex justify-start mt-3 ">
-                        <div class = "w-full">
-                               <label class="text-left font-bold text-gray-700 text-sm  mb-2 " for="grid-bio"> Bio </label>
-                                <textarea onChange={this.handleBio} class="resize-none appearance-none block h-24  w-full text-sm text-gray-700 border-solid border-2 border-gray-300 rounded py-2 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-first-name" type="text" placeholder={this.state.bio}/>
-                        </div>
+                </div>
+                <div class = "w-full flex justify-start mt-3 ">
+                    <div class = "w-full">
+                            <label class="text-left font-bold text-gray-700 text-sm  mb-2 " for="grid-bio"> Bio </label>
+                            <textarea onChange={(e)=>handleBio(e)} class="resize-none appearance-none block h-24  w-full text-sm text-gray-700 border-solid border-2 border-gray-300 rounded py-2 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-first-name" type="text" placeholder={bio}/>
                     </div>
-                    <div class = "flex w-full">
-                        <div class = " w-1/2 mr-2 mb-4">
-                            <label class=" tracking-wide text-gray-700 text-sm font-bold mb-2" for="grid-first-name">
-                                First Name
-                            </label>
-                            <input onChange={this.handleFirstName} class="appearance-none block w-full  text-gray-700 border-solid border-2 border-gray-300 rounded py-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder={this.state.fName}/>
-                        </div>
-                        <div class = "w-1/2 ml-2">
-                            <label class=" tracking-wide text-gray-700 text-sm font-bold mb-2" for="grid-last-name">
-                            Last Name
-                            </label>
-                            <input onChange={this.handleLastName} class="appearance-none block w-full  text-gray-700 border-solid border-2 border-gray-300 rounded py-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder={this.state.lName}/>
-                        </div>
+                </div>
+                <div class = "flex w-full">
+                    <div class = " w-1/2 mr-2 mb-4">
+                        <label class=" tracking-wide text-gray-700 text-sm font-bold mb-2" for="grid-first-name">
+                            First Name
+                        </label>
+                        <input onChange={(e)=>handleFirstName(e)} class="appearance-none block w-full  text-gray-700 border-solid border-2 border-gray-300 rounded py-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder={fName}/>
                     </div>
-                    <div class = "w-full flex justify-start">
-                        <div class = "w-full">
-                
-                            <label class=" tracking-wide text-gray-700 text-sm font-bold mb-2" for="grid-email"> Email </label>
-                            <input onChange={this.handleEMAIL} class="appearance-none block w-full  text-gray-700 border-solid border-2 border-gray-300 rounded py-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="text"  placeholder={this.state.email}/>
-                        </div>
+                    <div class = "w-1/2 ml-2">
+                        <label class=" tracking-wide text-gray-700 text-sm font-bold mb-2" for="grid-last-name">
+                        Last Name
+                        </label>
+                        <input onChange={(e)=>handleLastName(e)} class="appearance-none block w-full  text-gray-700 border-solid border-2 border-gray-300 rounded py-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder={lName}/>
                     </div>
-                    <div class = "flex mt-6">
-                        <button  onClick={(e) => this.handleSubmit(e)} class="  text-sm border-solid border-2 border-color-beige  py-2 px-4 rounded hover:opacity-75" type="button">
-                            Save Changes
-                        </button>
+                </div>
+                <div class = "w-full flex justify-start">
+                    <div class = "w-full">
+            
+                        <label class=" tracking-wide text-gray-700 text-sm font-bold mb-2" for="grid-email"> Email </label>
+                        <input onChange={(e)=>handleEMAIL(e)} class="appearance-none block w-full  text-gray-700 border-solid border-2 border-gray-300 rounded py-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="text"  placeholder={email}/>
                     </div>
-             </div>
-          </form> 
-        );
-    }
+                </div>
+                <div class = "flex flex-col mt-6 w-full items-center">
+                    <button  onClick={(e) => handleSubmit(e)} class="hover:bg-orange-200  w-1/2 text-sm border-solid border-2 border-color-beige  py-2 px-4 rounded " type="button">
+                        Save Changes
+                    </button>
+                    <button class="w-full mt-48  hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border-2 border-red-500 hover:border-transparent rounded" onClick = {()=> {
+                        props.signInState(false, '')
+                        history.push("/")
+                        firebase.database().ref('users/' + props.googleId).remove()
+                        }}>
+                        Delete Account
+                    </button>
+                </div>
+            </div>
+        </form> 
+    );
 }
-export default Settings;
 
+export default Settings;

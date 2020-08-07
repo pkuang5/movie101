@@ -189,7 +189,8 @@ function Movie(props){
             let commentObj = {
                 username: presentUsername,
                 comment: singleComment,
-                profilePic: userProfilePic
+                profilePic: userProfilePic,
+                timestamp: thisDate
             }
             setCommentsToDisplay([...commentsToDisplay, commentObj])
             let newTemp = commentsToDisplay
@@ -308,7 +309,7 @@ function Movie(props){
                     </div>
                 </div>
                 <div class = "flex flex-row pb-2">
-                    <i class={likeStatus === false?"fa fa-heart-o fa-2x ":"fa fa-heart fa-2x "} onClick = {()=> {
+                    <i class={likeStatus === false?"fa fa-heart-o fa-2x text-red-600":"fa fa-heart fa-2x text-red-600"} onClick = {()=> {
                     like() 
                     }} aria-hidden="true"></i>
                     
@@ -387,7 +388,7 @@ function Movie(props){
                 defaultValue={description} readOnly={readOnly}/>
             </div>
             <div class = "flex flex-row pb-2">
-                <i class={likeStatus === false?"fa fa-heart-o fa-2x ":"fa fa-heart fa-2x "} onClick = {()=> {
+                <i class={likeStatus === false?"fa fa-heart-o fa-2x text-red-600":"fa fa-heart fa-2x text-red-600"} onClick = {()=> {
                 like() 
                 }} aria-hidden="true"></i>
                 <div class = "pl-2 cursor-pointer text-lg font-bold" onClick = {()=>{setChecked(!checked)}}>Likes: {likeAmount}</div>
