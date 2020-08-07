@@ -4,16 +4,17 @@ import Noty from 'noty'
 import 'noty/lib/noty.css'
 import 'noty/lib/themes/bootstrap-v4.css'
 import 'font-awesome/css/font-awesome.min.css'
-import Switch from "react-switch";
-import { useHistory,useLocation, useRef } from 'react-router-dom'
-import DropSearch from './dropSearch'
-import { render } from '@testing-library/react'
+import { useHistory } from 'react-router-dom'
 
 require('dotenv').config()
 
 function About (props) {
+
+    let history = useHistory()
+
     return(
         <div class="flex flex-col font-montserrat w-screen items-center mt-3">
+            <i class="fa fa-arrow-circle-left fa-2x" onClick = {() => history.push('/')} ></i>
             <div class = "flex lg:w-2/3 md:w-4/5 w-full items-center">
                 <div class = "flex flex-col  px-4 py-8 justify-between  h-24 w-screen ">
                     <div class = "flex bg-gray-200 text-5xl pb-4">

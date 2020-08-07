@@ -8,6 +8,7 @@ function Film(props) {
     const [details, setDetails] = useState([])
     const [images, setImages] = useState([])
     const [videoDisplay, setVideoDisplay] = useState(false)
+    const [watchlist, setWatchlist] = useState(false)
     let history = useHistory();
 
 
@@ -56,7 +57,10 @@ function Film(props) {
     return (
         //mobile
         <div class="flex flex-col w-screen items-center p-3">
-            <i onClick={() => history.push({pathname: '/editor', movieId: props.movieId, title:details.title})} class="fa fa-plus-circle fa-lg float-right"></i>
+            <div class = "flex flex-row">
+                <i onClick={() => history.push({pathname: '/editor', movieId: props.movieId, title:details.title})} class="fa fa-plus-circle fa-lg float-right px-2"></i>
+                <i class="fa fa-lg fa-eye mr-2 transition ease-in-out duration-200 transform hover:-translate-y-1 hover:scale-110" onMouseOver={() => setWatchlist(true)} onMouseLeave={() => setWatchlist(false)}  onClick={() => history.push({pathname:'/watchlist', movieId: props.movieId, image: 'https://image.tmdb.org/t/p/w500'+details.poster_path, title: details.title})}/>
+            </div>
             <p class="font-montserrat text-center text-2xl font-semibold">{details.title}</p>
             <p class="w-3/4 font-montserrat text-center text-xs my-1">{details.release_date}</p>
             <img class="w-3/4" src={'https://image.tmdb.org/t/p/w500' + details.poster_path} alt="poster" />

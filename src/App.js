@@ -20,15 +20,15 @@ class App extends Component {
   state = {
     signedIn: false,
     googleId: '',
-    username: ''
+    username: '',
   }
   signInState = (bool, id, name) => {
     this.setState({
       signedIn: bool,
       googleId: id,
-      username: name
     })
   }
+  
   componentDidMount = () => {
     let localStorageObject = JSON.parse(localStorage.getItem('user'));
     if (localStorageObject && localStorageObject.signedIn === true) {
@@ -68,7 +68,7 @@ class App extends Component {
             <Route path="/" exact strict component={() => <Feed signInState={this.signInState} googleId={this.state.googleId} />}></Route>
             <Route path="/editor" exact strict component={() => <Editor googleId={this.state.googleId} username = {this.state.username}/>}></Route>
             <Route path="/discover" exact strict component={() => <Discover/>}></Route>
-            <Route path="/settings" exact strict component={() => <Settings googleId={this.state.googleId} />}></Route>
+            <Route path="/settings" exact strict component={() => <Settings googleId={this.state.googleId} signInState={this.signInState} signInStatus={this.state.signedIn}/>}></Route>
             <Route path="/about" exact strict component = {() => <About googleId = {this.state.googleId} />}></Route> 
             <Route path="/search" exact strict component={() => <Search googleId={this.state.googleId} username={this.state.username} />}></Route>
             <Route path="/watchlist" exact strict component={() => <WatchList id={this.state.googleId}/>}></Route>
