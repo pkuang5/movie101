@@ -30,8 +30,8 @@ function Discover(props) {
                 <p class="text-2xl font-semibold">Discover fellow users!</p>
                 {users.map(user => 
                     <div class="flex w-full h-32 mb-3 px-3 cursor-pointer transition duration-300 hover:bg-gray-100" onClick={() => handleUserClick(user.username)}>
-                        <div class="self-center rounded-full h-24 w-24 flex bg-cover" style={{backgroundImage: "url('" + user.profilePicURL + "')"}}> </div>
-                        <div class="flex flex-col pl-4 pt-4">
+                        <div class="flex-grow-0 flex-shrink-0 self-center rounded-full h-24 w-24 flex bg-cover" style={{backgroundImage: "url('" + user.profilePicURL + "')"}}> </div>
+                        <div class="flex flex-col pl-4 pt-4 ">
                             <p class="text-md font-semibold">{user.username}</p>
                             <p class="text-xs">{user.bio}</p>
                         </div>
