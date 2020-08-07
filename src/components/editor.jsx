@@ -40,8 +40,6 @@ function Editor (props) {
             setMovieId(location.movieId)
             setMovieName(location.title)
             getMovieInfo(location.title,location.movieId)
-            
-            console.log(location.movieId)
             getMovieImage(location.movieId)
             setChange(true)
         }
@@ -110,6 +108,7 @@ function Editor (props) {
         let url = ''.concat('https://api.themoviedb.org/3/', 'search/movie?api_key=', process.env.REACT_APP_MOVIEDB_API_KEY, '&query=', title);
         fetch(url).then(result=>result.json()).then((data)=>{
                 var i
+                let tempID
                 for (i in data.results) {
                     def = data.results[0].poster_path
                     defID = data.results[0].id
@@ -119,11 +118,12 @@ function Editor (props) {
                     id: data.results[i].id
                   }
                   movieEntry.id = ''.concat(movieEntry.id)
-                  if (movieEntry.id === id && movieEntry.image === 'https://image.tmdb.org/t/p/w500null'){
+                  tempID = ''.concat(id)
+                  if (movieEntry.id === tempID && movieEntry.image === 'https://image.tmdb.org/t/p/w500null'){
                     setMovieImage("http://pngimg.com/uploads/mario/mario_PNG53.png")
                     setMovieId(movieEntry.id)
                   }
-                  else if (movieEntry.id === id) {
+                  else if (movieEntry.id === tempID) {
                     setMovieName(movieEntry.title)
                     setMovieImage(movieEntry.image)
                     setMovieId(movieEntry.id)
@@ -132,8 +132,7 @@ function Editor (props) {
                   }
                 }
                 if (flag === false) {
-    
-                  setMovieImage('https://image.tmdb.org/t/p/w500'+def)
+                  setMovieImage("https://upload.wikimedia.org/wikipedia/commons/1/16/No_image_available_450_x_600.svg")
                   setMovieId(defID)
                   getMovieImage(defID)
                 }

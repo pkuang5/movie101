@@ -16,9 +16,9 @@ function Footer (props) {
             <h6 class = "cursor-pointer hover:text-blue-600 text-lg" onClick = {() => history.push('/about')}>
                 About
             </h6>
-            <h6 class = "cursor-pointer hover:text-blue-600 text-lg">
-                Contact Us: pn@gmail.com
-            </h6>
+            <a href = "mailto:screenbook.pn@gmail.com"class = "cursor-pointer hover:text-blue-600 text-lg">
+                Contact Us: screenbook.pn@gmail.com
+            </a>
         </div>
        
     )

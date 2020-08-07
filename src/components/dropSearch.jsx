@@ -81,7 +81,6 @@ class DropSearch extends Component {
                 <input autocomplete = "off" id = "searchBar" class = "outline-none h-full rounded sm:text-base text-xs cursor-pointer w-full " value = {this.state.text} onChange = {this.onTextChanged} 
                 onKeyPress={event => {
                     if (event.key === 'Enter') {
-                      console.log(this.state.text)
                       this.props.getMovieInfo(this.state.text)
                     }
                   }}

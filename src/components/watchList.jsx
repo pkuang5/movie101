@@ -93,13 +93,13 @@ function WatchList(props){
                 <p class="font-montserrat text-sm sm:text-md">Keep track of the movies you want to watch in the future!</p>
                 }
                 <div class="grid grid-cols-3 sm:grid-cols-5 gap-4">
+                    {editMode ? null : <div onClick={() => history.push('/search')} class={movies && movies.length ? "flex flex-col w-full h-full bg-gray-200 items-center justify-center transition ease-in-out duration-200 sm:transform hover:-translate-y-1 hover:scale-110 cursor-pointer": 'flex flex-col w-full h-40 sm:h-56 bg-gray-200 items-center justify-center transition ease-in-out duration-200 sm:transform hover:-translate-y-1 hover:scale-110 cursor-pointer'}>
+                            <i class="fa fa-plus-circle fa-2x"></i>
+                            <p class="font-montserrat text-sm mt-1">Add movie</p>
+                        </div>}
                     {movies.slice().reverse().map( movie =>
                         <img onClick={() => editMode ? !trashMovies.includes(movie) ? setTrashMovies([...trashMovies,movie]): setTrashMovies(trashMovies.filter(element => element !== movie)) : history.push(`/films/${movie.id}`)} class={trashMovies.includes(movie) ? "transition ease-in-out duration-200 sm:transform hover:-translate-y-1 hover:scale-110 cursor-pointer border-yellow-400 border-solid border-4" : "transition ease-in-out duration-200 sm:transform hover:-translate-y-1 hover:scale-110 cursor-pointer"} src={movie.image} alt={movie.title} />
                     )}
-                    {editMode ? null : <div onClick={() => history.push('/search')} class={movies && movies.length ? "flex flex-col w-full h-42 sm:h-56 bg-gray-200 items-center justify-center transition ease-in-out duration-200 sm:transform hover:-translate-y-1 hover:scale-110 cursor-pointer": 'flex flex-col w-full h-40 sm:h-56 bg-gray-200 items-center justify-center transition ease-in-out duration-200 sm:transform hover:-translate-y-1 hover:scale-110 cursor-pointer'}>
-                        <i class="fa fa-plus-circle fa-2x"></i>
-                        <p class="font-montserrat text-sm mt-1">Add movie</p>
-                    </div>}
                 </div>
             </div>
         </div>
