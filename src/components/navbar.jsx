@@ -61,7 +61,7 @@ function Navbar(props) {
               <div class="mr-3"><NavLink exact to="/discover" style={navLinkStyle} activeStyle={activeStyle}>Discover</NavLink></div>
               <div class="mr-3">
                 <NavLink exact to={"/" + props.username} >
-                  {location.pathname === "/" + props.username ?
+                  {location.pathname === ("/" + props.username) ?
                   <i class="fa fa-user fa-lg text-black" />
                   :
                   <i class="fa fa-user-o text-black" />}

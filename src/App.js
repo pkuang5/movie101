@@ -26,9 +26,9 @@ class App extends Component {
     this.setState({
       signedIn: bool,
       googleId: id,
+      username: name
     })
   }
-  
   componentDidMount = () => {
     let localStorageObject = JSON.parse(localStorage.getItem('user'));
     if (localStorageObject && localStorageObject.signedIn === true) {
@@ -52,9 +52,8 @@ class App extends Component {
     if (this.state.signedIn === false) {
       return (
         <Router>
-          {/* <Login signInState={this.signInState} /> */}
           <Switch>
-            <Route path="/" exact strict component = {() => <Login signInState={this.signInState}/>}></Route>
+            <Route path="/" exact strict component = {() => <Login signInState={this.signInState} username = {this.setUsername}/>}></Route>
             <Route path="/about" exact strict component = {() => <About/>}></Route>
           </Switch>
         </Router>
