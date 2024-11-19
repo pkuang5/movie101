@@ -10,7 +10,7 @@
     "aos": "^2.3.4",
     "bootstrap": "^4.5.0",
     "dotenv": "^8.2.0",
-    "firebase": "^7.15.0",
+    "firebase": "^10.9.0",
     "font-awesome": "^4.7.0",
     "noty": "^3.2.0-beta",
     "react": "^16.13.1",
